@@ -133,7 +133,7 @@ public sealed partial class Plugin : IDalamudPlugin
         NoireLibMain.AddModule(new NoireUpdateTracker("UpdateTrackerModule",
             true,
             true,
-            "https://raw.githubusercontent.com/Aspher0/BypassEmote/refs/heads/main/repo.json"));
+            "https://raw.githubusercontent.com/Luckyumimi/BypassEmoteCN/refs/heads/main/repo.json"));
     }
 
     // Cancels emotes when the player starts casting, mounting, crafting, gathering or interacting with an NPC.

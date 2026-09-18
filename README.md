@@ -1,5 +1,7 @@
 # Repository link
-`https://raw.githubusercontent.com/Aspher0/BypassEmote/refs/heads/main/repo.json`
+`https://raw.githubusercontent.com/Luckyumimi/BypassEmoteCN/refs/heads/main/repo.json`
+
+国服适配版，也收录在合集库链中：`https://raw.githubusercontent.com/Luckyumimi/MyDalamudPlugins/master/pluginmaster.json`
 
 # Definition and usage
 

@@ -22,16 +22,29 @@ public partial class Service
     public static NoireHook<OnEmoteFuncDelegate>? OnEmoteHook;
     public static NoireHook<AgentEmote.Delegates.ExecuteEmote> AgentExecuteEmoteHook;
     public static NoireHook<EmoteManager.Delegates.ExecuteEmote> ExecuteEmoteHook;
-    public static NoireHook<RaptureHotbarModule.Delegates.ExecuteSlot> ExecuteHotbarSlotHook;
+    public static NoireHook<RaptureHotbarModule.Delegates.ExecuteSlot>? ExecuteHotbarSlotHook;
 
     private const byte HotbarSlotNotExecuted = 0;
     private static bool inHotbarSlot;
+
+    // The hotbar entry point the client actually calls on a press. It is a tail-call thunk sitting at
+    // RaptureHotbarModule.ExecuteSlotById + 0x22, and it takes a HotbarSlot*, which is the signature the
+    // detour below is written against.
+    //
+    // From the Chinese 7.56 build on, FFXIVClientStructs' RaptureHotbarModule.Delegates.ExecuteSlot no longer
+    // resolves to that thunk: its member function pattern matches the address of ExecuteSlotById itself, whose
+    // real parameters are (uint hotbarId, uint slotId). Hooking that address with a HotbarSlot* signature both
+    // misses every press, because the client enters through the thunk, and hands the original a bogus third
+    // argument. Scanning for the thunk ourselves is client agnostic: this pattern was verified to be unique and
+    // to point at the right address on both the global 7.55 and the Chinese 7.56 binaries.
+    private const string ExecuteSlotSignature = "E9 ?? ?? ?? ?? 73 25 8B CA 49 8D 91 A0 00 00 00";
 
     private static unsafe void InstallHooks()
     {
         AgentExecuteEmoteHook = new(DetourAgentExecuteEmote, true);
         ExecuteEmoteHook = new(DetourExecuteEmote, true);
-        ExecuteHotbarSlotHook = new(DetourExecuteHotbarSlot, true);
+
+        ExecuteHotbarSlotHook = InstallExecuteSlotHook();
 
         try
         {
@@ -41,6 +54,42 @@ public partial class Service
         catch (Exception ex)
         {
             Log.Error(ex, "OnEmote Hook error");
+        }
+    }
+
+    // Bypassing emotes from the hotbar is a convenience. If the entry point cannot be found the plugin must
+    // still load and every other feature must keep working, so a failure here is logged instead of thrown.
+    private static unsafe NoireHook<RaptureHotbarModule.Delegates.ExecuteSlot>? InstallExecuteSlotHook()
+    {
+        try
+        {
+            var bySignature = new NoireHook<RaptureHotbarModule.Delegates.ExecuteSlot>(
+                ExecuteSlotSignature, DetourExecuteHotbarSlot, true, "ExecuteSlot");
+
+            Log.Debug("Hotbar ExecuteSlot hook bound by signature.");
+
+            return bySignature;
+        }
+        catch (Exception ex)
+        {
+            Log.Warning($"The ExecuteSlot signature '{ExecuteSlotSignature}' did not resolve: {ex.Message}");
+        }
+
+        try
+        {
+            var byClientStructs = new NoireHook<RaptureHotbarModule.Delegates.ExecuteSlot>(
+                DetourExecuteHotbarSlot, true);
+
+            Log.Warning("The hotbar ExecuteSlot hook fell back to the client structs delegate. On a client where "
+                + "that delegate points at ExecuteSlotById instead of the ExecuteSlot thunk, hotbar bypassing "
+                + "will not intercept presses.");
+
+            return byClientStructs;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "The hotbar ExecuteSlot hook could not be installed; hotbar bypassing stays off.");
+            return null;
         }
     }
 
@@ -70,7 +119,8 @@ public partial class Service
 
         try
         {
-            ret = ExecuteHotbarSlotHook.Original(thisPtr, hotbarSlot);
+            // The detour can only run while the hook exists, so the hook is never null in here.
+            ret = ExecuteHotbarSlotHook!.Original(thisPtr, hotbarSlot);
         }
         finally
         {
@@ -117,8 +167,9 @@ public partial class Service
         if (LeaveToTheGame(emote.RowId))
             return false;
 
-        Orchestrator?.TrySwap(emote);
-        return true;
+        // Only swallow the press when the swap really took the emote over. A refused or failed pipeline has to
+        // leave the press to the game rather than eating it and doing nothing.
+        return Orchestrator?.TrySwap(emote) == true;
     }
 
     private static void ArmCacheBreak(ushort emoteId)

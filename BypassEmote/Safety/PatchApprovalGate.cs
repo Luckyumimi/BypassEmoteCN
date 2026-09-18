@@ -18,7 +18,7 @@ public sealed class PatchApprovalGate : IDisposable
     private const string LogPrefix = "[PatchApprovalGate] ";
 
     internal const string ApprovalListUrl =
-        "https://raw.githubusercontent.com/Aspher0/BypassEmote/refs/heads/main/patch-approval.json";
+        "https://raw.githubusercontent.com/Luckyumimi/BypassEmoteCN/refs/heads/main/patch-approval.json";
 
     internal static readonly TimeSpan RetryInterval = TimeSpan.FromMinutes(10);
 

@@ -56,17 +56,29 @@ public sealed partial class SwapOrchestrator : IDisposable
 
     public bool IsExecutingSwap { get; private set; }
 
-    public void TrySwap(Emote sourceEmote)
+    // Set once the pipeline committed to a swap, i.e. once a mod serves the emote. Callers that swallow the
+    // input which started the swap, the hotbar hook, must only do so when this came back true: a refused or
+    // failed pipeline that swallows the press leaves the player with nothing happening at all.
+    private bool _swapArmed;
+
+    /// <summary>Runs the swap pipeline for <paramref name="sourceEmote"/>.</summary>
+    /// <returns>True when a swap took the emote over, false when nothing was swapped.</returns>
+    public bool TrySwap(Emote sourceEmote)
     {
+        _swapArmed = false;
+
         try
         {
             RunPipeline(sourceEmote);
         }
         catch (Exception ex)
         {
+            _swapArmed = false;
             Log.Error(ex, $"Swapping emote {sourceEmote.RowId} failed.", LogPrefix);
             LogHelper.Error(GenericFailureMessage);
         }
+
+        return _swapArmed;
     }
 
     private void RunPipeline(Emote sourceEmote)
@@ -121,6 +133,7 @@ public sealed partial class SwapOrchestrator : IDisposable
             && TryIdlePoseSwap(source, localPlayer, skeleton, swapClock, elapsedAtMatch,
                 new SwapContext(IdlePoseRoute(choice.Match, poolHasLoop), poolLine, character)))
         {
+            _swapArmed = true;
             return;
         }
 
@@ -188,6 +201,9 @@ public sealed partial class SwapOrchestrator : IDisposable
             LogHelper.Error(NoMatchMessage(source, []), "swap.no-match");
             return;
         }
+
+        // Past this point the swap is committed: an existing mod is reused or a new one is built and selected.
+        _swapArmed = true;
 
         var resolvedPairs = raceInputs[0].Pairs;
 
