@@ -324,7 +324,7 @@ public class ConfigWindow : Window, IDisposable
         ImGui.TextColoredWrapped(PatchWarningColor, L.T("The Bypass Emote you are using is not the original plugin."));
 
         ImGui.TextColoredWrapped(NoireTheme.Current.Resolve(ThemeColor.Success),
-            L.T("This Chinese localization and CN client adaptation branch is maintained by luckyumimi. "
+            L.T("This Chinese localization and CN client adaptation branch is maintained by Sachimi. "
                 + "If you have any problem, please report the bug at https://github.com/Luckyumimi/BypassEmoteCN"));
 
         if (ImGui.Button(L.T("Open the project page") + "##BypassEmoteIssueTracker"))

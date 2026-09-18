@@ -338,8 +338,8 @@ internal static class ZhConfigWindow
 
         ("The Bypass Emote you are using is not the original plugin.", "你所在使用的Bypass Emote不是原版插件"),
 
-        ("This Chinese localization and CN client adaptation branch is maintained by luckyumimi. If you have any problem, please report the bug at https://github.com/Luckyumimi/BypassEmoteCN",
-            "此汉化＆国服适配分支由luckyumimi负责，如果有任何问题，请前往https://github.com/Luckyumimi/BypassEmoteCN报告bug"),
+        ("This Chinese localization and CN client adaptation branch is maintained by Sachimi. If you have any problem, please report the bug at https://github.com/Luckyumimi/BypassEmoteCN",
+            "此汉化＆国服适配分支由Sachimi负责，如果有任何问题，请前往https://github.com/Luckyumimi/BypassEmoteCN报告bug"),
 
         ("Open the project page", "打开项目主页"),
 
