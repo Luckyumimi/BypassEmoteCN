@@ -1,7 +1,7 @@
 {
     "Author": "Aspher0",
     "Name": "Bypass Emote",
-    "Punchline": "No emotes? No problem.",
+    "Punchline": "（国服适配）无视限制，游玩任意情感动作。",
     "IconUrl": "https://raw.githubusercontent.com/Luckyumimi/MyDalamudPlugins/master/plugins/BypassEmote/icon.png",
     "RepoUrl": "https://github.com/Luckyumimi/BypassEmoteCN",
     "Description": "（国服适配初版）一个简单的插件，让你可以播放任意游戏表情，无论是否已解锁。\n像平时一样直接输入表情指令即可。\n支持自定义动画，也可在同步服务（Sync Services）上使用。",

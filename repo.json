@@ -18,7 +18,7 @@
         "LoadSync": false,
         "CanUnloadAsync": false,
         "LoadPriority": 0,
-        "Punchline": "Lets you play any emote, without restriction.",
+        "Punchline": "（国服适配）无视限制，游玩任意情感动作。",
         "RepoUrl": "https://github.com/Luckyumimi/BypassEmoteCN",
         "IconUrl": "https://raw.githubusercontent.com/Luckyumimi/MyDalamudPlugins/master/plugins/BypassEmote/icon.png",
         "DownloadLinkInstall": "https://raw.githubusercontent.com/Luckyumimi/MyDalamudPlugins/master/plugins/BypassEmote/latest.zip",
