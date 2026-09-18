@@ -27,15 +27,15 @@ public static class PatchApproval
         Version? pluginVersion, GameClient client = GameClient.Global)
     {
         if (string.IsNullOrWhiteSpace(gameVersion))
-            return new(PatchApprovalStatus.Blocked, "The installed game build could not be read.", null);
+            return new(PatchApprovalStatus.Blocked, L.T("The installed game build could not be read."), null);
 
         if (document == null)
-            return Unapproved(client, "The approval list could not be reached.", null);
+            return Unapproved(client, L.T("The approval list could not be reached."), null);
 
         var notice = Trimmed(document.Notice);
 
         if (Find(document, gameVersion, client) is not { } entry)
-            return Unapproved(client, $"Game build {gameVersion} has not been approved yet.", notice);
+            return Unapproved(client, L.T("Game build {0} has not been approved yet.", gameVersion), notice);
 
         notice = Trimmed(entry.Notice) ?? notice;
 
@@ -44,18 +44,18 @@ public static class PatchApproval
             if (!Version.TryParse(minimumText, out var minimum))
             {
                 return new(PatchApprovalStatus.Blocked,
-                    $"Game build {gameVersion} names a plugin version the plugin cannot read.", notice);
+                    L.T("Game build {0} names a plugin version the plugin cannot read.", gameVersion), notice);
             }
 
             if (pluginVersion == null || pluginVersion < minimum)
             {
                 return new(PatchApprovalStatus.Blocked,
-                    $"Game build {gameVersion} needs Bypass Emote {minimum} or newer; this is "
-                    + $"{pluginVersion?.ToString() ?? "unknown"}.", notice);
+                    L.T("Game build {0} needs Bypass Emote {1} or newer; this is {2}.", gameVersion, minimum,
+                        pluginVersion?.ToString() ?? "unknown"), notice);
             }
         }
 
-        return new(PatchApprovalStatus.Approved, $"Game build {gameVersion} is approved.", notice);
+        return new(PatchApprovalStatus.Approved, L.T("Game build {0} is approved.", gameVersion), notice);
     }
 
     internal static bool ShouldAnnounce(PatchApprovalStatus status, bool wasApproved, string? gameVersion,
@@ -85,14 +85,14 @@ public static class PatchApproval
         return remaining <= TimeSpan.Zero ? 0 : (int)Math.Ceiling(remaining.TotalSeconds);
     }
 
-    private const string UntestedTail = "has not and can not be tested. This plugin might not work and might be "
-        + "unstable/unusable. Please don't use it if it does not work well.";
-
     public static string UntestedReason(GameClient client) => client switch
     {
-        GameClient.Korean or GameClient.Chinese
-            => $"The {GameClientHelper.Name(client)} client {UntestedTail}",
-        _ => $"This game client is not the Global one, and {UntestedTail}",
+        GameClient.Korean or GameClient.Chinese => L.T(
+            "The {0} client has not and can not be tested. This plugin might not work and might be "
+            + "unstable/unusable. Please don't use it if it does not work well.",
+            GameClientHelper.Name(client)),
+        _ => L.T("This game client is not the Global one, and has not and can not be tested. This plugin might "
+            + "not work and might be unstable/unusable. Please don't use it if it does not work well."),
     };
 
     private static PatchApprovalVerdict Unapproved(GameClient client, string blockedReason, string? notice)

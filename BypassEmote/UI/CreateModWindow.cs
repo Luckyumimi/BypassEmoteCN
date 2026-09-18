@@ -34,7 +34,7 @@ public sealed class CreateModWindow : Window, IDisposable
     private string _status = string.Empty;
     private bool _statusIsGood;
 
-    public CreateModWindow() : base("Bypass Emote - Create a mod##BypassEmoteCreateMod")
+    public CreateModWindow() : base(L.T("Bypass Emote - Create a mod") + "##BypassEmoteCreateMod")
     {
         SizeConstraints = new WindowSizeConstraints
         {
@@ -46,7 +46,7 @@ public sealed class CreateModWindow : Window, IDisposable
     /// <summary> Opens the window with the emote already in the source slot (from the main UI). </summary>
     public void ShowFor(Emote emote)
     {
-        Picker(ref _source, "BypassEmoteCreateModSource", "Pick the emote to play...").Select(emote.RowId);
+        Picker(ref _source, "BypassEmoteCreateModSource", L.T("Pick the emote to play...")).Select(emote.RowId);
 
         Show();
     }
@@ -61,20 +61,28 @@ public sealed class CreateModWindow : Window, IDisposable
 
     public override void Draw()
     {
+        // The window name doubles as the ImGui id, so only the visible half is translated.
+        var windowTitle = L.T("Bypass Emote - Create a mod") + "##BypassEmoteCreateMod";
+
+        if (!string.Equals(WindowName, windowTitle, StringComparison.Ordinal))
+            WindowName = windowTitle;
+
         if (Service.Penumbra is not { Available: true })
         {
             ImGui.TextColored(NoireTheme.Current.Resolve(ThemeColor.Danger),
-                Service.Penumbra?.UnavailableReason is { Length: > 0 } reason ? reason : "Penumbra is not running.");
+                Service.Penumbra?.UnavailableReason is { Length: > 0 } reason ? reason : L.T("Penumbra is not running."));
             return;
         }
 
-        ImGui.TextWrapped("This window allows you to create a permanent swap mod, and it stays unaffected by BypassEmote. You own it, and you manage it, like any other mod.");
+        ImGui.TextWrapped(L.T("This window allows you to create a permanent swap mod, and it stays unaffected by BypassEmote. You own it, and you manage it, like any other mod."));
 
         ImGui.Spacing();
         ImGui.Separator();
         ImGui.Spacing();
 
-        var names = SettingsLayout.NameColumn("Emote to play", "Played over", "Races covered", "Mod name", "Enable on creation", "Highest priority");
+        var names = SettingsLayout.NameColumn(
+            L.T("Emote to play"), L.T("Played over"), L.T("Races covered"), L.T("Mod name"),
+            L.T("Enable on creation"), L.T("Highest priority"));
         var controls = MathF.Max(NoireUI.Scaled(240f), ImGui.GetContentRegionAvail().X - names - NoireUI.Scaled(40f));
 
         RefillRacesWhenThePairChanges();
@@ -83,34 +91,34 @@ public sealed class CreateModWindow : Window, IDisposable
         {
             if (rows)
             {
-                SettingsLayout.Name("Emote to play");
-                DrawPicker(ref _source, "BypassEmoteCreateModSource", "Pick the emote to play...", controls);
-                SettingsLayout.Help("The animation the mod plays. The one you have not unlocked.");
+                SettingsLayout.Name(L.T("Emote to play"));
+                DrawPicker(ref _source, "BypassEmoteCreateModSource", L.T("Pick the emote to play..."), controls);
+                SettingsLayout.Help(L.T("The animation the mod plays. The one you have not unlocked."));
 
-                SettingsLayout.Name("Played over");
-                DrawPicker(ref _target, "BypassEmoteCreateModTarget", "Pick the emote to play over...", controls);
-                SettingsLayout.Help("The emote you will actually use in game. The one you have unlocked.");
+                SettingsLayout.Name(L.T("Played over"));
+                DrawPicker(ref _target, "BypassEmoteCreateModTarget", L.T("Pick the emote to play over..."), controls);
+                SettingsLayout.Help(L.T("The emote you will actually use in game. The one you have unlocked."));
 
-                SettingsLayout.Name("Races covered");
+                SettingsLayout.Name(L.T("Races covered"));
                 DrawRaces(controls);
-                SettingsLayout.Help("Which bodies the mod is written for.");
+                SettingsLayout.Help(L.T("Which bodies the mod is written for."));
 
-                SettingsLayout.Name("Mod name");
-                ImGui.InputTextWithHint("##BypassEmoteCreateModName", "My emote mod", ref _modName,
+                SettingsLayout.Name(L.T("Mod name"));
+                ImGui.InputTextWithHint("##BypassEmoteCreateModName", L.T("My emote mod"), ref _modName,
                     PermanentModBuilder.MaxModNameLength);
-                SettingsLayout.Help("The name of the generated mod.");
+                SettingsLayout.Help(L.T("The name of the generated mod."));
 
                 var enableOnCreation = _enableOnCreation;
-                if (SettingsLayout.Check("Enable on creation", ref enableOnCreation))
+                if (SettingsLayout.Check(L.T("Enable on creation"), ref enableOnCreation))
                     _enableOnCreation = enableOnCreation;
 
-                SettingsLayout.Help("Switches the mod on in your character's collection as soon as it exists.");
+                SettingsLayout.Help(L.T("Switches the mod on in your character's collection as soon as it exists."));
 
                 var highestPriority = _highestPriority;
-                if (SettingsLayout.Check("Highest priority", ref highestPriority))
+                if (SettingsLayout.Check(L.T("Highest priority"), ref highestPriority))
                     _highestPriority = highestPriority;
 
-                SettingsLayout.Help("Makes the mod have the highest priority. When off, it is created at priority 0.");
+                SettingsLayout.Help(L.T("Makes the mod have the highest priority. When off, it is created at priority 0."));
             }
         }
 
@@ -206,8 +214,8 @@ public sealed class CreateModWindow : Window, IDisposable
     private NoireMultiCombo<string> Races()
         => _races ??= new NoireMultiCombo<string>("BypassEmoteCreateModRaces", AllRaceNames)
         {
-            PreviewPlaceholder = "No race covered",
-            FilterHint = "Search races...",
+            PreviewPlaceholder = L.T("No race covered"),
+            FilterHint = L.T("Search races..."),
             VisibleItemCount = 12,
         };
 
@@ -232,9 +240,9 @@ public sealed class CreateModWindow : Window, IDisposable
         ImGui.Spacing();
 
         if (orchestrator.ModServingAnimation(source, SwapOrchestrator.SkeletonFor(player)) is { } modName)
-            ImGui.TextColored(NoireTheme.Current.Resolve(ThemeColor.Accent), $"Modded animation: {modName}");
+            ImGui.TextColored(NoireTheme.Current.Resolve(ThemeColor.Accent), L.T("Modded animation: {0}", modName));
         else
-            ImGui.TextDisabled("Vanilla animation");
+            ImGui.TextDisabled(L.T("Vanilla animation"));
     }
 
     private void DrawMatchWarnings()
@@ -256,12 +264,13 @@ public sealed class CreateModWindow : Window, IDisposable
 
         if (!EmoteHelper.IsEmoteUnlocked(targetRowId))
         {
-            lines.Add(new SwapAdvice.Line(SwapAdvice.Severity.Warning, $"You have not unlocked {targetName}."));
+            lines.Add(new SwapAdvice.Line(SwapAdvice.Severity.Warning, L.T("You have not unlocked {0}.", targetName)));
         }
 
         if (ModOnTheTarget(target) is { Length: > 0 } modName)
         {
-            lines.Add(new SwapAdvice.Line(SwapAdvice.Severity.Warning, $"Your mod \"{modName}\" already changes {targetName}."));
+            lines.Add(new SwapAdvice.Line(SwapAdvice.Severity.Warning,
+                L.T("Your mod \"{0}\" already changes {1}.", modName, targetName)));
         }
 
         lines.AddRange(SwapAdvice.Behaviour(source, sourceName, target, targetName));
@@ -305,14 +314,14 @@ public sealed class CreateModWindow : Window, IDisposable
 
         foreach (var shared in plan.Shared)
         {
-            ImGui.TextColored(warning, $"{string.Join(", ", shared.Losers)} read the same animation file as "
-                + $"{shared.Winner}. {shared.Winner}'s version plays for all of them.");
+            ImGui.TextColored(warning, L.T("{0} read the same animation file as {1}. {1}'s version plays for all of them.",
+                string.Join(", ", shared.Losers), shared.Winner));
         }
 
         if (plan.AlsoReached.Count > 0)
         {
-            ImGui.TextColored(warning, "This also changes the emote for "
-                + $"{string.Join(", ", plan.AlsoReached)}: they read a file the mod writes.");
+            ImGui.TextColored(warning, L.T("This also changes the emote for {0}: they read a file the mod writes.",
+                string.Join(", ", plan.AlsoReached)));
         }
 
         ImGui.PopTextWrapPos();
@@ -330,29 +339,29 @@ public sealed class CreateModWindow : Window, IDisposable
 
         using (ImRaii.Disabled(!ready))
         {
-            if (ImGui.Button("Create", new Vector2(-1f, ImGui.GetFrameHeight() * 1.4f)) && ready)
+            if (ImGui.Button(L.T("Create"), new Vector2(-1f, ImGui.GetFrameHeight() * 1.4f)) && ready)
                 Create(source!.Value, target!.Value, name, [.. races.Select(SkeletonOf)]);
         }
 
         if (sameEmote)
-            ImGui.TextDisabled("An emote cannot be played over itself.");
+            ImGui.TextDisabled(L.T("An emote cannot be played over itself."));
         else if (source != null && target != null && races.Count == 0)
-            ImGui.TextDisabled("Pick at least one race.");
+            ImGui.TextDisabled(L.T("Pick at least one race."));
         else if (!ready)
-            ImGui.TextDisabled("Pick both emotes and name the mod.");
+            ImGui.TextDisabled(L.T("Pick both emotes and name the mod."));
     }
 
     private void Create(uint sourceRowId, uint targetRowId, string name, IReadOnlyList<string> skeletons)
     {
         if (Service.Catalog is not { Ready: true } catalog)
         {
-            Report(false, "Emote data is still loading. Try again in a moment.");
+            Report(false, L.T("Emote data is still loading. Try again in a moment."));
             return;
         }
 
         if (catalog.Get(sourceRowId) is not { } source || catalog.Get(targetRowId) is not { } target)
         {
-            Report(false, "One of those emotes has no animation this can read.");
+            Report(false, L.T("One of those emotes has no animation this can read."));
             return;
         }
 
@@ -380,7 +389,7 @@ public sealed class CreateModWindow : Window, IDisposable
             Icon = CommonHelper.GetEmoteIcon,
             Include = emote => CommonHelper.GetEmotePlayType(emote) != EmotePlayType.DoNotPlay
                             && CommonHelper.IsEmoteDisplayable(emote),
-            FilterHint = "Search emotes...",
+            FilterHint = L.T("Search emotes..."),
             PreviewPlaceholder = placeholder,
         };
 

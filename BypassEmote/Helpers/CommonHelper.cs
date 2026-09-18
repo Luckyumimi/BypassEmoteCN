@@ -122,7 +122,7 @@ public static class CommonHelper
         if (specification == null)
         {
             return emote.Name.ToString().IsNullOrWhitespace() ?
-                (emote.TextCommand.ValueNullable?.Command.ExtractText() ?? $"No name")
+                (emote.TextCommand.ValueNullable?.Command.ExtractText() ?? L.T("No name"))
                 : name + $"{emote.Name.ToString()}";
         }
 
@@ -147,7 +147,7 @@ public static class CommonHelper
     public static string GetRealEmoteNameById(uint emoteId)
     {
         var foundEmote = EmoteHelper.GetEmoteById(emoteId);
-        return foundEmote?.Name.ToString() ?? $"No name";
+        return foundEmote?.Name.ToString() ?? L.T("No name");
     }
 
     public static uint? GetRealEmoteIconById(uint emoteId)

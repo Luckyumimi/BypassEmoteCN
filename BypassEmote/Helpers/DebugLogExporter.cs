@@ -56,11 +56,11 @@ internal static class DebugLogExporter
     {
         if (Interlocked.CompareExchange(ref _running, 1, 0) != 0)
         {
-            LogHelper.Info("A debug log export is already running.");
+            LogHelper.Info(L.T("A debug log export is already running."));
             return;
         }
 
-        LogHelper.NoticeAlways("Exporting logs...");
+        LogHelper.NoticeAlways(L.T("Exporting logs..."));
 
         _ = AsyncHelper.RunInBackgroundAsync(ExportAsync, "BypassEmote.ExportDebugLogs");
     }
@@ -77,7 +77,7 @@ internal static class DebugLogExporter
         catch (Exception ex)
         {
             Log.Error(ex, "Exporting the debug logs failed.", LogPrefix);
-            LogHelper.Error("Debug logs could not be exported. The Dalamud log has the reason.");
+            LogHelper.Error(L.T("Debug logs could not be exported. The Dalamud log has the reason."));
         }
         finally
         {
@@ -87,10 +87,10 @@ internal static class DebugLogExporter
 
     private static void Announce(string archivePath)
     {
-        var openText = "Debug logs exported to ";
-        var bodyText = ". Send this file to the developer. Feel free to check the content of the zip and if you need to anonymize any information, please do so before sending it. ";
-        var warningtext = "Personal information appears in it, DO NOT send this in a public channel.";
-        var endText = " Ask the developer where to send this file to be extra safe.";
+        var openText = L.T("Debug logs exported to ");
+        var bodyText = L.T(". Send this file to the developer. Feel free to check the content of the zip and if you need to anonymize any information, please do so before sending it. ");
+        var warningtext = L.T("Personal information appears in it, DO NOT send this in a public channel.");
+        var endText = L.T(" Ask the developer where to send this file to be extra safe.");
 
         var key = $"BypassEmote.OpenDebugLogs.{Path.GetFileName(archivePath)}";
 
@@ -104,7 +104,7 @@ internal static class DebugLogExporter
         chat.AddText(warningtext, LogHelper.ErrorColor);
         chat.AddText(endText, LogHelper.WarningColor);
         chat.AddText(" ");
-        chat.AddLink("[Open folder]", key, Open, LinkColor);
+        chat.AddLink(L.T("[Open folder]"), key, Open, LinkColor);
 
         LogHelper.NoticeAlways(openText + archivePath + bodyText + warningtext + endText, chat);
     }

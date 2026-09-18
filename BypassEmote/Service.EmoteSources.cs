@@ -59,7 +59,7 @@ public partial class Service
             {
                 if (!source.Text.IsNullOrWhitespace())
                 {
-                    var type = source.Type.IsNullOrWhitespace() ? "Unknown" : source.Type!;
+                    var type = source.Type.IsNullOrWhitespace() ? L.T("Unknown") : source.Type!;
                     entries.Add((type, source.Text!));
                 }
             }

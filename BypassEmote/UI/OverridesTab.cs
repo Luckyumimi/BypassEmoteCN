@@ -47,14 +47,14 @@ internal static class OverridesTab
         var overrides = Configuration.EmoteOverrides;
 
         ImGui.TextColoredWrapped(NoireTheme.Current.Resolve(ThemeColor.Info),
-            "This tab allows you to make sure a locked emote will always use one or multiple specific target emotes.");
+            L.T("This tab allows you to make sure a locked emote will always use one or multiple specific target emotes."));
 
         ImGui.Spacing();
         ImGui.Separator();
         ImGui.Spacing();
 
         if (Service.Catalog is not { Ready: true })
-            ImGui.TextDisabled("The emote catalog is still building.");
+            ImGui.TextDisabled(L.T("The emote catalog is still building."));
 
         var listWidth = MathF.Max(NoireUI.Scaled(150f), ImGui.GetContentRegionAvail().X * 0.36f);
 
@@ -77,11 +77,11 @@ internal static class OverridesTab
                 DrawSourceRows(overrides);
         }
 
-        var picker = _sourceAdd ??= new EmoteQuickAdd("BypassEmoteOverrideSourceAdd", "Override an emote...")
+        var picker = _sourceAdd ??= new EmoteQuickAdd("BypassEmoteOverrideSourceAdd", L.T("Override an emote..."))
         {
             Marked = rowId => Configuration.EmoteOverrides.Any(entry => entry.SourceEmote == rowId),
             MarkedColor = NoireTheme.Current.Resolve(ThemeColor.Accent),
-            MarkedNote = "(overridden)",
+            MarkedNote = L.T("(overridden)"),
         };
 
         if (picker.Draw(width) is not { } picked)
@@ -97,7 +97,7 @@ internal static class OverridesTab
     {
         if (overrides.Count == 0)
         {
-            ImGui.TextDisabled("No override yet.");
+            ImGui.TextDisabled(L.T("No override yet."));
             return;
         }
 
@@ -107,7 +107,7 @@ internal static class OverridesTab
         {
             var top = ImGui.GetCursorPosY();
 
-            if (RemoveButton($"##BypassEmoteOverrideDrop{entry.SourceEmote}", "Remove this override"))
+            if (RemoveButton($"##BypassEmoteOverrideDrop{entry.SourceEmote}", L.T("Remove this override")))
                 removing = entry;
 
             ImGui.SameLine(0f, NoireUI.Scaled(4f));
@@ -118,7 +118,7 @@ internal static class OverridesTab
             var label = SwapOrchestrator.NameOf(entry.SourceEmote);
 
             if (entry.Targets.Count == 0)
-                label += "  (empty)";
+                label += L.T("  (empty)");
 
             if (ImGui.Selectable($"{label}##BypassEmoteOverrideSource{entry.SourceEmote}",
                 _selectedSource == entry.SourceEmote))
@@ -146,7 +146,7 @@ internal static class OverridesTab
             if (child)
             {
                 if (configured == null)
-                    ImGui.TextDisabled("Pick an emote on the left.");
+                    ImGui.TextDisabled(L.T("Pick an emote on the left."));
                 else
                     DrawTargetPane(configured);
             }
@@ -155,10 +155,10 @@ internal static class OverridesTab
         if (configured == null)
             return;
 
-        var picker = _targetAdd ??= new EmoteQuickAdd("BypassEmoteOverrideTargetAdd", "Add a target emote...")
+        var picker = _targetAdd ??= new EmoteQuickAdd("BypassEmoteOverrideTargetAdd", L.T("Add a target emote..."))
         {
             MarkedColor = NoireTheme.Current.Resolve(ThemeColor.Accent),
-            MarkedNote = "(already a target)",
+            MarkedNote = L.T("(already a target)"),
         };
 
         picker.Marked = rowId => configured.Targets.Contains(rowId);
@@ -183,13 +183,13 @@ internal static class OverridesTab
     {
         var limited = configured.LimitedToTargets;
 
-        if (ImGui.Checkbox("Limited to selected targets only", ref limited))
+        if (ImGui.Checkbox(L.T("Limited to selected targets only"), ref limited))
             configured.LimitedToTargets = limited;
 
         ImGui.SameLine();
 
-        SettingsLayout.Marker("On, this emote lands on one of these targets or it does not play at all."
-            + "\nOff, the usual configuration takes over whenever none of them can be used as targets during a swap.");
+        SettingsLayout.Marker(L.T("On, this emote lands on one of these targets or it does not play at all."
+            + "\nOff, the usual configuration takes over whenever none of them can be used as targets during a swap."));
     }
 
     private static NoireReorderableList<uint> BoundList(EmoteOverride configured)
@@ -198,7 +198,7 @@ internal static class OverridesTab
         {
             AllowDelete = true,
             RowHeight = NoireUI.Scaled(IconSize + 4f),
-            EmptyText = "No target yet.",
+            EmptyText = L.T("No target yet."),
             Label = SwapOrchestrator.NameOf,
             Renderer = DrawTargetRow,
         };

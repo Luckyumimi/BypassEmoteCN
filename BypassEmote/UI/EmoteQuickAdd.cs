@@ -24,7 +24,7 @@ internal sealed class EmoteQuickAdd
             Icon = CommonHelper.GetEmoteIcon,
             IconSize = IconSize,
             Include = include ?? (emote => CommonHelper.GetEmotePlayType(emote) != EmotePlayType.DoNotPlay),
-            FilterHint = "Search emotes...",
+            FilterHint = L.T("Search emotes..."),
             PreviewPlaceholder = placeholder,
         };
 

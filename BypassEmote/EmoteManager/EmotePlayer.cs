@@ -64,7 +64,7 @@ internal static unsafe class EmotePlayer
         if (isLocalPlayer && SwapPromptWindow.IsShowing)
         {
             LogHelper.Error(
-                "Bypass Emote is waiting for you to choose how it should play locked emotes.", "prompt.pending");
+                L.T("Bypass Emote is waiting for you to choose how it should play locked emotes."), "prompt.pending");
 
             return;
         }
@@ -78,7 +78,7 @@ internal static unsafe class EmotePlayer
                 isLocalPlayer && NoireService.Condition[ConditionFlag.Fishing]))
         {
             if (isLocalPlayer)
-                LogHelper.Error("You cannot bypass this emote right now.");
+                LogHelper.Error(L.T("You cannot bypass this emote right now."));
             return;
         }
 

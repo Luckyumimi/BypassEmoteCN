@@ -80,11 +80,11 @@ public static class OverrideResolver
 
     public static string ReasonText(Refusal refusal) => refusal switch
     {
-        Refusal.Locked => "you have not unlocked it",
-        Refusal.NeverATarget => "it can never be a swap target",
-        Refusal.NotHere => "it cannot be played in your current state",
-        Refusal.ChangedByAMod => "one of your mods changes it, and your settings block those",
-        Refusal.NotConfigured => "there is no animation data for it",
-        _ => "it is available",
+        Refusal.Locked => L.T("you have not unlocked it"),
+        Refusal.NeverATarget => L.T("it can never be a swap target"),
+        Refusal.NotHere => L.T("it cannot be played in your current state"),
+        Refusal.ChangedByAMod => L.T("one of your mods changes it, and your settings block those"),
+        Refusal.NotConfigured => L.T("there is no animation data for it"),
+        _ => L.T("it is available"),
     };
 }

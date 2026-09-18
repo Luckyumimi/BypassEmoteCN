@@ -19,7 +19,7 @@ public sealed partial class SwapOrchestrator
     internal static IReadOnlyList<string> NoMatchLines(EmoteAttributes source, IReadOnlyList<NearMiss> diagnostics,
         Func<NearMiss, string?>? modNameFor = null)
     {
-        var lines = new List<string>(diagnostics.Count + 1) { $"Could not swap /{source.Command}." };
+        var lines = new List<string>(diagnostics.Count + 1) { L.T("Could not swap /{0}.", source.Command) };
 
         for (var index = 0; index < diagnostics.Count; index++)
         {
@@ -29,11 +29,12 @@ public sealed partial class SwapOrchestrator
                 ? modNameFor?.Invoke(miss)
                 : null;
 
-            lines.Add((index == 0 ? "Found /" : "Also found /")
-                + miss.Candidate.Command
-                + " but "
-                + NearMissReason(miss.BlockedBy, Configuration.LoopMatching, Configuration.TurnMatching,
-                    Configuration.SoundMatching, modName));
+            var reason = NearMissReason(miss.BlockedBy, Configuration.LoopMatching, Configuration.TurnMatching,
+                Configuration.SoundMatching, modName);
+
+            lines.Add(index == 0
+                ? L.T("Found /{0} but {1}", miss.Candidate.Command, reason)
+                : L.T("Also found /{0} but {1}", miss.Candidate.Command, reason));
         }
 
         return lines;
@@ -77,32 +78,32 @@ public sealed partial class SwapOrchestrator
         SoundMatchRule soundRule, string? blockingModName = null)
     {
         if (blockedBy == BestMatchResolver.BlockedByRules)
-            return "it is on your blocked targets list.";
+            return L.T("it is on your blocked targets list.");
 
         if (blockedBy == BestMatchResolver.BlockedByModdedTarget)
         {
             return string.IsNullOrEmpty(blockingModName)
-                ? "another of your mods targets it. Your configuration blocked it."
-                : $"your mod \"{blockingModName}\" targets it. Your configuration blocked it.";
+                ? L.T("another of your mods targets it. Your configuration blocked it.")
+                : L.T("your mod \"{0}\" targets it. Your configuration blocked it.", blockingModName);
         }
 
         if (blockedBy == "Loop" && loopRule != LoopMatchRule.Strict)
-            return "the loop kinds do not match.";
+            return L.T("the loop kinds do not match.");
 
         if (blockedBy == "Turn" && turnRule == TurnMatchRule.VeryStrict)
-            return "turn matching is very strict.";
+            return L.T("turn matching is very strict.");
 
         if (blockedBy == "Sound")
         {
             return soundRule switch
             {
-                SoundMatchRule.Strict => "it makes a sound, and your sound rule avoids every target that does.",
-                SoundMatchRule.Lenient => "it makes a sound, and your sound rule only allows that for an emote "
-                    + "that makes one too.",
-                _ => "it makes a sound.",
+                SoundMatchRule.Strict => L.T("it makes a sound, and your sound rule avoids every target that does."),
+                SoundMatchRule.Lenient => L.T("it makes a sound, and your sound rule only allows that for an emote "
+                    + "that makes one too."),
+                _ => L.T("it makes a sound."),
             };
         }
 
-        return $"{blockedBy.ToLowerInvariant()} matching is strict.";
+        return L.T("{0} matching is strict.", L.T(blockedBy.ToLowerInvariant()));
     }
 }

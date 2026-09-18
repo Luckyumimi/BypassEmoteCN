@@ -58,12 +58,12 @@ public sealed class PatchApprovalGate : IDisposable
     private Reading FirstReading()
     {
         if (RememberedApproval())
-            return new(PatchApprovalStatus.Approved, $"Game build {GameVersion} was approved earlier.", null, null);
+            return new(PatchApprovalStatus.Approved, L.T("Game build {0} was approved earlier.", GameVersion), null, null);
 
         if (Client != GameClient.Global)
             return new(PatchApprovalStatus.Untested, PatchApproval.UntestedReason(Client), null, null);
 
-        return new(PatchApprovalStatus.Checking, "Reading the approval list.", null, null);
+        return new(PatchApprovalStatus.Checking, L.T("Reading the approval list."), null, null);
     }
 
     public string GameVersion { get; }
@@ -178,7 +178,7 @@ public sealed class PatchApprovalGate : IDisposable
         _document = null;
 
         Volatile.Write(ref _reading, new Reading(PatchApprovalStatus.Checking,
-            $"The approval recorded for game build {GameVersion} was dropped.", null, DateTime.UtcNow));
+            L.T("The approval recorded for game build {0} was dropped.", GameVersion), null, DateTime.UtcNow));
 
         Log.Debug($"Dropped the approval recorded for game build {GameVersion}; the list is read "
             + $"again in {RetryInterval.TotalMinutes:0} minutes.", LogPrefix);
@@ -319,8 +319,8 @@ public sealed class PatchApprovalGate : IDisposable
 
     private static void AnnounceApproval()
     {
-        var content = "The plugin has been approved for this patch. If you noticed weird behaviors prior to this message, "
-        + "try again and it should be fixed now.";
+        var content = L.T("The plugin has been approved for this patch. If you noticed weird behaviors prior to this message, "
+        + "try again and it should be fixed now.");
 
         LogHelper.Success(content);
 

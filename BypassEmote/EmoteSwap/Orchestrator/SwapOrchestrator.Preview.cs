@@ -59,10 +59,10 @@ public sealed partial class SwapOrchestrator
     private string? PipelineBlockedBy()
     {
         if (Configuration.SelfBypassMode != SelfBypassMode.EmoteSwap)
-            return "Emote Swap is off.";
+            return L.T("Emote Swap is off.");
 
         if (NoireService.ClientState.IsGPosing)
-            return "Client in gpose.";
+            return L.T("Client in gpose.");
 
         if (!_penumbra.Available)
             return PenumbraUnavailableMessage;
@@ -78,7 +78,7 @@ public sealed partial class SwapOrchestrator
         var condition = DirectPlayPlanner.PlayableAsFor(rawCondition);
 
         if (NoireService.ObjectTable.LocalPlayer is not { } localPlayer)
-            return new SwapPreview { Condition = condition, Refusal = "Local player not found." };
+            return new SwapPreview { Condition = condition, Refusal = L.T("Local player not found.") };
 
         if (!_catalog.Ready)
             return new SwapPreview { Condition = condition, Refusal = CatalogLoadingMessage };
@@ -88,7 +88,7 @@ public sealed partial class SwapOrchestrator
             return new SwapPreview
             {
                 Condition = condition,
-                Refusal = "This emote is not in the catalog.",
+                Refusal = L.T("This emote is not in the catalog."),
             };
         }
 
@@ -123,7 +123,8 @@ public sealed partial class SwapOrchestrator
                 Source = source,
                 ResolvedFrom = resolvedFrom,
                 Condition = condition,
-                Refusal = $"/{source.Command} needs {EmoteHelper.EnvironmentRequirementFor(source.RowId)}.",
+                Refusal = L.T("/{0} needs {1}.", source.Command,
+                    L.T(EmoteHelper.EnvironmentRequirementFor(source.RowId))),
             };
         }
 

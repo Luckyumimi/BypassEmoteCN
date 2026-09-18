@@ -22,7 +22,8 @@ public sealed partial class SwapOrchestrator
         => source.Intro == IntroKind.Pap && target.Intro != IntroKind.Pap;
 
     internal static string TargetIntroDroppedMessageFor(EmoteAttributes target)
-        => $"This emote landed on a {(target.LoopKind == EmotePlayType.Looped ? "loop only" : "one shot")} target with no intro. You will not see the intro play.";
+        => L.T("This emote landed on a {0} target with no intro. You will not see the intro play.",
+            target.LoopKind == EmotePlayType.Looped ? L.T("loop only") : L.T("one shot"));
 
     internal static bool IdlePoseDropsSourceIntro(string? poseStartRelativePapPath, IntroKind sourceIntro,
         string? sourceIntroRequestedPath)
@@ -46,21 +47,21 @@ public sealed partial class SwapOrchestrator
 
     internal static string IdlePoseCauseFor(IdlePoseFailure reason) => reason switch
     {
-        IdlePoseFailure.StillInAnotherEmote => "Your character is still in another emote. Move, or change pose, then try again.",
-        IdlePoseFailure.MountedOrRiding => "Your character is mounted, so there is no idle pose to borrow.",
-        IdlePoseFailure.PoseHasNoRedirectablePap => "This pose cannot be changed.",
-        IdlePoseFailure.PosePapNotFound => "Your pose animation could not be found.",
-        IdlePoseFailure.SourceHasNoVariant => "That emote has no animation to lend.",
-        IdlePoseFailure.SourcePapNotFound => "That emote's animation could not be found.",
-        IdlePoseFailure.PosePapCouldNotBeBuilt => "Your pose animation could not be rebuilt.",
-        IdlePoseFailure.CollectionUnavailable => "Penumbra could not say which collection your character uses.",
-        IdlePoseFailure.ModCouldNotBeApplied => "The swap mod could not be turned on.",
-        IdlePoseFailure.RedrawFailed => "Your character could not be refreshed.",
-        _ => "Something went wrong.",
+        IdlePoseFailure.StillInAnotherEmote => L.T("Your character is still in another emote. Move, or change pose, then try again."),
+        IdlePoseFailure.MountedOrRiding => L.T("Your character is mounted, so there is no idle pose to borrow."),
+        IdlePoseFailure.PoseHasNoRedirectablePap => L.T("This pose cannot be changed."),
+        IdlePoseFailure.PosePapNotFound => L.T("Your pose animation could not be found."),
+        IdlePoseFailure.SourceHasNoVariant => L.T("That emote has no animation to lend."),
+        IdlePoseFailure.SourcePapNotFound => L.T("That emote's animation could not be found."),
+        IdlePoseFailure.PosePapCouldNotBeBuilt => L.T("Your pose animation could not be rebuilt."),
+        IdlePoseFailure.CollectionUnavailable => L.T("Penumbra could not say which collection your character uses."),
+        IdlePoseFailure.ModCouldNotBeApplied => L.T("The swap mod could not be turned on."),
+        IdlePoseFailure.RedrawFailed => L.T("Your character could not be refreshed."),
+        _ => L.T("Something went wrong."),
     };
 
     internal static string IdlePoseFailureLine(IdlePoseFailure reason)
-        => $"Could not use your idle pose for this emote. {IdlePoseCauseFor(reason)}";
+        => L.T("Could not use your idle pose for this emote. {0}", IdlePoseCauseFor(reason));
 
     internal static EmoteController.PoseType? StanceFromMode(CharacterModes mode, byte modeParam)
         => IdlePoseData.StanceFromMode(mode, modeParam);
@@ -251,10 +252,10 @@ public sealed partial class SwapOrchestrator
 
         var elapsedAtRedraw = swapClock.ElapsedMilliseconds;
 
-        LogHelper.SwapLine(source.Command, "idle pose");
+        LogHelper.SwapLine(source.Command, L.T("idle pose"));
 
         if (IdlePoseDropsSourceIntro(posePaths.StartRelativePapPath, source.Intro, sourceIntroRequestedPath))
-            LogHelper.Notice("Your idle 0 pose has no intro, so this emote's intro will not play. Try changing pose.");
+            LogHelper.Notice(L.T("Your idle 0 pose has no intro, so this emote's intro will not play. Try changing pose."));
 
         if (ArmsIdlePoseWatch(Configuration.SwapLifetime))
             _endWatcher.ArmIdlePose(entry!, () => _penumbra.RedrawLocalPlayer(), () => ArmPoseCacheBreak(poseType, poseIndex));

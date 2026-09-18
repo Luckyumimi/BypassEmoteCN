@@ -31,7 +31,7 @@ public class DebugWindow : Window, IDisposable
     private string emoteSearchText = string.Empty;
     private List<Emote>? cachedEmoteList = null;
 
-    public DebugWindow() : base("Bypass Emote Debug###BypassEmote")
+    public DebugWindow() : base(L.T("Bypass Emote Debug") + "###BypassEmote")
     {
         SizeConstraints = new WindowSizeConstraints
         {
@@ -46,47 +46,53 @@ public class DebugWindow : Window, IDisposable
 
     public override void Draw()
     {
+        // The window name doubles as the ImGui id, so only the visible half is translated.
+        var windowTitle = L.T("Bypass Emote Debug") + "###BypassEmote";
+
+        if (!string.Equals(WindowName, windowTitle, StringComparison.Ordinal))
+            WindowName = windowTitle;
+
         using (ImRaii.TabBar("DebugTabs"))
         {
-            using (var tab = ImRaii.TabItem("IPC Tests"))
+            using (var tab = ImRaii.TabItem(L.T("IPC Tests")))
             {
                 if (tab)
                     DrawIpcTestsTab();
             }
 
-            using (var tab = ImRaii.TabItem("Tracked Characters"))
+            using (var tab = ImRaii.TabItem(L.T("Tracked Characters")))
             {
                 if (tab)
                     DrawTrackedCharactersTab();
             }
 
 #if DEBUG
-            using (var tab = ImRaii.TabItem("Network Relay"))
+            using (var tab = ImRaii.TabItem(L.T("Network Relay")))
             {
                 if (tab)
                     DrawNetworkRelayTab();
             }
 #endif
 
-            using (var tab = ImRaii.TabItem("Swap Layers"))
+            using (var tab = ImRaii.TabItem(L.T("Swap Layers")))
             {
                 if (tab)
                     DrawSwapLayers();
             }
 
-            using (var tab = ImRaii.TabItem("Emote Pool"))
+            using (var tab = ImRaii.TabItem(L.T("Emote Pool")))
             {
                 if (tab)
                     EmotePoolTab.Draw();
             }
 
-            using (var tab = ImRaii.TabItem("Kept Swaps"))
+            using (var tab = ImRaii.TabItem(L.T("Kept Swaps")))
             {
                 if (tab)
                     DrawKeptSwapsTab();
             }
 
-            using (var tab = ImRaii.TabItem("Patch Approval"))
+            using (var tab = ImRaii.TabItem(L.T("Patch Approval")))
             {
                 if (tab)
                     DrawPatchApprovalTab();
@@ -103,68 +109,69 @@ public class DebugWindow : Window, IDisposable
     {
         if (Service.PatchApproval is not { } gate)
         {
-            ImGui.TextUnformatted("The gate is not up.");
+            ImGui.TextUnformatted(L.T("The gate is not up."));
             return;
         }
 
-        ImGui.TextUnformatted($"Probed client: {GameClientHelper.Name(GameClientHelper.Detected())}");
-        ImGui.TextUnformatted($"Gate reads: {GameClientHelper.Name(gate.Client)}");
+        ImGui.TextUnformatted(L.T("Probed client: {0}", GameClientHelper.Name(GameClientHelper.Detected())));
+        ImGui.TextUnformatted(L.T("Gate reads: {0}", GameClientHelper.Name(gate.Client)));
 
         ImGui.Separator();
 
-        DrawPretendToggle("Pretend this is the Korean client", GameClient.Korean);
-        DrawPretendToggle("Pretend this is the Chinese client", GameClient.Chinese);
-        DrawPretendToggle("Pretend this client cannot be identified", GameClient.Unknown);
+        DrawPretendToggle(L.T("Pretend this is the Korean client"), GameClient.Korean);
+        DrawPretendToggle(L.T("Pretend this is the Chinese client"), GameClient.Chinese);
+        DrawPretendToggle(L.T("Pretend this client cannot be identified"), GameClient.Unknown);
 
         var rejecting = IPCCaller_Penumbra.PretendIdentifierRejected;
 
-        if (ImGui.Checkbox("Pretend Penumbra rejects the player identifier (KR/CN clients debug)", ref rejecting))
+        if (ImGui.Checkbox(L.T("Pretend Penumbra rejects the player identifier (KR/CN clients debug)"), ref rejecting))
             IPCCaller_Penumbra.PretendIdentifierRejected = rejecting;
 
         if (rejecting && GameClientHelper.Current() is not (GameClient.Korean or GameClient.Chinese))
         {
             ImGui.TextColored(new Vector4(1f, 0.75f, 0.25f, 1f),
-                "Client is Global. Enable one of the client checkboxes above.");
+                L.T("Client is Global. Enable one of the client checkboxes above."));
         }
 
         if (Service.Penumbra?.PlayerCollectionFallbackSource is { } fallbackSource)
-            ImGui.TextUnformatted($"Fallback in use: {fallbackSource}");
+            ImGui.TextUnformatted(L.T("Fallback in use: {0}", fallbackSource));
 
         if (rejecting && Service.Penumbra is { } penumbraGateway)
         {
-            ImGui.TextUnformatted("Assignment chain:");
+            ImGui.TextUnformatted(L.T("Assignment chain:"));
             ImGui.TextUnformatted(penumbraGateway.DescribePlayerAssignmentChain());
         }
 
         ImGui.Separator();
 
-        ImGui.TextUnformatted($"Game build: {gate.GameVersion}");
-        ImGui.TextUnformatted($"Status: {gate.Status}");
-        ImGui.TextWrapped($"Reason: {gate.Reason}");
+        ImGui.TextUnformatted(L.T("Game build: {0}", gate.GameVersion));
+        ImGui.TextUnformatted(L.T("Status: {0}", gate.Status));
+        ImGui.TextWrapped(L.T("Reason: {0}", gate.Reason));
 
         if (gate.Notice is { Length: > 0 } notice)
-            ImGui.TextWrapped($"Notice: {notice}");
+            ImGui.TextWrapped(L.T("Notice: {0}", notice));
 
-        ImGui.TextUnformatted($"Governs: {gate.Governs}    Holds hooks: {gate.HoldsHooks}    Held: {gate.HeldCount}");
+        ImGui.TextUnformatted(L.T("Governs: {0}    Holds hooks: {1}    Held: {2}",
+            gate.Governs, gate.HoldsHooks, gate.HeldCount));
 
         var due = gate.LastCheckedUtc is { } checkedUtc
             ? (checkedUtc + PatchApprovalGate.RetryInterval).ToLocalTime().ToString("HH:mm:ss")
-            : "as soon as the loop runs";
+            : L.T("as soon as the loop runs");
 
-        ImGui.TextUnformatted($"Next automatic check: {due}");
+        ImGui.TextUnformatted(L.T("Next automatic check: {0}", due));
 
         ImGui.Separator();
 
-        if (ImGui.Button("Drop the recorded approval"))
+        if (ImGui.Button(L.T("Drop the recorded approval")))
             gate.Forget();
 
         ImGui.SameLine();
-        ImGuiComponents.HelpMarker("Clears the approval stored in the config and at runtime");
+        ImGuiComponents.HelpMarker(L.T("Clears the approval stored in the config and at runtime"));
 
-        ImGui.InputTextWithHint("##BypassEmoteApprovalNotice", "Notice for this build",
+        ImGui.InputTextWithHint("##BypassEmoteApprovalNotice", L.T("Notice for this build"),
             ref approvalNotice, 512);
 
-        if (ImGui.Button("Approve this build in the .json file"))
+        if (ImGui.Button(L.T("Approve this build in the .json file")))
             approvalNote = ApprovalPublisher.Publish(gate.GameVersion, gate.PluginVersion, gate.Client, approvalNotice);
 
         if (approvalNote.Length > 0)
@@ -185,25 +192,26 @@ public class DebugWindow : Window, IDisposable
 
         if (manager == null)
         {
-            ImGui.TextUnformatted("The swap mod manager is not initialized.");
+            ImGui.TextUnformatted(L.T("The swap mod manager is not initialized."));
             return;
         }
 
         var registry = manager.Registry;
         var directory = manager.ModDirectoryName;
 
-        ImGui.TextUnformatted($"Mod directory: {(directory.Length == 0 ? "<no character loaded>" : directory)}");
-        ImGui.TextUnformatted($"Penumbra: {DescribeModState(manager.PenumbraState())}");
-        ImGui.TextUnformatted($"Drawn body: {registry.Skeleton ?? "<unknown>"}");
-        ImGui.TextUnformatted($"Swap files: {DescribeSize(manager.SwapFilesSize())}");
+        ImGui.TextUnformatted(L.T("Mod directory: {0}",
+            directory.Length == 0 ? L.T("<no character loaded>") : directory));
+        ImGui.TextUnformatted(L.T("Penumbra: {0}", DescribeModState(manager.PenumbraState())));
+        ImGui.TextUnformatted(L.T("Drawn body: {0}", registry.Skeleton ?? L.T("<unknown>")));
+        ImGui.TextUnformatted(L.T("Swap files: {0}", DescribeSize(manager.SwapFilesSize())));
 
-        var clearing = ImGui.Button("Clear kept swaps##KeptSwaps");
+        var clearing = ImGui.Button(L.T("Clear kept swaps") + "##KeptSwaps");
 
         ImGui.Separator();
 
         if (registry.Entries.Count == 0)
         {
-            ImGui.TextUnformatted("No swap is kept.");
+            ImGui.TextUnformatted(L.T("No swap is kept."));
         }
         else
         {
@@ -226,13 +234,13 @@ public class DebugWindow : Window, IDisposable
         if (!table)
             return;
 
-        ImGui.TableSetupColumn("Target");
-        ImGui.TableSetupColumn("Source");
-        ImGui.TableSetupColumn("Option");
-        ImGui.TableSetupColumn("Races", ImGuiTableColumnFlags.WidthFixed);
-        ImGui.TableSetupColumn("Last used", ImGuiTableColumnFlags.WidthFixed);
-        ImGui.TableSetupColumn("Selected", ImGuiTableColumnFlags.WidthFixed);
-        ImGui.TableSetupColumn("Rules", ImGuiTableColumnFlags.WidthFixed);
+        ImGui.TableSetupColumn(L.T("Target"));
+        ImGui.TableSetupColumn(L.T("Source"));
+        ImGui.TableSetupColumn(L.T("Option"));
+        ImGui.TableSetupColumn(L.T("Races"), ImGuiTableColumnFlags.WidthFixed);
+        ImGui.TableSetupColumn(L.T("Last used"), ImGuiTableColumnFlags.WidthFixed);
+        ImGui.TableSetupColumn(L.T("Selected"), ImGuiTableColumnFlags.WidthFixed);
+        ImGui.TableSetupColumn(L.T("Rules"), ImGuiTableColumnFlags.WidthFixed);
         ImGui.TableSetupColumn("##KeptSwapsActions", ImGuiTableColumnFlags.WidthFixed);
         ImGui.TableHeadersRow();
 
@@ -247,7 +255,7 @@ public class DebugWindow : Window, IDisposable
             ImGui.TableNextRow();
 
             ImGui.TableNextColumn();
-            ImGui.TextUnformatted(EmoteLabel(entry.TargetEmote) + (entry.IsIdlePoseSwap ? " (idle pose)" : string.Empty));
+            ImGui.TextUnformatted(EmoteLabel(entry.TargetEmote) + (entry.IsIdlePoseSwap ? " " + L.T("(idle pose)") : string.Empty));
 
             ImGui.TableNextColumn();
             ImGui.TextUnformatted(EmoteLabel(entry.SourceEmote));
@@ -265,18 +273,18 @@ public class DebugWindow : Window, IDisposable
             ImGui.TextUnformatted(entry.LastUsedStamp.ToString());
 
             ImGui.TableNextColumn();
-            ImGui.TextUnformatted(entry.SelectedByUs ? "yes" : "no");
+            ImGui.TextUnformatted(entry.SelectedByUs ? L.T("yes") : L.T("no"));
 
             ImGui.TableNextColumn();
 
-            if (ImGui.Button($"Select##KeptSwap{index}"))
+            if (ImGui.Button(L.T("Select") + $"##KeptSwap{index}"))
                 pending = (entry, true);
 
             ImGui.SameLine();
 
             using (ImRaii.Disabled(!entry.SelectedByUs))
             {
-                if (ImGui.Button($"Turn off##KeptSwap{index}"))
+                if (ImGui.Button(L.T("Turn off") + $"##KeptSwap{index}"))
                     pending = (entry, false);
             }
         }
@@ -293,9 +301,10 @@ public class DebugWindow : Window, IDisposable
     private static string DescribeModState(ModState? state)
     {
         if (state is not { } held)
-            return "does not hold the mod";
+            return L.T("does not hold the mod");
 
-        return $"{(held.Enabled ? "enabled" : "disabled")}, priority {held.Priority}";
+        return L.T("{0}, priority {1}",
+            held.Enabled ? L.T("enabled") : L.T("disabled"), held.Priority);
     }
 
     private static string DescribeSize(long bytes)
@@ -326,22 +335,22 @@ public class DebugWindow : Window, IDisposable
 
         if (relay == null)
         {
-            ImGui.Text("Network relay is not initialized.");
+            ImGui.Text(L.T("Network relay is not initialized."));
             return;
         }
 
-        ImGui.Text($"Network: {relay.NetworkName}");
-        ImGui.Text($"State: {relay.State}{(relay.IsHub ? " (hub)" : string.Empty)}");
-        ImGui.Text($"Self: {relay.SelfId}");
+        ImGui.Text(L.T("Network: {0}", relay.NetworkName));
+        ImGui.Text(L.T("State: {0}", relay.State) + (relay.IsHub ? " " + L.T("(hub)") : string.Empty));
+        ImGui.Text(L.T("Self: {0}", relay.SelfId));
 
         var isActive = relay.IsActive;
-        if (ImGui.Checkbox("Active", ref isActive))
+        if (ImGui.Checkbox(L.T("Active"), ref isActive))
             relay.SetActive(isActive);
 
         ImGui.SameLine();
 
         var enableLan = relay.Options.EnableLan;
-        if (ImGui.Checkbox("LAN discovery", ref enableLan))
+        if (ImGui.Checkbox(L.T("LAN discovery"), ref enableLan))
         {
             relay.Options.EnableLan = enableLan;
 
@@ -350,21 +359,22 @@ public class DebugWindow : Window, IDisposable
         }
 
         if (ImGui.IsItemHovered())
-            ImGui.SetTooltip("Instances on the same PC find each other with no configuration.\nLAN discovery reaches other PCs, and may need a Windows Firewall inbound allow.");
+            ImGui.SetTooltip(L.T("Instances on the same PC find each other with no configuration.\n"
+                + "LAN discovery reaches other PCs, and may need a Windows Firewall inbound allow."));
 
         var localPlayer = NoireService.ObjectTable.LocalPlayer;
         if (localPlayer != null)
             relay.Self.Set("character", localPlayer.Name.TextValue);
 
-        ImGui.Text("Peers:");
+        ImGui.Text(L.T("Peers:"));
         using (var child = ImRaii.Child("##NetworkPeers", new Vector2(-1, -1), true))
         {
             if (child)
             {
-                ImGui.Text($"You - {relay.Self} [{(relay.IsHub ? "hub" : "client")}]");
+                ImGui.Text(L.T("You - {0} [{1}]", relay.Self, relay.IsHub ? L.T("hub") : L.T("client")));
 
                 foreach (var peer in relay.OtherPeers)
-                    ImGui.Text($"{peer} [{(peer.IsSameMachine ? "same PC" : "LAN")}]");
+                    ImGui.Text($"{peer} [{(peer.IsSameMachine ? L.T("same PC") : L.T("LAN"))}]");
             }
         }
     }
@@ -372,19 +382,19 @@ public class DebugWindow : Window, IDisposable
 
     private static void DrawSwapLayers()
     {
-        LayerSwitch("Swap owned emotes##SwapLayer", SwapLayers.SwapOwnedEmotes,
+        LayerSwitch(L.T("Swap owned emotes") + "##SwapLayer", SwapLayers.SwapOwnedEmotes,
             value => SwapLayers.SwapOwnedEmotes = value);
 
         ImGui.SameLine();
-        ImGuiComponents.HelpMarker("Sends emotes you already own through the swap instead of letting the game play them, for debugging only.");
+        ImGuiComponents.HelpMarker(L.T("Sends emotes you already own through the swap instead of letting the game play them, for debugging only."));
 
-        LayerSwitch("Weapon in hand##SwapLayer", SwapLayers.WeaponInHand,
+        LayerSwitch(L.T("Weapon in hand") + "##SwapLayer", SwapLayers.WeaponInHand,
             value => SwapLayers.WeaponInHand = value);
 
-        LayerSwitch("Weapon stow at end##SwapLayer", SwapLayers.WeaponStowAtEnd,
+        LayerSwitch(L.T("Weapon stow at end") + "##SwapLayer", SwapLayers.WeaponStowAtEnd,
             value => SwapLayers.WeaponStowAtEnd = value);
 
-        LayerSwitch("Weapon travel animation##SwapLayer", SwapLayers.WeaponTravelAnimation,
+        LayerSwitch(L.T("Weapon travel animation") + "##SwapLayer", SwapLayers.WeaponTravelAnimation,
             value => SwapLayers.WeaponTravelAnimation = value);
     }
 
@@ -419,16 +429,16 @@ public class DebugWindow : Window, IDisposable
 
     private void DrawIpcTestsTab()
     {
-        ImGui.Text($"IPC Version: {IpcProvider.ApiVersion().ToString()}");
-        ImGui.Text($"IPC Is Ready: {IpcProvider.IsReady()}");
+        ImGui.Text(L.T("IPC Version: {0}", IpcProvider.ApiVersion().ToString()));
+        ImGui.Text(L.T("IPC Is Ready: {0}", IpcProvider.IsReady()));
 
         ImGui.Separator();
 
         InitCache();
 
-        ImGui.Text("Select Emote:");
+        ImGui.Text(L.T("Select Emote:"));
 
-        var selectedEmoteName = selectedEmoteId == 0 ? "None" : GetEmoteDisplayName(selectedEmoteId);
+        var selectedEmoteName = selectedEmoteId == 0 ? L.T("None") : GetEmoteDisplayName(selectedEmoteId);
 
         ImGui.SetNextItemWidth(250);
 
@@ -437,10 +447,10 @@ public class DebugWindow : Window, IDisposable
             if (combo)
             {
                 ImGui.SetNextItemWidth(-1);
-                ImGui.InputTextWithHint("##EmoteSearch", "Search emotes...", ref emoteSearchText, 256);
+                ImGui.InputTextWithHint("##EmoteSearch", L.T("Search emotes..."), ref emoteSearchText, 256);
 
                 bool isNoneSelected = selectedEmoteId == 0;
-                if (ImGui.Selectable("None", isNoneSelected))
+                if (ImGui.Selectable(L.T("None"), isNoneSelected))
                 {
                     selectedEmoteId = 0;
                 }
@@ -501,7 +511,7 @@ public class DebugWindow : Window, IDisposable
                 currentState = CurrentState.PlayingEmote;
         }
 
-        if (ImGui.Button("Set local player state") && localPlayer != null)
+        if (ImGui.Button(L.T("Set local player state")) && localPlayer != null)
         {
             var characterState = CommonHelper.CreateCharacterState(localPlayer.Address, executedAction, currentState, selectedEmoteId);
             IpcProvider.SetStateForCharacter(localPlayer.Address, characterState.Serialize());
@@ -509,7 +519,7 @@ public class DebugWindow : Window, IDisposable
 
         ImGui.SameLine();
 
-        if (ImGui.Button("Set target state") && target != null)
+        if (ImGui.Button(L.T("Set target state")) && target != null)
         {
             if (target is not ICharacter castTarget)
                 return;
@@ -517,16 +527,16 @@ public class DebugWindow : Window, IDisposable
             IpcProvider.SetStateForCharacter(castTarget.Address, characterState.Serialize());
         }
 
-        if (ImGui.Button("Clear local player state") && localPlayer != null)
+        if (ImGui.Button(L.T("Clear local player state")) && localPlayer != null)
             IpcProvider.ClearStateForCharacter(localPlayer.Address);
 
         ImGui.SameLine();
 
-        if (ImGui.Button("Clear target state") && target != null)
+        if (ImGui.Button(L.T("Clear target state")) && target != null)
             IpcProvider.ClearStateForCharacter(target.Address);
 
         ImGui.Separator();
-        ImGui.Text("Current Local Player IPC Data (Looping only):");
+        ImGui.Text(L.T("Current Local Player IPC Data (Looping only):"));
 
         var remainingHeight = ImGui.GetContentRegionAvail().Y;
         var heightBlocks = (int)(remainingHeight / 2 - 20);
@@ -555,7 +565,7 @@ public class DebugWindow : Window, IDisposable
         }
 
         ImGui.Separator();
-        ImGui.Text("Current Target IPC Data (Looping only):");
+        ImGui.Text(L.T("Current Target IPC Data (Looping only):"));
 
         using (var child = ImRaii.Child("IpcDataBlockTarget", new Vector2(-1, heightBlocks), true))
         {
@@ -583,7 +593,7 @@ public class DebugWindow : Window, IDisposable
 
     private void DrawTrackedCharactersTab()
     {
-        ImGui.Text("Tracked Characters:");
+        ImGui.Text(L.T("Tracked Characters:"));
 
         using (var child = ImRaii.Child("BlockTrackedCharacters", new Vector2(-1, -1), true))
         {
@@ -597,7 +607,7 @@ public class DebugWindow : Window, IDisposable
                 }
                 catch (Exception ex)
                 {
-                    ImGui.TextUnformatted($"Serialization error: {ex.Message}");
+                    ImGui.TextUnformatted(L.T("Serialization error: {0}", ex.Message));
                 }
             }
         }
@@ -605,10 +615,10 @@ public class DebugWindow : Window, IDisposable
 
     private string GetEmoteDisplayName(uint emoteId)
     {
-        if (emoteId == 0) return "None";
+        if (emoteId == 0) return L.T("None");
 
         var emote = cachedEmoteList?.FirstOrDefault(e => e.RowId == emoteId);
-        if (emote == null) return $"Unknown ({emoteId})";
+        if (emote == null) return L.T("Unknown ({0})", emoteId);
 
         return CommonHelper.GetEmoteName(emote.Value);
     }

@@ -27,7 +27,7 @@ internal static class PermanentModBuilder
         catch (Exception ex)
         {
             Log.Error(ex, $"Creating a mod for /{source.Command} over /{target.Command} failed.", LogPrefix);
-            return new Outcome(false, "Something went wrong. Nothing was created; the log has the details.");
+            return new Outcome(false, L.T("Something went wrong. Nothing was created; the log has the details."));
         }
     }
 
@@ -35,26 +35,26 @@ internal static class PermanentModBuilder
         IReadOnlyList<string> skeletons, string modName, bool enable, bool highestPriority)
     {
         if (skeletons.Count == 0)
-            return new Outcome(false, "Pick at least one race for the mod to cover.");
+            return new Outcome(false, L.T("Pick at least one race for the mod to cover."));
 
         if (Service.Penumbra is not { Available: true } penumbra)
-            return new Outcome(false, Service.Penumbra?.UnavailableReason ?? "Penumbra is not running.");
+            return new Outcome(false, Service.Penumbra?.UnavailableReason ?? L.T("Penumbra is not running."));
 
         var name = CleanName(modName);
         if (name.Length == 0)
-            return new Outcome(false, "Give the mod a name first.");
+            return new Outcome(false, L.T("Give the mod a name first."));
 
         if (penumbra.GetModRootDirectory() is not { Length: > 0 } modRoot)
-            return new Outcome(false, "Penumbra's mod folder could not be read.");
+            return new Outcome(false, L.T("Penumbra's mod folder could not be read."));
 
         if (Service.Orchestrator is not { } orchestrator)
-            return new Outcome(false, "The swap engine is not running.");
+            return new Outcome(false, L.T("The swap engine is not running."));
 
         var directoryName = DirectoryNameFor(name);
         var modDirectory = Path.Combine(modRoot, directoryName);
 
         if (Directory.Exists(modDirectory))
-            return new Outcome(false, $"Penumbra already holds a mod folder called '{directoryName}'. Pick another name.");
+            return new Outcome(false, L.T("Penumbra already holds a mod folder called '{0}'. Pick another name.", directoryName));
 
         var ownSkeleton = NoireService.ObjectTable.LocalPlayer is { } player
             ? SwapOrchestrator.SkeletonFor(player)
@@ -62,8 +62,8 @@ internal static class PermanentModBuilder
 
         if (orchestrator.BuildPlainSwapFiles(source, target, skeletons, ownSkeleton) is not { Count: > 0 } files)
         {
-            return new Outcome(false, $"/{source.Command} cannot be played over /{target.Command}: "
-                + "they share no posture to move the animation onto.");
+            return new Outcome(false, L.T("/{0} cannot be played over /{1}: they share no posture to move the animation onto.",
+                source.Command, target.Command));
         }
 
         var redirects = new Dictionary<string, string>(files.Count);
@@ -79,27 +79,27 @@ internal static class PermanentModBuilder
         var layout = Service.SwapMods?.EnsureLayout() ?? ModLayout.V3;
 
         if (!WriteMod(modDirectory, name, source, target, files, redirects, layout))
-            return new Outcome(false, "The mod's files could not be written. The log has the details.");
+            return new Outcome(false, L.T("The mod's files could not be written. The log has the details."));
 
         if (!penumbra.AddMod(directoryName))
         {
-            return new Outcome(false, $"'{name}' was written to '{directoryName}' but Penumbra would not take it. "
-                + "Rediscovering mods in Penumbra should pick it up.");
+            return new Outcome(false, L.T("'{0}' was written to '{1}' but Penumbra would not take it. "
+                + "Rediscovering mods in Penumbra should pick it up.", name, directoryName));
         }
 
         if (assigned is { } collectionToPrioritiseIn)
             penumbra.TrySetModPriority(collectionToPrioritiseIn.Id, directoryName, priority);
 
         if (!enable)
-            return new Outcome(true, $"'{name}' was created. Enable it in Penumbra when you want it.");
+            return new Outcome(true, L.T("'{0}' was created. Enable it in Penumbra when you want it.", name));
 
         if (assigned is not { } collection)
-            return new Outcome(true, $"'{name}' was created, but no collection is assigned to your character, so it is off.");
+            return new Outcome(true, L.T("'{0}' was created, but no collection is assigned to your character, so it is off.", name));
 
         if (!penumbra.TrySetModEnabled(collection.Id, directoryName, true))
-            return new Outcome(true, $"'{name}' was created, but Penumbra would not switch it on in {collection.Name}.");
+            return new Outcome(true, L.T("'{0}' was created, but Penumbra would not switch it on in {1}.", name, collection.Name));
 
-        return new Outcome(true, $"'{name}' was created and switched on in {collection.Name}.");
+        return new Outcome(true, L.T("'{0}' was created and switched on in {1}.", name, collection.Name));
     }
 
     private static int PriorityOver(IPCCaller_Penumbra penumbra, Guid collectionId,

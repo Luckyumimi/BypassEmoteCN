@@ -204,9 +204,9 @@ public sealed partial class SwapOrchestrator
     }
 
     internal static string ChangedTargetMessage(EmoteAttributes target, string modName)
-        => $"This emote landed on /{target.Command}, which your mod \"{modName}\" changes. Players around you may "
-        + "briefly see that mod's animation before yours reaches them. If you don't want this to happen, head over to the configuration " +
-        "window and block emotes that are changed by other mods.";
+        => L.T("This emote landed on /{0}, which your mod \"{1}\" changes. Players around you may "
+            + "briefly see that mod's animation before yours reaches them. If you don't want this to happen, head over to the configuration "
+            + "window and block emotes that are changed by other mods.", target.Command, modName);
 
     private void ReportChangedTarget(EmoteAttributes target, string modDirectory)
     {

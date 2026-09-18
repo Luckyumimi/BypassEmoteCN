@@ -14,7 +14,7 @@ namespace BypassEmote.UI;
 /// <summary> The "Assign emote to hotbar" picker. </summary>
 public class AssignHotbarWindow : IDisposable
 {
-    private const string DragHintText = "You can also drag and drop an emote from the main window onto any visible hotbar slot.";
+    private static string DragHintText => L.T("You can also drag and drop an emote from the main window onto any visible hotbar slot.");
 
     private const float SlotSize = 36f;
     private const float GridCellPadding = 2f;
@@ -26,13 +26,13 @@ public class AssignHotbarWindow : IDisposable
     {
         var options = new ModalOptions
         {
-            ConfirmLabel = "Assign",
+            ConfirmLabel = L.T("Assign"),
             Width = DialogWidth(),
         };
 
         var content = new NoireContent().AddCustom(() => DrawBody(options));
 
-        if (!await NoireModal.ConfirmAsync($"Assign {CommonHelper.GetEmoteName(emoteToAssign)} to hotbar...", content, options))
+        if (!await NoireModal.ConfirmAsync(L.T("Assign {0} to hotbar...", CommonHelper.GetEmoteName(emoteToAssign)), content, options))
             return;
 
         await AsyncHelper.RunOnFrameworkThreadAsync(() =>
@@ -55,7 +55,7 @@ public class AssignHotbarWindow : IDisposable
         options.Width = DialogWidth();
 
         var hotbar = Math.Clamp(Configuration.AssignModalHotbar, 0, 17);
-        if (ImGui.Combo("Hotbar", ref hotbar, "1\02\03\04\05\06\07\08\09\010\0XHB 1\0XHB 2\0XHB 3\0XHB 4\0XHB 5\0XHB 6\0XHB 7\0XHB 8"))
+        if (ImGui.Combo(L.T("Hotbar"), ref hotbar, L.T("1\02\03\04\05\06\07\08\09\010\0XHB 1\0XHB 2\0XHB 3\0XHB 4\0XHB 5\0XHB 6\0XHB 7\0XHB 8")))
             Configuration.AssignModalHotbar = hotbar;
 
         var slotCount = hotbar < 10 ? 12 : 16;
@@ -77,9 +77,9 @@ public class AssignHotbarWindow : IDisposable
     {
         var slot = CommonHelper.GetHotbarSlot(hotbar, hotbarSlot);
         if (slot != null && !slot->IsEmpty)
-            ImGui.TextColoredWrapped(ColorHelper.HexToVector4("#ff0000"), $"Currently assigned: {slot->PopUpHelp}");
+            ImGui.TextColoredWrapped(ColorHelper.HexToVector4("#ff0000"), L.T("Currently assigned: {0}", slot->PopUpHelp));
         else
-            ImGui.Text("This slot is empty. You can safely assign an emote.");
+            ImGui.Text(L.T("This slot is empty. You can safely assign an emote."));
     }
 
     private unsafe void DrawSlotGrid(int hotbar, int slotCount)
@@ -145,7 +145,7 @@ public class AssignHotbarWindow : IDisposable
             if (ImGui.IsItemHovered())
             {
                 ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
-                ImGui.SetTooltip(isEmpty ? $"Slot {i + 1} - Empty" : $"Slot {i + 1} - {slot->PopUpHelp}");
+                ImGui.SetTooltip(isEmpty ? L.T("Slot {0} - Empty", i + 1) : L.T("Slot {0} - {1}", i + 1, slot->PopUpHelp));
             }
         }
     }

@@ -47,7 +47,7 @@ public class EmoteWindow : Window, IDisposable
         Icon = FontAwesomeIcon.Comments,
     };
 
-    public EmoteWindow() : base("Bypass Emote - Locked Emotes##BypassEmoteMain", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
+    public EmoteWindow() : base(L.T("Bypass Emote - Locked Emotes") + "##BypassEmoteMain", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
     {
         SizeConstraints = new WindowSizeConstraints
         {
@@ -60,7 +60,7 @@ public class EmoteWindow : Window, IDisposable
             Click = (m) => { if (m == ImGuiMouseButton.Left) Service.Plugin.OpenSettings(); },
             Icon = FontAwesomeIcon.Cog,
             IconOffset = new(2, 2),
-            ShowTooltip = () => ImGui.SetTooltip("Open settings"),
+            ShowTooltip = () => ImGui.SetTooltip(L.T("Open settings")),
         });
 
         TitleBarButtons.Add(new()
@@ -68,7 +68,7 @@ public class EmoteWindow : Window, IDisposable
             Click = (m) => { if (m == ImGuiMouseButton.Left) Service.Plugin.OpenMessageJournal(); },
             Icon = FontAwesomeIcon.TimesCircle,
             IconOffset = new(2, 2),
-            ShowTooltip = () => ImGui.SetTooltip("Show every logs"),
+            ShowTooltip = () => ImGui.SetTooltip(L.T("Show every logs")),
         });
 
         TitleBarButtons.Add(new()
@@ -76,7 +76,7 @@ public class EmoteWindow : Window, IDisposable
             Click = (m) => { if (m == ImGuiMouseButton.Left) Service.Plugin.OpenChangelog(); },
             Icon = FontAwesomeIcon.Book,
             IconOffset = new(2, 2),
-            ShowTooltip = () => ImGui.SetTooltip("Show changelogs"),
+            ShowTooltip = () => ImGui.SetTooltip(L.T("Show changelogs")),
         });
 
         TitleBarButtons.Add(new()
@@ -84,7 +84,7 @@ public class EmoteWindow : Window, IDisposable
             Click = (m) => { if (m == ImGuiMouseButton.Left) Service.OpenDiscord(); },
             Icon = FontAwesomeIcon.Comments,
             IconOffset = new(2, 2),
-            ShowTooltip = () => ImGui.SetTooltip("Join the Discord"),
+            ShowTooltip = () => ImGui.SetTooltip(L.T("Join the Discord")),
         });
 
         TitleBarButtons.Add(new()
@@ -92,19 +92,25 @@ public class EmoteWindow : Window, IDisposable
             Click = (m) => { if (m == ImGuiMouseButton.Left) Service.OpenKofi(); },
             Icon = FontAwesomeIcon.Heart,
             IconOffset = new(2, 2),
-            ShowTooltip = () => ImGui.SetTooltip("Support me"),
+            ShowTooltip = () => ImGui.SetTooltip(L.T("Support me")),
         });
     }
 
     public override void Draw()
     {
+        // The window name doubles as the ImGui id, so only the visible half is translated.
+        var windowTitle = L.T("Bypass Emote - Locked Emotes") + "##BypassEmoteMain";
+
+        if (!string.Equals(WindowName, windowTitle, StringComparison.Ordinal))
+            WindowName = windowTitle;
+
         DrawToolbar();
 
         ImGui.Separator();
 
-        var showAllText = "Show all emotes";
-        var showInvalidText = "Show invalid emotes";
-        var showIdsText = "Show IDs";
+        var showAllText = L.T("Show all emotes");
+        var showInvalidText = L.T("Show invalid emotes");
+        var showIdsText = L.T("Show IDs");
         var showAllWidth = ImGui.CalcTextSize(showAllText).X + ImGui.GetStyle().FramePadding.X * 2 + ImGui.GetFrameHeight();
         var showInvalidWidth = ImGui.CalcTextSize(showInvalidText).X + ImGui.GetStyle().FramePadding.X * 2 + ImGui.GetFrameHeight();
         var showIdsWidth = ImGui.CalcTextSize(showIdsText).X + ImGui.GetStyle().FramePadding.X * 2 + ImGui.GetFrameHeight();
@@ -114,59 +120,59 @@ public class EmoteWindow : Window, IDisposable
         ImGui.SetCursorPosX((availWidth - totalWidth) * 0.5f);
 
         bool showAllEmotes = Configuration.ShowAllEmotes;
-        if (ImGui.Checkbox("Show all emotes", ref showAllEmotes))
+        if (ImGui.Checkbox(L.T("Show all emotes"), ref showAllEmotes))
             Configuration.ShowAllEmotes = showAllEmotes;
 
         ImGui.SameLine();
 
         bool showInvalidEmotes = Configuration.ShowInvalidEmotes;
-        if (ImGui.Checkbox("Show Invalid Emotes", ref showInvalidEmotes))
+        if (ImGui.Checkbox(L.T("Show Invalid Emotes"), ref showInvalidEmotes))
             Configuration.ShowInvalidEmotes = showInvalidEmotes;
 
         ImGui.SameLine();
 
         bool showEmoteIds = Configuration.ShowEmoteIds;
-        if (ImGui.Checkbox("Show IDs", ref showEmoteIds))
+        if (ImGui.Checkbox(L.T("Show IDs"), ref showEmoteIds))
             Configuration.ShowEmoteIds = showEmoteIds;
 
         ImGui.Separator();
 
         ImGui.SetNextItemWidth(-1);
-        ImGui.InputTextWithHint("##SearchEmotes", "Search emotes...", ref searchText, 256);
+        ImGui.InputTextWithHint("##SearchEmotes", L.T("Search emotes..."), ref searchText, 256);
 
         if (ImGui.BeginTabBar("##LockedEmotesTabs", ImGuiTabBarFlags.FittingPolicyScroll))
         {
-            if (ImGui.BeginTabItem("All"))
+            if (ImGui.BeginTabItem(L.T("All")))
             {
                 currentTab = LockedTab.All;
                 ImGui.EndTabItem();
             }
-            if (ImGui.BeginTabItem("General"))
+            if (ImGui.BeginTabItem(L.T("General")))
             {
                 currentTab = LockedTab.General;
                 ImGui.EndTabItem();
             }
-            if (ImGui.BeginTabItem("Special"))
+            if (ImGui.BeginTabItem(L.T("Special")))
             {
                 currentTab = LockedTab.Special;
                 ImGui.EndTabItem();
             }
-            if (ImGui.BeginTabItem("Expressions"))
+            if (ImGui.BeginTabItem(L.T("Expressions")))
             {
                 currentTab = LockedTab.Expressions;
                 ImGui.EndTabItem();
             }
-            if (ImGui.BeginTabItem("Other"))
+            if (ImGui.BeginTabItem(L.T("Other")))
             {
                 currentTab = LockedTab.Other;
                 ImGui.EndTabItem();
             }
-            if (ImGui.BeginTabItem("Fav", ImGuiTabItemFlags.Leading))
+            if (ImGui.BeginTabItem(L.T("Fav"), ImGuiTabItemFlags.Leading))
             {
                 currentTab = LockedTab.Favorites;
                 ImGui.EndTabItem();
             }
-            if (ImGui.BeginTabItem("Blocked", ImGuiTabItemFlags.Leading))
+            if (ImGui.BeginTabItem(L.T("Blocked"), ImGuiTabItemFlags.Leading))
             {
                 currentTab = LockedTab.Blocked;
                 ImGui.EndTabItem();
@@ -206,8 +212,8 @@ public class EmoteWindow : Window, IDisposable
 
         var emptyListMessage = currentTab switch
         {
-            LockedTab.Favorites when Configuration.FavoriteEmotes.Count == 0 => "No favorited emote",
-            LockedTab.Blocked when Configuration.BlockedTargetEmotesEmoteSwap.Count == 0 => "No blocked emote",
+            LockedTab.Favorites when Configuration.FavoriteEmotes.Count == 0 => L.T("No favorited emote"),
+            LockedTab.Blocked when Configuration.BlockedTargetEmotesEmoteSwap.Count == 0 => L.T("No blocked emote"),
             _ => null,
         };
 
@@ -316,8 +322,8 @@ public class EmoteWindow : Window, IDisposable
                 {
                     ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
                     ImGui.SetTooltip(isBlocked
-                        ? "Blocked: no swap will land on this emote"
-                        : "Block this emote as a swap target");
+                        ? L.T("Blocked: no swap will land on this emote")
+                        : L.T("Block this emote as a swap target"));
                 }
 
                 ImGui.SameLine();
@@ -386,7 +392,7 @@ public class EmoteWindow : Window, IDisposable
 
                         if (!string.IsNullOrWhiteSpace(emoteSources.Patch))
                         {
-                            ImGui.Text($"Patch: {emoteSources.Patch}");
+                            ImGui.Text(L.T("Patch: {0}", emoteSources.Patch));
                             if (emoteSources.Sources.Count > 0)
                                 ImGui.Separator();
                         }
@@ -403,10 +409,10 @@ public class EmoteWindow : Window, IDisposable
                 if (selectableHovered && !infoIconHovered && !HotbarDragDrop.IsDragging)
                 {
                     ImGui.BeginTooltip();
-                    ImGui.TextUnformatted("Left-click to apply to yourself");
-                    ImGui.TextUnformatted("Right-click for more options");
+                    ImGui.TextUnformatted(L.T("Left-click to apply to yourself"));
+                    ImGui.TextUnformatted(L.T("Right-click for more options"));
                     if (CommonHelper.IsEmoteAssignableToHotbar(emote.Item1))
-                        ImGui.TextUnformatted("Drag onto a hotbar slot to assign it");
+                        ImGui.TextUnformatted(L.T("Drag onto a hotbar slot to assign it"));
                     ImGui.Separator();
                     ConditionIcons.Draw(EmoteHelper.GetEmoteConditions(emote.Item1), ImGui.GetTextLineHeight() * 1.1f);
                     ImGui.EndTooltip();
@@ -422,28 +428,28 @@ public class EmoteWindow : Window, IDisposable
                 {
                     var inEmoteSwap = Configuration.SelfBypassMode == SelfBypassMode.EmoteSwap;
 #if DEBUG
-                    if (ImGui.MenuItem("Force swap", string.Empty, false, inEmoteSwap) && contextMenuEmote.HasValue)
+                    if (ImGui.MenuItem(L.T("Force swap"), string.Empty, false, inEmoteSwap) && contextMenuEmote.HasValue)
                         ForceSwap(contextMenuEmote.Value);
 
                     if (!inEmoteSwap && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
-                        ImGui.SetTooltip("Only Emote Swap mode swaps.");
+                        ImGui.SetTooltip(L.T("Only Emote Swap mode swaps."));
 
                     ImGui.Separator();
 #endif
 
-                    if (ImGui.MenuItem("Apply emote on Minion"))
+                    if (ImGui.MenuItem(L.T("Apply emote on Minion")))
                     {
                         if (contextMenuEmote.HasValue)
                             ApplyEmoteOnMinion(contextMenuEmote.Value);
                     }
 
-                    if (ImGui.MenuItem("Apply emote on Pet"))
+                    if (ImGui.MenuItem(L.T("Apply emote on Pet")))
                     {
                         if (contextMenuEmote.HasValue)
                             ApplyEmoteOnPet(contextMenuEmote.Value);
                     }
 
-                    if (ImGui.MenuItem("Apply emote on Chocobo"))
+                    if (ImGui.MenuItem(L.T("Apply emote on Chocobo")))
                     {
                         if (contextMenuEmote.HasValue)
                             ApplyEmoteOnBuddy(contextMenuEmote.Value);
@@ -453,7 +459,7 @@ public class EmoteWindow : Window, IDisposable
                     {
                         ImGui.Separator();
 
-                        if (ImGui.MenuItem("Add an override..."))
+                        if (ImGui.MenuItem(L.T("Add an override...")))
                         {
                             Service.Plugin.OpenOverrides(contextMenuEmote.Value.RowId);
                             ImGui.CloseCurrentPopup();
@@ -464,7 +470,7 @@ public class EmoteWindow : Window, IDisposable
                     {
                         ImGui.Separator();
 
-                        if (ImGui.MenuItem("Assign emote to Hotbar..."))
+                        if (ImGui.MenuItem(L.T("Assign emote to Hotbar...")))
                         {
                             Service.Plugin.OpenAssignHotbar(contextMenuEmote.Value);
                             ImGui.CloseCurrentPopup();
@@ -475,7 +481,7 @@ public class EmoteWindow : Window, IDisposable
                     {
                         ImGui.Separator();
 
-                        if (ImGui.MenuItem("Create a mod from this emote..."))
+                        if (ImGui.MenuItem(L.T("Create a mod from this emote...")))
                         {
                             Service.Plugin.OpenCreateMod(contextMenuEmote.Value);
                             ImGui.CloseCurrentPopup();
@@ -500,11 +506,11 @@ public class EmoteWindow : Window, IDisposable
         var width = ImGui.GetContentRegionAvail().X;
         var half = MathF.Floor((width - spacing) * 0.5f);
 
-        if (NoireButtons.Button("Support me on Ko-fi##BypassEmoteKofi", KofiStyle, new Vector2(half, height)))
+        if (NoireButtons.Button(L.T("Support me on Ko-fi") + "##BypassEmoteKofi", KofiStyle, new Vector2(half, height)))
             Service.OpenKofi();
 
         if (ImGui.IsItemHovered())
-            ImGui.SetTooltip("This plugin is free and always will be, donations are appreciated.");
+            ImGui.SetTooltip(L.T("This plugin is free and always will be, donations are appreciated."));
 
         ImGui.SameLine();
 
@@ -512,7 +518,7 @@ public class EmoteWindow : Window, IDisposable
             Service.OpenDiscord();
 
         if (ImGui.IsItemHovered())
-            ImGui.SetTooltip("Help, bug reports and updates.");
+            ImGui.SetTooltip(L.T("Help, bug reports and updates."));
     }
 
     private void DrawQuickAdd()
@@ -523,17 +529,17 @@ public class EmoteWindow : Window, IDisposable
         var favorites = currentTab == LockedTab.Favorites;
 
         var picker = favorites
-            ? favoriteAdd ??= new EmoteQuickAdd("BypassEmoteFavoriteAdd", "Add an emote to your favorites...")
+            ? favoriteAdd ??= new EmoteQuickAdd("BypassEmoteFavoriteAdd", L.T("Add an emote to your favorites..."))
             {
                 Marked = rowId => Configuration.FavoriteEmotes.Contains(rowId),
                 MarkedColor = new Vector4(1f, 0.9f, 0f, 1f),
-                MarkedNote = "(favorite)",
+                MarkedNote = L.T("(favorite)"),
             }
-            : blockedAdd ??= new EmoteQuickAdd("BypassEmoteBlockedAdd", "Block an emote as a swap target...")
+            : blockedAdd ??= new EmoteQuickAdd("BypassEmoteBlockedAdd", L.T("Block an emote as a swap target..."))
             {
                 Marked = rowId => Configuration.BlockedTargetEmotesEmoteSwap.Contains(rowId),
                 MarkedColor = new Vector4(0.9f, 0.2f, 0.2f, 1f),
-                MarkedNote = "(blocked)",
+                MarkedNote = L.T("(blocked)"),
             };
 
         if (picker.Draw(ImGui.GetContentRegionAvail().X) is { } rowId)
@@ -561,7 +567,7 @@ public class EmoteWindow : Window, IDisposable
         using (ImRaii.PushStyle(ImGuiStyleVar.ItemSpacing, new Vector2(0f, style.ItemSpacing.Y)))
         using (ImRaii.PushStyle(ImGuiStyleVar.FrameRounding, 0f))
         {
-            if (ToolbarButton(FontAwesomeIcon.SyncAlt, "Refresh Locked Emotes", "##BypassEmoteRefresh", segment, height))
+            if (ToolbarButton(FontAwesomeIcon.SyncAlt, L.T("Refresh Locked Emotes"), "##BypassEmoteRefresh", segment, height))
                 Service.RefreshLockedEmotes();
 
             ImGui.SameLine();
@@ -573,7 +579,7 @@ public class EmoteWindow : Window, IDisposable
             {
                 ImGui.SameLine();
 
-                if (ToolbarButton(FontAwesomeIcon.ExchangeAlt, "Create a mod", "##BypassEmoteCreateMod", lastWidth, height))
+                if (ToolbarButton(FontAwesomeIcon.ExchangeAlt, L.T("Create a mod"), "##BypassEmoteCreateMod", lastWidth, height))
                     Service.Plugin.OpenCreateMod();
             }
         }
@@ -605,7 +611,7 @@ public class EmoteWindow : Window, IDisposable
     {
         var directPlay = Configuration.SelfBypassMode == SelfBypassMode.DirectPlay;
 
-        if (ToolbarButton(FontAwesomeIcon.PeopleArrows, directPlay ? "Sync..." : "Sync All (/be syncall)", "##BypassEmoteSync", width, height))
+        if (ToolbarButton(FontAwesomeIcon.PeopleArrows, directPlay ? L.T("Sync...") : L.T("Sync All (/be syncall)"), "##BypassEmoteSync", width, height))
         {
             if (directPlay)
                 ImGui.OpenPopup("##BypassEmoteSyncMenu");
@@ -617,10 +623,10 @@ public class EmoteWindow : Window, IDisposable
         if (!popup)
             return;
 
-        if (ImGui.MenuItem("Sync BE users (/be sync)"))
+        if (ImGui.MenuItem(L.T("Sync BE users (/be sync)")))
             EmotePlayer.SyncEmotes(false);
 
-        if (ImGui.MenuItem("Sync all (/be syncall)"))
+        if (ImGui.MenuItem(L.T("Sync all (/be syncall)")))
             EmotePlayer.SyncEmotes(true);
     }
 
@@ -653,7 +659,7 @@ public class EmoteWindow : Window, IDisposable
         var addr = CharacterHelper.GetCompanionAddress(player);
         if (addr == 0)
         {
-            LogHelper.Info("No minion summoned.");
+            LogHelper.Info(L.T("No minion summoned."));
             return;
         }
 
@@ -671,7 +677,7 @@ public class EmoteWindow : Window, IDisposable
         var addr = CharacterHelper.GetPetAddress(player);
         if (addr == 0)
         {
-            LogHelper.Info("No pet summoned.");
+            LogHelper.Info(L.T("No pet summoned."));
             return;
         }
 
@@ -689,7 +695,7 @@ public class EmoteWindow : Window, IDisposable
         var addr = CharacterHelper.GetBuddyAddress(player);
         if (addr == 0)
         {
-            LogHelper.Info("No chocobo summoned.");
+            LogHelper.Info(L.T("No chocobo summoned."));
             return;
         }
 

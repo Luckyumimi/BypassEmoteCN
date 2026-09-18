@@ -25,7 +25,8 @@ public class SwapPromptWindow : IDisposable
 
         try
         {
-            choice = await NoireModal.ChoiceAsync("Choose how Bypass Emote plays locked emotes", BuildMessage(), ["Use Emote Swap", "Keep Direct Play"],
+            choice = await NoireModal.ChoiceAsync(L.T("Choose how Bypass Emote plays locked emotes"), BuildMessage(),
+                [L.T("Use Emote Swap"), L.T("Keep Direct Play")],
                 new ModalOptions { Width = DialogWidth });
         }
         finally
@@ -62,7 +63,7 @@ public class SwapPromptWindow : IDisposable
                     {
                         ModeSwitcher.Apply(SelfBypassMode.EmoteSwap);
                         Configuration.SwapPromptPending = false;
-                        LogHelper.Error("Emote Swap was enabled because no choice was made.");
+                        LogHelper.Error(L.T("Emote Swap was enabled because no choice was made."));
                     }
 
                     break;
@@ -79,20 +80,20 @@ public class SwapPromptWindow : IDisposable
         var muted = ColorHelper.HexToVector4("#9E9E9E");
 
         return new NoireContent()
-            .AddCustom(() => NoireText.Wrapped(ImGui.GetContentRegionAvail().X, "A safer way to play locked emotes", TextSize.Heading))
+            .AddCustom(() => NoireText.Wrapped(ImGui.GetContentRegionAvail().X, L.T("A safer way to play locked emotes"), TextSize.Heading))
             .AddSeparator()
-            .AddText("Until now Bypass Emote forced the animation onto your character from your own client. Nothing was ever "
+            .AddText(L.T("Until now Bypass Emote forced the animation onto your character from your own client. Nothing was ever "
                 + "sent to the server, but in specific cases, where your character would be in any pose other than the base one, the "
                 + "game client would send duplicate change pose packets to the server. This is not caused by the plugin itself, but rather "
                 + "by how the game handles pose changes. The \"Idle Animation Delay\" setting in the game's "
-                + "Character Configuration > Control Settings > Character tab is what causes this.")
+                + "Character Configuration > Control Settings > Character tab is what causes this."))
             .AddNewLine()
             .AddNewLine()
-            .AddText("The new mode uses Penumbra to swap locked emotes onto unlocked ones. "
-                + "The game itself does the playing, and nothing mismatches between the game and the server anymore.")
+            .AddText(L.T("The new mode uses Penumbra to swap locked emotes onto unlocked ones. "
+                + "The game itself does the playing, and nothing mismatches between the game and the server anymore."))
             .AddNewLine()
             .AddNewLine()
-            .AddText("You can change this at any time in the settings.", muted);
+            .AddText(L.T("You can change this at any time in the settings."), muted);
     }
 
     public void Dispose() { }

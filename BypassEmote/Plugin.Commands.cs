@@ -20,105 +20,110 @@ public sealed partial class Plugin
 
         var mainCommand = commandRouter.Map("/bypassemote")
             .AddAlias("/be")
-            .WithHelp("Opens the Bypass Emote main window.")
+            .WithHelp(L.T("Opens the Bypass Emote main window."))
             .WithDisplayOrder(0)
             .Handle(ToggleMainWindow)
             .AddFallbackCommand("emote_command", fallback => fallback
-                .WithHelp("Bypasses any emote (including locked ones) on yourself, by command name or ID.")
+                .WithHelp(L.T("Bypasses any emote (including locked ones) on yourself, by command name or ID."))
                 .WithDisplayOrder(0)
-                .Handle(args => PlayEmoteFromArg(ResolveLocalPlayer(), args.RawTokens[0], "Usage: /be <emote_command> or /be stop")))
+                .Handle(args => PlayEmoteFromArg(ResolveLocalPlayer(), args.RawTokens[0], L.T("Usage: /be <emote_command> or /be stop"))))
             .AddSubCommand("config", sub => sub
-                .WithHelp("Opens the configuration window.")
+                .WithHelp(L.T("Opens the configuration window."))
                 .AddAlias("c")
                 .WithDisplayOrder(0)
                 .Handle(ToggleSettings))
             .AddSubCommand("sync", sub => sub
-                .WithHelp("Syncs only players that are bypassing an emote.")
+                .WithHelp(L.T("Syncs only players that are bypassing an emote."))
                 .WithDisplayOrder(1)
                 .Handle(() => EmotePlayer.SyncEmotes(false)))
             .AddSubCommand("syncall", sub => sub
-                .WithHelp("Syncs everyone playing an emote.")
+                .WithHelp(L.T("Syncs everyone playing an emote."))
                 .WithDisplayOrder(2)
                 .Handle(() => EmotePlayer.SyncEmotes(true)))
             .AddSubCommand("changelog", sub => sub
-                .WithHelp("Opens the changelog window.")
+                .WithHelp(L.T("Opens the changelog window."))
                 .WithDisplayOrder(3)
                 .Handle(OpenChangelog))
             .AddSubCommand("stop", sub => sub
-                .WithHelp("Stops the emote currently playing on yourself.")
+                .WithHelp(L.T("Stops the emote currently playing on yourself."))
                 .WithDisplayOrder(4)
                 .Handle(() => StopEmote(ResolveLocalPlayer())))
             .AddSubCommand("logs", sub => sub
-                .WithHelp("Exports a zip with the plugin logs and settings, to send to the developer.")
+                .WithHelp(L.T("Exports a zip with the plugin logs and settings, to send to the developer."))
                 .WithDisplayOrder(5)
-                .Handle(DebugLogExporter.Export));
+                .Handle(DebugLogExporter.Export))
+            .AddSubCommand("lang", sub => sub
+                .WithHelp(L.T("Changes the language of the plugin. Usage: /be lang <auto|zh|en>"))
+                .WithDisplayOrder(6)
+                .AddArgument("language", false, "auto", L.T("auto, zh or en"))
+                .Handle(args => SetLanguage(args.GetOrDefault("language", "auto"))));
 
 #if DEBUG
         mainCommand
             .AddSubCommand("debug", sub => sub
-                .WithHelp("Opens the debug window.")
+                .WithHelp(L.T("Opens the debug window."))
                 .AddAlias("d")
                 .WithDisplayOrder(6)
                 .Handle(ToggleDebug))
             .AddSubCommand("hooks", sub => sub
-                .WithHelp("Shows the hooks window.")
+                .WithHelp(L.T("Shows the hooks window."))
                 .WithDisplayOrder(7)
                 .Handle(() => NoireHook.ShowWindow()));
 #endif
 
         commandRouter.Map("/belogs")
-            .WithHelp("Exports a zip with the plugin logs and settings, to send to the developer.")
+            .WithHelp(L.T("Exports a zip with the plugin logs and settings, to send to the developer."))
             .WithDisplayOrder(5)
             .ShowDetailedDalamudHelp(false)
             .Handle(DebugLogExporter.Export);
 
         commandRouter.Map("/bet")
-            .WithHelp("Applies any emote to a targetted NPC. Only works on NPCs and owned minions/pets. Use /bet <emote_command> or /bet stop.")
+            .WithHelp(L.T("Applies any emote to a targetted NPC. Only works on NPCs and owned minions/pets. Use /bet <emote_command> or /bet stop."))
             .WithDisplayOrder(1)
             .ShowDetailedDalamudHelp(false)
             .AddSubCommand("stop", sub => sub
-                .WithHelp("Stops the emote currently playing on your target.")
+                .WithHelp(L.T("Stops the emote currently playing on your target."))
                 .Handle(() => StopEmote(ResolveTargetedNpc())))
             .AddFallbackCommand("emote_command", fallback => fallback
-                .WithHelp("Plays the emote on your target, by command name or ID.")
+                .WithHelp(L.T("Plays the emote on your target, by command name or ID."))
                 .WithDisplayOrder(0)
-                .Handle(args => PlayEmoteFromArg(ResolveTargetedNpc(), args.RawTokens[0], "Usage: /bet <emote_command> or /bet stop")));
+                .Handle(args => PlayEmoteFromArg(ResolveTargetedNpc(), args.RawTokens[0], L.T("Usage: /bet <emote_command> or /bet stop"))));
 
         commandRouter.Map("/bem")
-            .WithHelp("Applies any emote to your own minion if summoned, without needing to target it. Use /bem <emote_command> or /bem stop.")
+            .WithHelp(L.T("Applies any emote to your own minion if summoned, without needing to target it. Use /bem <emote_command> or /bem stop."))
             .WithDisplayOrder(2)
             .ShowDetailedDalamudHelp(false)
             .AddSubCommand("stop", sub => sub
-                .WithHelp("Stops the emote currently playing on your minion.")
+                .WithHelp(L.T("Stops the emote currently playing on your minion."))
                 .Handle(() => StopEmote(ResolveMinion())))
             .AddFallbackCommand("emote_command", fallback => fallback
-                .WithHelp("Plays the emote on your minion, by command name or ID.")
+                .WithHelp(L.T("Plays the emote on your minion, by command name or ID."))
                 .WithDisplayOrder(0)
-                .Handle(args => PlayEmoteFromArg(ResolveMinion(), args.RawTokens[0], "Usage: /bem <emote_command> or /bem stop")));
+                .Handle(args => PlayEmoteFromArg(ResolveMinion(), args.RawTokens[0], L.T("Usage: /bem <emote_command> or /bem stop"))));
 
         commandRouter.Map("/bep")
-            .WithHelp("Applies any emote to your own pet (carbuncle/eos) if summoned, without needing to target it. Use /bep <emote_command> or /bep stop.")
+            .WithHelp(L.T("Applies any emote to your own pet (carbuncle/eos) if summoned, without needing to target it. Use /bep <emote_command> or /bep stop."))
             .WithDisplayOrder(3)
             .ShowDetailedDalamudHelp(false)
             .AddSubCommand("stop", sub => sub
-                .WithHelp("Stops the emote currently playing on your pet.")
+                .WithHelp(L.T("Stops the emote currently playing on your pet."))
                 .Handle(() => StopEmote(ResolvePet())))
             .AddFallbackCommand("emote_command", fallback => fallback
-                .WithHelp("Plays the emote on your pet, by command name or ID.")
+                .WithHelp(L.T("Plays the emote on your pet, by command name or ID."))
                 .WithDisplayOrder(0)
-                .Handle(args => PlayEmoteFromArg(ResolvePet(), args.RawTokens[0], "Usage: /bep <emote_command> or /bep stop")));
+                .Handle(args => PlayEmoteFromArg(ResolvePet(), args.RawTokens[0], L.T("Usage: /bep <emote_command> or /bep stop"))));
 
         commandRouter.Map("/bec")
-            .WithHelp("Applies any emote to your own chocobo if summoned, without needing to target it. Use /bec <emote_command> or /bec stop.")
+            .WithHelp(L.T("Applies any emote to your own chocobo if summoned, without needing to target it. Use /bec <emote_command> or /bec stop."))
             .WithDisplayOrder(4)
             .ShowDetailedDalamudHelp(false)
             .AddSubCommand("stop", sub => sub
-                .WithHelp("Stops the emote currently playing on your chocobo.")
+                .WithHelp(L.T("Stops the emote currently playing on your chocobo."))
                 .Handle(() => StopEmote(ResolveChocobo())))
             .AddFallbackCommand("emote_command", fallback => fallback
-                .WithHelp("Plays the emote on your chocobo, by command name or ID.")
+                .WithHelp(L.T("Plays the emote on your chocobo, by command name or ID."))
                 .WithDisplayOrder(0)
-                .Handle(args => PlayEmoteFromArg(ResolveChocobo(), args.RawTokens[0], "Usage: /bec <emote_command> or /bec stop")));
+                .Handle(args => PlayEmoteFromArg(ResolveChocobo(), args.RawTokens[0], L.T("Usage: /bec <emote_command> or /bec stop"))));
     }
 
     private static ICharacter? ResolveLocalPlayer()
@@ -126,7 +131,7 @@ public sealed partial class Plugin
         if (NoireService.ObjectTable.LocalPlayer is { } player)
             return player;
 
-        LogHelper.Info("Error trying to process command");
+        LogHelper.Info(L.T("Error trying to process command"));
         return null;
     }
 
@@ -135,14 +140,14 @@ public sealed partial class Plugin
         if (CommonHelper.GetLocalTarget() is not ICharacter target ||
             target is not INpc && target is not IBattleNpc)
         {
-            LogHelper.Info("No NPC targeted.");
+            LogHelper.Info(L.T("No NPC targeted."));
             return null;
         }
 
         // Minion (Companion) or pet/chocobo (SubKind 2 and 3).
         if ((target.ObjectKind == ObjectKind.Companion || target.SubKind == 2 || target.SubKind == 3) && !CharacterHelper.IsLocalObject(target))
         {
-            LogHelper.Info("You can only target your own minion, pet, chocobo.");
+            LogHelper.Info(L.T("You can only target your own minion, pet, chocobo."));
             return null;
         }
 
@@ -150,13 +155,13 @@ public sealed partial class Plugin
     }
 
     private static ICharacter? ResolveMinion()
-        => ResolveOwned(CharacterHelper.GetCompanion, "No minion summoned.");
+        => ResolveOwned(CharacterHelper.GetCompanion, L.T("No minion summoned."));
 
     private static ICharacter? ResolvePet()
-        => ResolveOwned(CharacterHelper.GetPet, "No pet summoned.");
+        => ResolveOwned(CharacterHelper.GetPet, L.T("No pet summoned."));
 
     private static ICharacter? ResolveChocobo()
-        => ResolveOwned(CharacterHelper.GetBuddy, "No chocobo summoned.");
+        => ResolveOwned(CharacterHelper.GetBuddy, L.T("No chocobo summoned."));
 
     private static ICharacter? ResolveOwned(Func<ICharacter, ICharacter?> lookup, string absentMessage)
     {
@@ -200,7 +205,7 @@ public sealed partial class Plugin
 
         if (!emote.HasValue)
         {
-            LogHelper.Info($"Emote not found: {arg}\n{usage}");
+            LogHelper.Info(L.T("Emote not found: {0}\n{1}", arg, usage));
             return;
         }
 
@@ -219,14 +224,14 @@ public sealed partial class Plugin
 
         if (attributes?.IsPoseFamily == true)
         {
-            LogHelper.Error("Poses cannot be swapped.");
+            LogHelper.Error(L.T("Poses cannot be swapped."));
             return;
         }
 
         if (EmoteHelper.GetEmoteCategory(emote) == NoireLib.Enums.EmoteCategory.Unknown
             || (Service.Catalog?.Ready == true && attributes == null))
         {
-            LogHelper.Error("This emote cannot be played in Emote Swap mode.");
+            LogHelper.Error(L.T("This emote cannot be played in Emote Swap mode."));
             return;
         }
 

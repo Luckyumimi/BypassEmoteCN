@@ -138,24 +138,24 @@ internal static class DirectPlayPlanner
             state.OrnamentName);
 
     internal static string RefusalMessage(string command, EmoteCondition condition, string? ornamentName = null)
-        => $"/{command} cannot be played {Describe(condition, ornamentName)}.";
+        => L.T("/{0} cannot be played {1}.", command, Describe(condition, ornamentName));
 
     private static string Describe(EmoteCondition condition, string? ornamentName) => condition switch
     {
         EmoteCondition.HoldingUmbrella or EmoteCondition.HoldingTorch
-            when !string.IsNullOrWhiteSpace(ornamentName) => $"while carrying your {ornamentName}",
+            when !string.IsNullOrWhiteSpace(ornamentName) => L.T("while carrying your {0}", ornamentName),
 
-        EmoteCondition.Standing => "while standing",
-        EmoteCondition.Swimming => "while swimming",
-        EmoteCondition.Diving => "while diving",
-        EmoteCondition.SittingOnGround => "while sitting on the ground",
-        EmoteCondition.SittingInChair => "while sitting in a chair",
-        EmoteCondition.Mounted => "while mounted",
-        EmoteCondition.HoldingUmbrella => "while holding an umbrella",
-        EmoteCondition.HoldingTorch => "while holding a torch",
-        EmoteCondition.WearingFashionAccessory => "while wearing a fashion accessory",
-        EmoteCondition.Fishing => "while fishing",
-        _ => "right now",
+        EmoteCondition.Standing => L.T("while standing"),
+        EmoteCondition.Swimming => L.T("while swimming"),
+        EmoteCondition.Diving => L.T("while diving"),
+        EmoteCondition.SittingOnGround => L.T("while sitting on the ground"),
+        EmoteCondition.SittingInChair => L.T("while sitting in a chair"),
+        EmoteCondition.Mounted => L.T("while mounted"),
+        EmoteCondition.HoldingUmbrella => L.T("while holding an umbrella"),
+        EmoteCondition.HoldingTorch => L.T("while holding a torch"),
+        EmoteCondition.WearingFashionAccessory => L.T("while wearing a fashion accessory"),
+        EmoteCondition.Fishing => L.T("while fishing"),
+        _ => L.T("right now"),
     };
 
     internal static IReadOnlyList<int> SlotPreferenceFor(EmoteCondition condition)

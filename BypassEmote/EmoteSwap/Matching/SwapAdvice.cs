@@ -35,30 +35,31 @@ public static class SwapAdvice
         string targetName, Facts facts)
     {
         if (source.RowId == target.RowId)
-            return [new Line(Severity.Error, $"{targetName} is the emote being bypassed.")];
+            return [new Line(Severity.Error, L.T("{0} is the emote being bypassed.", targetName))];
 
         var lines = new List<Line>();
 
         if (!target.EligibleTarget)
         {
-            lines.Add(new Line(Severity.Error, $"{targetName} can never be a swap target: it is a pose, a facial "
-                + "expression, a per-job emote, or it draws your weapon. It is always skipped."));
+            lines.Add(new Line(Severity.Error, L.T("{0} can never be a swap target: it is a pose, a facial "
+                + "expression, a per-job emote, or it draws your weapon. It is always skipped.", targetName)));
         }
 
         if (!facts.Unlocked)
         {
-            lines.Add(new Line(Severity.Note, $"You have not unlocked {targetName}. It is skipped."));
+            lines.Add(new Line(Severity.Note, L.T("You have not unlocked {0}. It is skipped.", targetName)));
         }
 
         if (facts.Blocked)
         {
-            lines.Add(new Line(Severity.Warning, $"{targetName} is on your blocked targets list. This override uses it anyway."));
+            lines.Add(new Line(Severity.Warning,
+                L.T("{0} is on your blocked targets list. This override uses it anyway.", targetName)));
         }
 
         if (facts.ChangedByMod is { Length: > 0 } modName)
         {
-            lines.Add(new Line(Severity.Warning, $"Your mod \"{modName}\" already changes {targetName}. What your "
-                + "\"Emotes your mods change\" setting is set to still applies here."));
+            lines.Add(new Line(Severity.Warning, L.T("Your mod \"{0}\" already changes {1}. What your "
+                + "\"Emotes your mods change\" setting is set to still applies here.", modName, targetName)));
         }
 
         lines.AddRange(Behaviour(source, sourceName, target, targetName));
@@ -73,12 +74,13 @@ public static class SwapAdvice
 
         if ((source.Postures & target.Postures) == PostureFlags.None)
         {
-            lines.Add(new Line(Severity.Error, $"{targetName} and {sourceName} share no posture. The swap will not happen."));
+            lines.Add(new Line(Severity.Error,
+                L.T("{0} and {1} share no posture. The swap will not happen.", targetName, sourceName)));
         }
         else if ((source.Postures & ~target.Postures) is var missing && missing != PostureFlags.None)
         {
-            lines.Add(new Line(Severity.Warning, $"{targetName} has no {PostureText(missing)} animation. The swap "
-                + $"will not happen when you play {sourceName} in that posture."));
+            lines.Add(new Line(Severity.Warning, L.T("{0} has no {1} animation. The swap "
+                + "will not happen when you play {2} in that posture.", targetName, PostureText(missing), sourceName)));
         }
 
         AddLoopLine(lines, source, sourceName, target, targetName);
@@ -89,7 +91,7 @@ public static class SwapAdvice
 
         if (target.CancelsOnRotate)
         {
-            lines.Add(new Line(Severity.Warning, $"{targetName} will stop when you turn your character."));
+            lines.Add(new Line(Severity.Warning, L.T("{0} will stop when you turn your character.", targetName)));
         }
 
         return lines;
@@ -107,8 +109,9 @@ public static class SwapAdvice
             return;
         }
 
-        lines.Add(new Line(Severity.Warning, $"{targetName} plays a separate animation when you use it on someone (adjust variant) "
-            + $"but {sourceName} has no adjust variant. Targeting someone will keep {targetName}'s animation."));
+        lines.Add(new Line(Severity.Warning, L.T("{0} plays a separate animation when you use it on someone (adjust variant) "
+            + "but {1} has no adjust variant. Targeting someone will keep {2}'s animation.",
+            targetName, sourceName, targetName)));
     }
 
     private static void AddLoopLine(List<Line> lines, EmoteAttributes source, string sourceName,
@@ -118,9 +121,10 @@ public static class SwapAdvice
             return;
 
         lines.Add(source.LoopKind == EmotePlayType.Looped
-            ? new Line(Severity.Warning, $"{targetName} plays once while {sourceName} loops. The animation will stop "
-                + "instead of looping.")
-            : new Line(Severity.Warning, $"{targetName} loops while {sourceName} plays once. Weird behavior might happen."));
+            ? new Line(Severity.Warning, L.T("{0} plays once while {1} loops. The animation will stop "
+                + "instead of looping.", targetName, sourceName))
+            : new Line(Severity.Warning, L.T("{0} loops while {1} plays once. Weird behavior might happen.",
+                targetName, sourceName)));
     }
 
     private static void AddTurnLine(List<Line> lines, EmoteAttributes source, string sourceName,
@@ -129,8 +133,9 @@ public static class SwapAdvice
         if (source.Turn == target.Turn)
             return;
 
-        lines.Add(new Line(Severity.Warning, $"{targetName} does not behave like {sourceName} when you target "
-            + $"someone: {targetName} {TurnText(target.Turn)} while {sourceName} {TurnText(source.Turn)}."));
+        lines.Add(new Line(Severity.Warning, L.T("{0} does not behave like {1} when you target "
+            + "someone: {0} {2} while {1} {3}.", targetName, sourceName, TurnText(target.Turn),
+            TurnText(source.Turn))));
     }
 
     private static void AddSoundLine(List<Line> lines, EmoteAttributes source, string sourceName,
@@ -138,13 +143,15 @@ public static class SwapAdvice
     {
         if (target.Sound == SoundClass.Voiceline && source.Sound != SoundClass.Voiceline)
         {
-            lines.Add(new Line(Severity.Warning, $"{targetName} emits a voice line sound. Everyone around you will hear it."));
+            lines.Add(new Line(Severity.Warning,
+                L.T("{0} emits a voice line sound. Everyone around you will hear it.", targetName)));
             return;
         }
 
         if (target.Sound == SoundClass.Sfx && source.Sound == SoundClass.Silent)
         {
-            lines.Add(new Line(Severity.Warning, $"{targetName} emits a sound that {sourceName} does not. Everyone around you will hear it."));
+            lines.Add(new Line(Severity.Warning,
+                L.T("{0} emits a sound that {1} does not. Everyone around you will hear it.", targetName, sourceName)));
         }
     }
 
@@ -155,23 +162,24 @@ public static class SwapAdvice
 
         if (sourceHasIntro && target.Intro == IntroKind.None || target.Intro == IntroKind.TmbOnly)
         {
-            lines.Add(new Line(Severity.Warning, $"{targetName} has no intro meanwhile {sourceName} has one, meaning the intro will not play."));
+            lines.Add(new Line(Severity.Warning,
+                L.T("{0} has no intro meanwhile {1} has one, meaning the intro will not play.", targetName, sourceName)));
             return;
         }
 
         if (!sourceHasIntro && target.Intro == IntroKind.Pap)
         {
-            lines.Add(new Line(Severity.Warning, $"{targetName} has an intro and {sourceName} does not."));
+            lines.Add(new Line(Severity.Warning, L.T("{0} has an intro and {1} does not.", targetName, sourceName)));
         }
     }
 
     private static string TurnText(TurnClass turn) => turn switch
     {
-        TurnClass.None => "does not turn at all",
-        TurnClass.Eyes => "only follows with the eyes",
-        TurnClass.Head => "turns the head",
-        TurnClass.Body => "turns the whole body",
-        _ => "turns in a way the plugin could not read",
+        TurnClass.None => L.T("does not turn at all"),
+        TurnClass.Eyes => L.T("only follows with the eyes"),
+        TurnClass.Head => L.T("turns the head"),
+        TurnClass.Body => L.T("turns the whole body"),
+        _ => L.T("turns in a way the plugin could not read"),
     };
 
     private static string PostureText(PostureFlags postures)
@@ -179,17 +187,17 @@ public static class SwapAdvice
         var names = new List<string>(4);
 
         if (postures.HasFlag(PostureFlags.Standing))
-            names.Add("standing");
+            names.Add(L.T("standing"));
 
         if (postures.HasFlag(PostureFlags.ChairSit))
-            names.Add("chair sitting");
+            names.Add(L.T("chair sitting"));
 
         if (postures.HasFlag(PostureFlags.GroundSit))
-            names.Add("ground sitting");
+            names.Add(L.T("ground sitting"));
 
         if (postures.HasFlag(PostureFlags.Mounted))
-            names.Add("mounted");
+            names.Add(L.T("mounted"));
 
-        return names.Count == 0 ? "matching" : string.Join(" or ", names);
+        return names.Count == 0 ? L.T("matching") : string.Join(L.T(" or "), names);
     }
 }

@@ -19,14 +19,14 @@ public sealed partial class SwapOrchestrator : IDisposable
 {
     private const string LogPrefix = "[SwapOrchestrator] ";
 
-    private const string CatalogLoadingMessage = "Still loading emote data. Try again in a moment.";
-    private const string GenericFailureMessage = "Something went wrong. Emote not swapped.";
-    private const string NoCollectionMessage = "No Penumbra collection is assigned to your character. Emote not swapped.";
+    private static string CatalogLoadingMessage => L.T("Still loading emote data. Try again in a moment.");
+    private static string GenericFailureMessage => L.T("Something went wrong. Emote not swapped.");
+    private static string NoCollectionMessage => L.T("No Penumbra collection is assigned to your character. Emote not swapped.");
 
-    private string PenumbraUnavailableMessage => $"{_penumbra.UnavailableReason} Emote not swapped.";
+    private string PenumbraUnavailableMessage => L.T("{0} Emote not swapped.", _penumbra.UnavailableReason);
 
-    private const string NoCharacterMessage =
-        "Penumbra could not say which collection your character uses. Emote not swapped.";
+    private static string NoCharacterMessage =>
+        L.T("Penumbra could not say which collection your character uses. Emote not swapped.");
 
     private readonly IPCCaller_Penumbra _penumbra;
     private readonly EmoteAttributeCatalog _catalog;
@@ -277,7 +277,8 @@ public sealed partial class SwapOrchestrator : IDisposable
         }
 
         if (!EmoteHelper.MeetsEnvironmentFor(localPlayer, source.RowId))
-            return Refuse($"/{source.Command} needs {EmoteHelper.EnvironmentRequirementFor(source.RowId)}.");
+            return Refuse(L.T("/{0} needs {1}.", source.Command,
+                    L.T(EmoteHelper.EnvironmentRequirementFor(source.RowId))));
 
         if (GameEmoteCooldownActive())
         {

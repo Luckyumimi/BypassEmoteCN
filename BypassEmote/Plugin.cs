@@ -46,6 +46,8 @@ public sealed partial class Plugin : IDalamudPlugin
 
         Service.InitializeService(this);
 
+        L.DetectClientLanguage();
+
         MainWindow = new EmoteWindow();
         ConfigWindow = new ConfigWindow();
         SwapPromptWindow = new SwapPromptWindow();
@@ -112,7 +114,7 @@ public sealed partial class Plugin : IDalamudPlugin
                     Click = (e) => { Service.Plugin.OpenSettings(); },
                     Icon = FontAwesomeIcon.Cog,
                     IconOffset = new(2, 2),
-                    ShowTooltip = () => ImGui.SetTooltip("Open settings"),
+                    ShowTooltip = () => ImGui.SetTooltip(L.T("Open settings")),
                 },
 
                 new()
@@ -120,7 +122,7 @@ public sealed partial class Plugin : IDalamudPlugin
                     Click = (e) => { Service.OpenKofi(); },
                     Icon = FontAwesomeIcon.Heart,
                     IconOffset = new(2, 2),
-                    ShowTooltip = () => ImGui.SetTooltip("Support me"),
+                    ShowTooltip = () => ImGui.SetTooltip(L.T("Support me")),
                 },
             ]);
 

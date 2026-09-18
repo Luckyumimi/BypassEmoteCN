@@ -169,9 +169,9 @@ public sealed class IPCCaller_Penumbra : IDisposable
     public string UnavailableReason => Readiness switch
     {
         PenumbraReadiness.Ready => string.Empty,
-        PenumbraReadiness.TooOld => $"Penumbra answers over interface version {_reportedBreaking}, and Bypass Emote "
-            + $"needs version {MinimumBreakingVersion} or newer. Update Penumbra.",
-        _ => "Penumbra is not running. Emote Swap needs it installed.",
+        PenumbraReadiness.TooOld => L.T("Penumbra answers over interface version {0}, and Bypass Emote "
+            + "needs version {1} or newer. Update Penumbra.", _reportedBreaking, MinimumBreakingVersion),
+        _ => L.T("Penumbra is not running. Emote Swap needs it installed."),
     };
 
     public string ResolvePlayerPath(string gamePath)

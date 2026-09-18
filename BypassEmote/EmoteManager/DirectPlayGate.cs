@@ -9,9 +9,9 @@ namespace BypassEmote;
 /// </summary>
 internal static class DirectPlayGate
 {
-    internal const string SafeModeMessage =
-        "Due to detectability, you need to be in the base pose (pose 0) of your current stance to bypass emotes "
-        + "in safe mode.";
+    internal static string SafeModeMessage
+        => L.T("Due to detectability, you need to be in the base pose (pose 0) of your current stance to bypass emotes "
+            + "in safe mode.");
 
     internal const string SafeModeRefusalKind = "directplay.safemode";
 

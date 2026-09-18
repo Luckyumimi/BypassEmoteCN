@@ -50,6 +50,22 @@ internal static class EmotePoolTab
         EmoteCondition.WearingFashionAccessory,
     ];
 
+    /// <summary> Label shown for a condition. The enum name is also the English label, so the key stays stable. </summary>
+    private static string ConditionLabel(EmoteCondition condition) => condition switch
+    {
+        EmoteCondition.Standing => L.T("Standing"),
+        EmoteCondition.SittingInChair => L.T("SittingInChair"),
+        EmoteCondition.SittingOnGround => L.T("SittingOnGround"),
+        EmoteCondition.Mounted => L.T("Mounted"),
+        EmoteCondition.Swimming => L.T("Swimming"),
+        EmoteCondition.Diving => L.T("Diving"),
+        EmoteCondition.Fishing => L.T("Fishing"),
+        EmoteCondition.HoldingUmbrella => L.T("HoldingUmbrella"),
+        EmoteCondition.HoldingTorch => L.T("HoldingTorch"),
+        EmoteCondition.WearingFashionAccessory => L.T("WearingFashionAccessory"),
+        _ => condition.ToString(),
+    };
+
     private sealed record PoolView(
         SwapOrchestrator.SwapPreview Preview,
         List<EmoteAttributes> Accepted,
@@ -68,7 +84,7 @@ internal static class EmotePoolTab
 
         if (catalog == null || !catalog.Ready)
         {
-            ImGui.TextWrapped("The emote catalog is still building.");
+            ImGui.TextWrapped(L.T("The emote catalog is still building."));
             return;
         }
 
@@ -80,7 +96,7 @@ internal static class EmotePoolTab
         using (ImRaii.Group())
         {
             ImGui.SetNextItemWidth(listWidth);
-            ImGui.InputTextWithHint("##EmotePoolSourceSearch", "Search emotes...", ref _sourceSearch, 256);
+            ImGui.InputTextWithHint("##EmotePoolSourceSearch", L.T("Search emotes..."), ref _sourceSearch, 256);
 
             using var list = ImRaii.Child("EmotePoolSources", new Vector2(listWidth, 0), true);
 
@@ -105,13 +121,13 @@ internal static class EmotePoolTab
 
         ImGui.SetNextItemWidth(200);
 
-        using (var combo = ImRaii.Combo("State##EmotePool", _condition.ToString()))
+        using (var combo = ImRaii.Combo(L.T("State") + "##EmotePool", ConditionLabel(_condition)))
         {
             if (combo)
             {
                 foreach (var condition in Conditions)
                 {
-                    if (ImGui.Selectable(condition.ToString(), _condition == condition))
+                    if (ImGui.Selectable(ConditionLabel(condition), _condition == condition))
                     {
                         _condition = condition;
                         _conditionPicked = true;
@@ -122,7 +138,7 @@ internal static class EmotePoolTab
 
         ImGui.SameLine();
 
-        if (ImGui.Button("Read my state##EmotePool") && NoireService.ObjectTable.LocalPlayer is { } current)
+        if (ImGui.Button(L.T("Read my state") + "##EmotePool") && NoireService.ObjectTable.LocalPlayer is { } current)
         {
             _condition = EmoteHelper.ConditionOf(current);
             _conditionPicked = true;
@@ -130,21 +146,22 @@ internal static class EmotePoolTab
 
         ImGui.SameLine();
 
-        if (ImGui.Button("Refresh##EmotePool"))
+        if (ImGui.Button(L.T("Refresh") + "##EmotePool"))
             _viewSignature = string.Empty;
 
         ImGui.SameLine();
-        ImGui.Checkbox("Refused##EmotePool", ref _showRefused);
+        ImGui.Checkbox(L.T("Refused") + "##EmotePool", ref _showRefused);
 
         ImGui.SameLine();
-        ImGui.Checkbox("Kept out##EmotePool", ref _showExcluded);
+        ImGui.Checkbox(L.T("Kept out") + "##EmotePool", ref _showExcluded);
 
-        ImGui.TextDisabled($"rules: loop {Configuration.LoopMatching}, turn {Configuration.TurnMatching}, "
-            + $"sound {Configuration.SoundMatching}, modded {Configuration.ModdedTargets}, "
-            + $"idle pose {Configuration.IdlePoseLoops}, dispatch "
-            + (Configuration.CachedDispatch == CachedDispatchMode.Off
-                ? "off"
-                : $"{Configuration.CachedDispatch}, {Configuration.MaxTargetsPerRank} per rank, {Configuration.DispatchFidelity}"));
+        ImGui.TextDisabled(L.T("rules: loop {0}, turn {1}, sound {2}, modded {3}, idle pose {4}, dispatch {5}",
+            Configuration.LoopMatching, Configuration.TurnMatching, Configuration.SoundMatching,
+            Configuration.ModdedTargets, Configuration.IdlePoseLoops,
+            Configuration.CachedDispatch == CachedDispatchMode.Off
+                ? L.T("off")
+                : L.T("{0}, {1} per rank, {2}", Configuration.CachedDispatch,
+                    Configuration.MaxTargetsPerRank, Configuration.DispatchFidelity)));
     }
 
     private static void DrawSourceList()
@@ -163,7 +180,7 @@ internal static class EmotePoolTab
 
             using (ImRaii.PushColor(ImGuiCol.Text, Excluded, refusedHere))
             {
-                if (ImGui.Selectable($"{name}{(refusedHere ? "  (not here)" : string.Empty)}##src{emote.RowId}",
+                if (ImGui.Selectable($"{name}{(refusedHere ? "  " + L.T("(not here)") : string.Empty)}##src{emote.RowId}",
                     _sourceEmoteId == emote.RowId))
                 {
                     _sourceEmoteId = emote.RowId;
@@ -195,13 +212,13 @@ internal static class EmotePoolTab
     {
         if (_sourceEmoteId == 0)
         {
-            ImGui.TextDisabled("No source emote selected.");
+            ImGui.TextDisabled(L.T("No source emote selected."));
             return;
         }
 
         if (Service.Orchestrator is not { } orchestrator)
         {
-            ImGui.TextColored(Blocked, "Emote Swap is not running, so there is nothing to preview.");
+            ImGui.TextColored(Blocked, L.T("Emote Swap is not running, so there is nothing to preview."));
             return;
         }
 
@@ -209,7 +226,7 @@ internal static class EmotePoolTab
 
         if (view == null)
         {
-            ImGui.TextDisabled("Nothing to show.");
+            ImGui.TextDisabled(L.T("Nothing to show."));
             return;
         }
 
@@ -223,7 +240,7 @@ internal static class EmotePoolTab
 
         ImGui.Spacing();
         ImGui.SetNextItemWidth(-1);
-        ImGui.InputTextWithHint("##EmotePoolTargetSearch", "Filter targets...", ref _targetSearch, 256);
+        ImGui.InputTextWithHint("##EmotePoolTargetSearch", L.T("Filter targets..."), ref _targetSearch, 256);
         ImGui.Separator();
 
         var best = view.Preview.Match?.Target;
@@ -262,7 +279,7 @@ internal static class EmotePoolTab
         if (preview.ResolvedFrom is { } pressed)
         {
             ImGui.SameLine();
-            ImGui.TextColored(Notice, $", you pressed {NameOf(pressed)}");
+            ImGui.TextColored(Notice, L.T(", you pressed {0}", NameOf(pressed)));
         }
 
         if (preview.Source is { } attributes)
@@ -270,21 +287,22 @@ internal static class EmotePoolTab
 
         if (preview.HandedToGame)
         {
-            ImGui.TextColored(Notice, "Pose family, never swapped.");
+            ImGui.TextColored(Notice, L.T("Pose family, never swapped."));
             return;
         }
 
         if (preview.Refusal is { } refusal)
         {
-            ImGui.TextColored(Blocked, $"Not playable here: {refusal}");
+            ImGui.TextColored(Blocked, L.T("Not playable here: {0}", refusal));
             return;
         }
 
-        ImGui.TextDisabled($"state {preview.Condition}, channel {preview.Posture}, body {preview.Skeleton}");
+        ImGui.TextDisabled(L.T("state {0}, channel {1}, body {2}",
+            preview.Condition, preview.Posture, preview.Skeleton));
 
         if (!preview.GameGateApplied)
         {
-            ImGui.TextColored(Notice, "The condition check was skipped.");
+            ImGui.TextColored(Notice, L.T("The condition check was skipped."));
         }
     }
 
@@ -293,35 +311,36 @@ internal static class EmotePoolTab
         var preview = view.Preview;
         var owned = preview.Pool.Count + preview.Excluded.Count;
 
-        ImGui.TextWrapped($"Pool of {preview.Pool.Count}: {view.Accepted.Count} usable, {view.Refused.Count} "
-            + $"refused. {preview.Excluded.Count} of your {owned} owned emotes were excluded.");
+        ImGui.TextWrapped(L.T("Pool of {0}: {1} usable, {2} refused. {3} of your {4} owned emotes were excluded.",
+            preview.Pool.Count, view.Accepted.Count, view.Refused.Count, preview.Excluded.Count, owned));
 
         if (preview.TriesIdlePose)
         {
-            ImGui.TextColored(Notice, "Borrows your idle pose first. The match below is only used if that fails.");
+            ImGui.TextColored(Notice,
+                L.T("Borrows your idle pose first. The match below is only used if that fails."));
         }
 
         if (preview.LoopsFirstFailed)
         {
-            ImGui.TextColored(Notice, "No owned loop fitted. This is the lenient pass, where a one-shot "
-                + "can be used for a loop.");
+            ImGui.TextColored(Notice, L.T("No owned loop fitted. This is the lenient pass, where a one-shot "
+                + "can be used for a loop."));
         }
 
         if (preview.Match?.Target == null)
         {
-            ImGui.TextColored(Blocked, "Nothing passes the filters, so this emote cannot be bypassed here.");
+            ImGui.TextColored(Blocked, L.T("Nothing passes the filters, so this emote cannot be bypassed here."));
             return;
         }
 
         if (preview.NoUsablePair)
         {
-            ImGui.TextColored(Blocked, $"No posture variant shared with {preview.Skeleton}. The swap stops "
-                + "before it is built.");
+            ImGui.TextColored(Blocked, L.T("No posture variant shared with {0}. The swap stops "
+                + "before it is built.", preview.Skeleton));
         }
 
         if (preview.WouldAlternate)
         {
-            ImGui.TextColored(Notice, "If this was to alternate, it would land on a second same-tier emote.");
+            ImGui.TextColored(Notice, L.T("If this was to alternate, it would land on a second same-tier emote."));
         }
     }
 
@@ -341,18 +360,18 @@ internal static class EmotePoolTab
             : view.TierIds.Contains(candidate.RowId) ? SameTier
             : Usable;
 
-        var prefix = keptOutBy != null ? "kept out"
-            : blockedBy != null ? "refused"
-            : isBest ? "chosen"
-            : view.TierIds.Contains(candidate.RowId) ? "same tier"
-            : "usable";
+        var prefix = keptOutBy != null ? L.T("kept out")
+            : blockedBy != null ? L.T("refused")
+            : isBest ? L.T("chosen")
+            : view.TierIds.Contains(candidate.RowId) ? L.T("same tier")
+            : L.T("usable");
 
         ImGui.TextColored(colour, $"[{prefix}] {name}  /{candidate.Command}");
 
         if (keptOutBy != null)
         {
             ImGui.SameLine();
-            ImGui.TextColored(Excluded, $"- {keptOutBy.ToLowerInvariant()}");
+            ImGui.TextColored(Excluded, $"- {L.T(keptOutBy.ToLowerInvariant())}");
         }
         else if (blockedBy != null)
         {
@@ -360,9 +379,9 @@ internal static class EmotePoolTab
 
             ImGui.TextColored(Refused, blockedBy switch
             {
-                BestMatchResolver.BlockedByRules => ", blocked by your rules",
-                BestMatchResolver.BlockedByModdedTarget => ", another of your mods changes it",
-                _ => $", blocked on {blockedBy.ToLowerInvariant()}",
+                BestMatchResolver.BlockedByRules => L.T(", blocked by your rules"),
+                BestMatchResolver.BlockedByModdedTarget => L.T(", another of your mods changes it"),
+                _ => L.T(", blocked on {0}", L.T(blockedBy.ToLowerInvariant())),
             });
         }
 
@@ -382,16 +401,16 @@ internal static class EmotePoolTab
         };
 
         if (attributes.CancelsOnRotate)
-            tags.Add("cancels on rotate");
+            tags.Add(L.T("cancels on rotate"));
 
         if (attributes.IsPoseFamily)
-            tags.Add("pose family");
+            tags.Add(L.T("pose family"));
 
         if (!attributes.EligibleTarget)
-            tags.Add("never a target");
+            tags.Add(L.T("never a target"));
 
         if (Configuration.BlockedTargetEmotesEmoteSwap.Contains(attributes.RowId))
-            tags.Add("blocked by your rules");
+            tags.Add(L.T("blocked by your rules"));
 
         ImGui.TextColored(TagColor, string.Join("  |  ", tags));
     }
@@ -401,45 +420,45 @@ internal static class EmotePoolTab
         var loops = attributes.LoopKind == EmotePlayType.Looped;
 
         return attributes.Intro == IntroKind.Pap
-            ? loops ? "intro + loop" : "intro + one shot"
-            : loops ? "loop only" : "one shot";
+            ? loops ? L.T("intro + loop") : L.T("intro + one shot")
+            : loops ? L.T("loop only") : L.T("one shot");
     }
 
     private static string SoundTag(SoundClass sound) => sound switch
     {
-        SoundClass.Silent => "no sound",
-        SoundClass.Sfx => "sound",
-        SoundClass.Voiceline => "voiceline",
-        _ => "sound unknown",
+        SoundClass.Silent => L.T("no sound"),
+        SoundClass.Sfx => L.T("sound"),
+        SoundClass.Voiceline => L.T("voiceline"),
+        _ => L.T("sound unknown"),
     };
 
     private static string TurnTag(TurnClass turn) => turn switch
     {
-        TurnClass.None => "no turn",
-        TurnClass.Eyes => "eyes turn",
-        TurnClass.Head => "head turn",
-        TurnClass.Body => "body turn",
-        _ => "turn unknown",
+        TurnClass.None => L.T("no turn"),
+        TurnClass.Eyes => L.T("eyes turn"),
+        TurnClass.Head => L.T("head turn"),
+        TurnClass.Body => L.T("body turn"),
+        _ => L.T("turn unknown"),
     };
 
     private static string PostureTag(PostureFlags postures)
     {
         if (postures == PostureFlags.None)
-            return "no posture";
+            return L.T("no posture");
 
         var names = new List<string>();
 
         if (postures.HasFlag(PostureFlags.Standing))
-            names.Add("standing");
+            names.Add(L.T("standing"));
 
         if (postures.HasFlag(PostureFlags.ChairSit))
-            names.Add("chair");
+            names.Add(L.T("chair"));
 
         if (postures.HasFlag(PostureFlags.GroundSit))
-            names.Add("ground");
+            names.Add(L.T("ground"));
 
         if (postures.HasFlag(PostureFlags.Mounted))
-            names.Add("mounted");
+            names.Add(L.T("mounted"));
 
         return string.Join(" ", names);
     }
@@ -447,7 +466,7 @@ internal static class EmotePoolTab
     private static string NameOf(uint emoteRowId)
         => EmoteHelper.GetEmoteById(emoteRowId) is { } emote
             ? CommonHelper.GetEmoteName(emote)
-            : $"Unknown ({emoteRowId})";
+            : L.T("Unknown ({0})", emoteRowId);
 
     private static PoolView? ViewFor(SwapOrchestrator orchestrator)
     {

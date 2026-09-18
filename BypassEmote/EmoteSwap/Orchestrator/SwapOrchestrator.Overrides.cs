@@ -78,14 +78,14 @@ public sealed partial class SwapOrchestrator
     {
         var lines = new List<string>(refusals.Count + 2)
         {
-            $"Could not swap /{source.Command}: none of the target override emotes can be played right now.",
+            L.T("Could not swap /{0}: none of the target override emotes can be played right now.", source.Command),
         };
 
         foreach (var (rowId, refusal) in refusals.Take(MaxRefusalsReported))
-            lines.Add($"{nameOf(rowId)} was skipped because {OverrideResolver.ReasonText(refusal)}.");
+            lines.Add(L.T("{0} was skipped because {1}.", nameOf(rowId), OverrideResolver.ReasonText(refusal)));
 
         if (refusals.Count > MaxRefusalsReported)
-            lines.Add($"{refusals.Count - MaxRefusalsReported} more target(s) were skipped for the same reason.");
+            lines.Add(L.T("{0} more target(s) were skipped for the same reason.", refusals.Count - MaxRefusalsReported));
 
         return string.Join('\n', lines);
     }
@@ -93,5 +93,5 @@ public sealed partial class SwapOrchestrator
     internal static string NameOf(uint emoteRowId)
         => EmoteHelper.GetEmoteById(emoteRowId) is { } emote
             ? CommonHelper.GetEmoteName(emote)
-            : $"Emote #{emoteRowId}";
+            : L.T("Emote #{0}", emoteRowId);
 }

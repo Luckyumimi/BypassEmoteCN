@@ -1,4 +1,5 @@
 using BypassEmote.Enums;
+using BypassEmote.Localization;
 using BypassEmote.Models;
 using Newtonsoft.Json.Linq;
 using NoireLib.Configuration;
@@ -15,6 +16,9 @@ public class ConfigurationInstance : NoireConfigBase
 {
     public override string GetConfigFileName() => "Configuration";
     public override int Version { get; set; } = 2;
+
+    /// <summary> Language of the plugin's own windows and chat messages. </summary>
+    public PluginLanguage Language { get; set; } = PluginLanguage.Auto;
 
     public bool PluginEnabled { get; set; } = true;
 
