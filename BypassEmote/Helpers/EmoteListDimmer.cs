@@ -106,7 +106,7 @@ internal static unsafe class EmoteListDimmer
 
             if (node->Type == NodeType.Text)
             {
-                if (Service.IsLockedEmoteName(((AtkTextNode*)node)->NodeText.ToString()))
+                if (Service.IsLockedEmoteName(SafeText.Utf8(((AtkTextNode*)node)->NodeText)))
                     return true;
 
                 continue;

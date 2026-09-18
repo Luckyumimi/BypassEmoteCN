@@ -19,6 +19,12 @@ public partial class Service
     private const string EmoteAddonName = "Emote";
     private const string ContextMenuAddonName = "ContextMenu";
 
+    /// <summary>
+    /// Sanity bound for an addon's node list. A larger count means the struct we are holding is not really an
+    /// AtkUldManager, and walking it would read whatever is in memory at the time.
+    /// </summary>
+    private const int MaxNodesPerManager = 1024;
+
     private static readonly string[] ActionBarAddons =
     [
         "_ActionBar", "_ActionBar01", "_ActionBar02", "_ActionBar03", "_ActionBar04",
@@ -137,7 +143,7 @@ public partial class Service
 
     private static unsafe string SearchTextIn(AtkUldManager* manager, int depth)
     {
-        if (depth > 3)
+        if (depth > 3 || manager == null || manager->NodeList == null || manager->NodeListCount > MaxNodesPerManager)
             return string.Empty;
 
         for (var index = 0; index < manager->NodeListCount; index++)
@@ -155,9 +161,9 @@ public partial class Service
             if ((ushort)node->Type == 1007)
             {
                 var input = (AtkComponentTextInput*)component;
-                var text = input->AtkComponentInputBase.RawString.ToString().Trim();
+                var text = SafeText.Utf8(input->AtkComponentInputBase.RawString);
 
-                return text.Length > 0 ? text : input->AtkComponentInputBase.EvaluatedString.ToString().Trim();
+                return text.Length > 0 ? text : SafeText.Utf8(input->AtkComponentInputBase.EvaluatedString);
             }
 
             var nested = SearchTextIn(&component->UldManager, depth + 1);
