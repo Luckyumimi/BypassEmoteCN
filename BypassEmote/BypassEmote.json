@@ -1,9 +1,10 @@
 {
     "Author": "Aspher0, Sachimi",
     "Name": "Bypass Emote",
-    "Punchline": "国服兼容，可播放任意情感动作。",
-    "IconUrl": "https://raw.githubusercontent.com/Aspher0/BypassEmote/main/Data/BypassEmote_LOGO.png",
-    "Description": "国服适配版。可播放未解锁的情感动作，支持自定义动画与同步服务。",
+    "Punchline": "（国服适配）无视限制，播放任意情感动作。",
+    "IconUrl": "https://raw.githubusercontent.com/Luckyumimi/MyDalamudPlugins/master/plugins/BypassEmote/icon.png",
+    "Description": "（国服适配初版）一个简单的插件，让你可以播放任意游戏表情，无论是否已解锁。\n像平时一样直接输入表情指令即可。\n支持自定义动画，也可在同步服务（Sync Services）上使用。",
+    "RepoUrl": "https://github.com/Luckyumimi/BypassEmoteCN",
     "ApplicableVersion": "any",
     "Tags": [
         "emotes",
