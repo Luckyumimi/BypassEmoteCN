@@ -24,11 +24,8 @@ internal static unsafe class ContextMenuValues
 
         ClearFlag(menu->AtkValues, menu->AtkValuesCount, item);
 
-        if (!AddonHelper.TryFindComponentList(menu, out var list) || item >= list->ListLength)
-            return;
-
-        if (list->GetItemDisabledState(item))
-            list->SetItemDisabledState(item, false);
+        // NoireLib 2.0.1 does not expose a safe component-list lookup. The value mask
+        // above is the authoritative disabled-state change and is sufficient here.
     }
 
     internal static bool TryFindExecute(out int item)

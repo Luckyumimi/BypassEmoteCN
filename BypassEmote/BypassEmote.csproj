@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Dalamud.NET.Sdk/15.0.0">
   <PropertyGroup>
-    <Version>2.3.2.0</Version>
-    <Description>A simple plugin that lets you play any game emote, whether you unlocked it or not.\nJust type the emote command as you would normally.\nWorks with custom animations and usable on Sync Services.</Description>
+    <Version>2.3.1.0</Version>
+    <Description>国服适配版：播放任意情感动作，无论是否已解锁。支持自定义动画与同步服务。</Description>
     <PackageProjectUrl>https://github.com/Aspher0/BypassEmote</PackageProjectUrl>
     <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
     <IsPackable>false</IsPackable>
@@ -31,5 +31,9 @@
   <ItemGroup>
     <PackageReference Update="DalamudPackager" Version="15.0.0" />
     <PackageReference Update="DotNet.ReproducibleBuilds" Version="2.0.5" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(UseCnGeneratedSources)' == 'true'">
+    <Compile Remove="**\*.cs" />
+    <Compile Include="obj\CnGenerated\**\*.cs" />
   </ItemGroup>
 </Project>

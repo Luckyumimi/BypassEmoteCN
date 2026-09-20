@@ -103,6 +103,8 @@ public partial class Service
 
         StopEmoteUi();
 
+        DisposeHooks();
+
         DisposeSwap();
 
         IpcProvider.Dispose();

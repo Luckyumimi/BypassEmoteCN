@@ -1,9 +1,9 @@
 {
-    "Author": "Aspher0",
-    "Name": "Bypass Emote",
-    "Punchline": "No emotes? No problem.",
+    "Author": "Aspher0, Sachimi",
+    "Name": "Bypass Emote 国服版",
+    "Punchline": "国服兼容，可播放任意情感动作。",
     "IconUrl": "https://raw.githubusercontent.com/Aspher0/BypassEmote/main/Data/BypassEmote_LOGO.png",
-    "Description": "A simple plugin that lets you play any game emote, whether you unlocked it or not.\nJust type the emote command as you would normally.\nWorks with custom animations and usable on Sync Services.",
+    "Description": "国服适配版。可播放未解锁的情感动作，支持自定义动画与同步服务。",
     "ApplicableVersion": "any",
     "Tags": [
         "emotes",

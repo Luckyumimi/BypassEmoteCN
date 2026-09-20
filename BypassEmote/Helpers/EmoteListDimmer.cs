@@ -22,12 +22,12 @@ internal static unsafe class EmoteListDimmer
                 break;
 
             case 4:
-                if (AddonHelper.TryGetComponent(addon, 47u, ComponentType.TreeList, out var searchList))
+                if (AddonText.TryGetComponent(addon, 47u, ComponentType.TreeList, out var searchList))
                     PaintNamedRows((AtkComponentList*)searchList, lit);
                 break;
 
             default:
-                if (AddonHelper.TryGetComponentList(addon, 4u, out var categoryList))
+                if (AddonText.TryGetComponentList(addon, 4u, out var categoryList))
                     PaintNamedRows(categoryList, lit);
                 break;
         }
@@ -66,7 +66,7 @@ internal static unsafe class EmoteListDimmer
 
     private static void PaintSlotList(AtkUnitBase* addon, uint nodeId, Span<ushort> slots, bool lit)
     {
-        if (!AddonHelper.TryGetComponentList(addon, nodeId, out var list))
+        if (!AddonText.TryGetComponentList(addon, nodeId, out var list))
             return;
 
         var multiply = lit ? (byte)100 : (byte)50;
@@ -88,7 +88,7 @@ internal static unsafe class EmoteListDimmer
 
     private static bool ShowsLockedEmote(AtkComponentBase* renderer)
     {
-        foreach (var text in AddonHelper.ReadComponentTexts(renderer))
+        foreach (var text in AddonText.ReadComponentTexts(renderer))
         {
             if (Service.IsLockedEmoteName(text))
                 return true;

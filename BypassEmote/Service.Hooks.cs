@@ -19,9 +19,9 @@ public partial class Service
     public delegate void OnEmoteFuncDelegate(ulong unk, ulong instigatorAddr, ushort emoteId, ulong targetId, ulong unk2);
 
     public static NoireHook<OnEmoteFuncDelegate>? OnEmoteHook;
-    public static NoireHook<AgentEmote.Delegates.ExecuteEmote> AgentExecuteEmoteHook;
-    public static NoireHook<EmoteManager.Delegates.ExecuteEmote> ExecuteEmoteHook;
-    public static NoireHook<RaptureHotbarModule.Delegates.ExecuteSlot> ExecuteHotbarSlotHook;
+    public static NoireHook<AgentEmote.Delegates.ExecuteEmote> AgentExecuteEmoteHook = null!;
+    public static NoireHook<EmoteManager.Delegates.ExecuteEmote> ExecuteEmoteHook = null!;
+    public static NoireHook<RaptureHotbarModule.Delegates.ExecuteSlot>? ExecuteHotbarSlotHook;
 
     private const byte HotbarSlotNotExecuted = 0;
     private static bool inHotbarSlot;
@@ -30,7 +30,18 @@ public partial class Service
     {
         AgentExecuteEmoteHook = new(DetourAgentExecuteEmote, true);
         ExecuteEmoteHook = new(DetourExecuteEmote, true);
-        ExecuteHotbarSlotHook = new(DetourExecuteHotbarSlot, true);
+        try
+        {
+            ExecuteHotbarSlotHook = new(
+                "E9 ?? ?? ?? ?? 73 25 8B CA 49 8D 91 A0 00 00 00",
+                DetourExecuteHotbarSlot, true, "ExecuteSlot");
+            Log.Debug("Hotbar ExecuteSlot hook bound by signature.");
+        }
+        catch (Exception ex)
+        {
+            ExecuteHotbarSlotHook = null;
+            Log.Error(ex, "The hotbar ExecuteSlot signature could not be resolved; hotbar bypassing stays off.");
+        }
 
         try
         {
@@ -41,6 +52,16 @@ public partial class Service
         {
             Log.Error(ex, "OnEmote Hook error");
         }
+    }
+
+    private static void DisposeHooks()
+    {
+        OnEmoteHook?.Dispose();
+        OnEmoteHook = null;
+        ExecuteHotbarSlotHook?.Dispose();
+        ExecuteHotbarSlotHook = null;
+        ExecuteEmoteHook?.Dispose();
+        AgentExecuteEmoteHook?.Dispose();
     }
 
     private static void HandleEmote(Emote emote)
@@ -69,7 +90,10 @@ public partial class Service
 
         try
         {
-            ret = ExecuteHotbarSlotHook.Original(thisPtr, hotbarSlot);
+            if (ExecuteHotbarSlotHook is not { } hook)
+                return HotbarSlotNotExecuted;
+
+            ret = hook.Original(thisPtr, hotbarSlot);
         }
         finally
         {

@@ -27,7 +27,7 @@ public sealed partial class Plugin
                 .WithHelp("Bypasses any emote (including locked ones) on yourself, by command name or ID.")
                 .WithDisplayOrder(0)
                 .Handle(args => PlayEmoteFromArg(ResolveLocalPlayer(), args.RawTokens[0],
-                    () => commandRouter.PrintHelp("/bypassemote"))))
+                    () => LogHelper.Info("Use /be config, /be sync, /be stop, or /be <emote>"))))
             .AddSubCommand("config", sub => sub
                 .WithHelp("Opens the configuration window.")
                 .AddAlias("c")
@@ -86,7 +86,7 @@ public sealed partial class Plugin
                 .WithHelp("Plays the emote on your target, by command name or ID.")
                 .WithDisplayOrder(0)
                 .Handle(args => PlayEmoteFromArg(ResolveTargetedNpc(), args.RawTokens[0],
-                    () => commandRouter.PrintHelp("/bet"))));
+                    () => LogHelper.Info("Use /bet <emote> or /bet stop."))));
 
         commandRouter.Map("/bem")
             .WithHelp("Applies any emote to your own minion if summoned, without needing to target it. Use /bem <emote_command> or /bem stop.")
@@ -99,7 +99,7 @@ public sealed partial class Plugin
                 .WithHelp("Plays the emote on your minion, by command name or ID.")
                 .WithDisplayOrder(0)
                 .Handle(args => PlayEmoteFromArg(ResolveMinion(), args.RawTokens[0],
-                    () => commandRouter.PrintHelp("/bem"))));
+                    () => LogHelper.Info("Use /bem <emote> or /bem stop."))));
 
         commandRouter.Map("/bep")
             .WithHelp("Applies any emote to your own pet (carbuncle/eos) if summoned, without needing to target it. Use /bep <emote_command> or /bep stop.")
@@ -112,7 +112,7 @@ public sealed partial class Plugin
                 .WithHelp("Plays the emote on your pet, by command name or ID.")
                 .WithDisplayOrder(0)
                 .Handle(args => PlayEmoteFromArg(ResolvePet(), args.RawTokens[0],
-                    () => commandRouter.PrintHelp("/bep"))));
+                    () => LogHelper.Info("Use /bep <emote> or /bep stop."))));
 
         commandRouter.Map("/bec")
             .WithHelp("Applies any emote to your own chocobo if summoned, without needing to target it. Use /bec <emote_command> or /bec stop.")
@@ -125,7 +125,7 @@ public sealed partial class Plugin
                 .WithHelp("Plays the emote on your chocobo, by command name or ID.")
                 .WithDisplayOrder(0)
                 .Handle(args => PlayEmoteFromArg(ResolveChocobo(), args.RawTokens[0],
-                    () => commandRouter.PrintHelp("/bec"))));
+                    () => LogHelper.Info("Use /bec <emote> or /bec stop."))));
     }
 
     private static ICharacter? ResolveLocalPlayer()

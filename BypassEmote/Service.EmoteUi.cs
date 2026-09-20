@@ -134,7 +134,7 @@ public partial class Service
 
             if (type == AddonEvent.PreRefresh
                 && AddonHelper.TryGetAddon(args, out var addon)
-                && AddonHelper.TryReadTextInput(addon, out var search)
+                && AddonText.TryReadTextInput(addon, out var search)
                 && search.Trim() is { Length: > 0 } trimmed)
             {
                 EmoteAddonValues.AddSearchMatches(values, count, MatchLockedEmotes(trimmed), LockedEmoteCommands);
@@ -258,7 +258,7 @@ public partial class Service
 
     private static unsafe void PaintSlotIcon(AtkComponentNode* iconNode, byte multiply)
     {
-        if (iconNode == null || !AddonHelper.TryGetComponent(&iconNode->AtkResNode, ComponentType.Icon, out var component))
+        if (iconNode == null || !AddonText.TryGetComponent(&iconNode->AtkResNode, ComponentType.Icon, out var component))
             return;
 
         var icon = (AtkComponentIcon*)component;

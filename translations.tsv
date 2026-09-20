@@ -1,0 +1,694 @@
+New Features	新功能
+Bug fixes	错误修复
+Bug Fixes	错误修复
+Technical Changes	技术改动
+Various technical enhancements.	多项技术性改进。
+Various bug fixes over the versions.	修复了各版本中的多项错误。
+Emote handling enhancement	情感动作处理改进
+Improved Emote Detection	情感动作检测改进
+Various QoLs and Changelog System	多项易用性改进与更新日志系统
+Major update introducing a comprehensive changelog system with UI integration, configuration tracking, and enhanced user experience features.	一次重大更新，引入了完整的更新日志系统，包含界面集成、配置记录以及多项体验优化。
+Changelog system	更新日志系统
+Introduced ChangelogWindow UI for viewing updates	新增更新日志窗口界面，用于查看更新内容
+Accessible via main plugin window book button	可通过主窗口的书本按钮打开
+Clean, organized display of version history	清晰、有条理地展示版本历史
+Interactive elements and color-coded entries	支持交互元素与按颜色区分的条目
+Comprehensive changelog management system	完整的更新日志管理系统
+Versioned changelog entries with structured data	使用结构化数据的版本化更新日志条目
+Automatic changelog version tracking	自动记录更新日志版本
+Support for rich formatting and icons	支持富文本格式与图标
+Added new emote data collected from FFXIVCollect	新增从 FFXIVCollect 收集的情感动作数据
+Added which patch the emote is from	新增该情感动作所属的游戏版本
+Added the obtention methods to get the emote	新增获取该情感动作的方式
+Configuration & Settings	配置与设置
+Updated configuration system to track changelog versions	更新配置系统以记录更新日志版本
+Show changelog on update	更新后显示更新日志
+Last seen changelog version tracking	记录最后查看过的更新日志版本
+Added an option to show update notifications	新增显示更新通知的选项
+User Interface	用户界面
+Enhanced main plugin window with new action buttons in the title bar	增强主窗口，在标题栏新增操作按钮
+Added changelog button in title bar	在标题栏新增更新日志按钮
+New settings access button	新增设置入口按钮
+Integrated support button (Ko-Fi)	集成赞助按钮（Ko-Fi）
+Donate	捐赠
+Added favorited emotes feature	新增情感动作收藏功能
+Easily access frequently used emotes	快速访问常用情感动作
+Mark/unmark emotes as favorites	将情感动作标记/取消标记为收藏
+View all favorited emotes in the \"Fav\" tab	在「收藏」标签页查看所有收藏的情感动作
+Added an info circle you can hover to see what patch the emote is from, and how to obtain it	新增信息图标，悬停即可查看该情感动作来自哪个游戏版本以及如何获取
+Fixed an incorrect detection of game emotes.	修复了游戏情感动作识别错误的问题。
+The game will now display Patch 7.35 game emotes.	游戏现在会显示 7.35 版本的情感动作。
+Bugfix, emote handling enhancement, and internal system change	错误修复、情感动作处理改进与内部系统调整
+Fixed emote playing capabilities, now allowing to bypass emotes when sitting or on a mount. Integrated NoireLib for improved utilities and features.	修复了情感动作的播放能力，现在坐着或骑乘时也能无视限制播放情感动作。集成 NoireLib 以改进工具与功能。
+You can now emote while sitting, groundsitting, mounted or riding pillion.	现在你可以坐着、坐在地上、骑乘或坐在他人坐骑后座时播放情感动作。
+You can now show emote IDs in the emote list.	现在可以在情感动作列表中显示情感动作 ID。
+Fixed a bug where Dalamud UI language would be used to get emote commands instead of game language when typing auto-translate emote commands.	修复了在输入自动翻译情感动作指令时，使用 Dalamud 界面语言而非游戏语言来获取情感动作指令的问题。
+Fixed a bug where NPCs emotes would bypass once and then block afterwards.	修复了 NPC 的情感动作只能无视限制播放一次、之后就会被拦截的问题。
+Integrated NoireLib for improved utilities and changelog system.	集成 NoireLib，以改进工具与更新日志系统。
+Refactored emote and character helpers to use NoireLib utilities.	重构情感动作与角色辅助代码，改用 NoireLib 工具。
+Bugfix, new UI option and various internal changes	错误修复、新增界面选项与多项内部调整
+For debug purposes, you can now show absolutely *all* in game emotes, including invalid ones, with an option in the emote window. Look for \"Show Invalid Emotes\".	为了便于调试，现在可以通过情感动作窗口中的选项显示游戏中*所有*情感动作，包括无效的那些。请查找「显示无效情感动作」。
+Emotes previously in the \"Other\" tab had disappeared. Those are now back.	之前位于「其他」标签页的情感动作消失了，现在已恢复。
+Other various bug fixes.	其他多项错误修复。
+Refactored the code to use the new NoireLib helpers and utilities.	重构代码以使用新的 NoireLib 辅助与工具。
+Hotfix	紧急修复
+Bug Hotfix	错误紧急修复
+Fixed the changelog that would not show anymore.	修复了更新日志不再显示的问题。
+Fixed the settings to show the changelog and print in chat on update that were not enforced anymore.	修复了「更新后显示更新日志」和「更新后在聊天栏提示」这两个设置不再生效的问题。
+Enhances the emote handling both locally and while synced.	改进本地与同步状态下的情感动作处理。
+Added support for special emotes such as /dote and /allsaintscharm where the target would not be handled properly.	新增对特殊情感动作的支持，例如 /dote 和 /allsaintscharm，这些动作的目标此前无法被正确处理。
+Added /be sync and /be syncall which will respectively sync the emotes of bypassed players only, or all players on the map.	新增 /be sync 与 /be syncall：前者只同步无视限制播放情感动作的玩家，后者同步地图上的所有玩家。
+Fixed emote not being bypassed when you passed the emote command with parameters, such as \"/beesknees motion\".	修复了在情感动作指令后带参数（例如 \"/beesknees motion\"）时无法无视限制播放的问题。
+Fixed a bug where bypassing a looped emote would not cancel after mounting-dismounting, interacting with NPCs, casting, etc.	修复了无视限制播放循环情感动作后，在上下坐骑、与 NPC 交互、咏唱等情况下不会取消的问题。
+Fixed a bug where you could bypass emotes in GPose.	修复了在 GPose 中可以无视限制播放情感动作的问题。
+Improved how the syncing works, and specifically how other players are handled when they stop emoting.	改进了同步机制，尤其是其他玩家停止播放情感动作时的处理方式。
+Various bug fixes	多项错误修复
+Fixes a few bugs with some specific emotes and syncing.	修复了若干与特定情感动作和同步相关的错误。
+Fixed some emotes not being bypassed properly, for example /waterfloat and /waterflip.	修复了部分情感动作无法正确无视限制播放的问题，例如 /waterfloat 和 /waterflip。
+Improved how the syncing works (again), and specifically how other players are handled when they stop emoting.\nA small delay will be added before the emote is sent over IPC.\nFurthermore, movement detections for other players has been improved to add some leeway so that the emote doesnt get stopped when the player is still moving a bit.	再次改进了同步机制，尤其是其他玩家停止播放情感动作时的处理方式。\n情感动作通过 IPC 发送前会加入一小段延迟。\n此外，其他玩家的移动检测也加入了容差，因此玩家仍在轻微移动时情感动作不会被中断。
+Fixed emotes bypassing under some conditions that are not valid (Casting, in cutscene, in GPose, In event ...).	修复了在某些本不应生效的情况下仍然无视限制播放的问题（咏唱中、过场动画中、GPose 中、事件中……）。
+Facial expressions	面部表情
+Fixed a few bugs concerning facial expressions and facing targets.	修复了若干与面部表情和面向目标相关的错误。
+Prevented facial expressions from stopping bypassed looped emotes.	避免面部表情中断已无视限制播放的循环情感动作。
+Facial expression emotes no longer makes the character face its target.	面部表情类情感动作不再让角色转向目标。
+Additionnaly, the character will no longer rotate when emoting to itself (self-targetting).	此外，角色对自己播放情感动作（自我锁定）时不再转向。
+Commands /be sync and /be syncall will now better handle syncing emotes that have intro + loop phases, hence improving the \"syncing\", where a slight delay would occur before for those type of emotes.	/be sync 与 /be syncall 现在能更好地同步带前奏 + 循环阶段的情感动作，从而改善这类情感动作此前会出现轻微延迟的「同步」表现。
+Fixed a bug with facing targets.	修复了面向目标相关的错误。
+Minions, Pets, Chocobos & Battle NPCs support	宠物、召唤兽、陆行鸟与战斗 NPC 支持
+Added support for Minions, Pets, Chocobos & Battle NPCs. Revised IPC.	新增对宠物、召唤兽、陆行鸟与战斗 NPC 的支持。重做了 IPC。
+Added support for Minions, Pets and Chocobos. You can now apply any emote to your own minions, pets and chocobos provided they have been summoned and turned human.	新增对宠物、召唤兽与陆行鸟的支持。只要它们已被召唤并变为人类形态，你现在就可以对它们播放任何情感动作。
+Added support for Battle NPCs. You can now apply any emote Battle NPCs in the world.	新增对战斗 NPC 的支持。你现在可以对世界中的战斗 NPC 播放任何情感动作。
+Revised IPC to support above changes.	重做 IPC 以支持上述改动。
+Added the /bem command to apply emotes to your minion, provided it's been summoned and turned human.\nYou do not need to target the minion, and just like /bet, you can use an emote argument or the stop argument (/bem stop, /bem beesknees, /bem /tea, ...).\nUseful for untargettable minions such as the cushion or the campfire.	新增 /bem 指令，用于对你的宠物播放情感动作（前提是它已被召唤并变为人类形态）。\n无需锁定该宠物；与 /bet 一样，可以使用情感动作参数或停止参数（/bem stop、/bem beesknees、/bem /tea 等）。\n对于坐垫、篝火等无法锁定的宠物很有用。
+Additionally, added the /bep command to apply emotes to your pet (carbuncle and eos), provided it's been summoned and turned human.	此外，新增 /bep 指令，用于对你的召唤兽（carbuncle 和 eos）播放情感动作（前提是它已被召唤并变为人类形态）。
+Additionally, added the /bec command to apply emotes to your chocobo, provided it's been summoned and turned human.	此外，新增 /bec 指令，用于对你的陆行鸟播放情感动作（前提是它已被召唤并变为人类形态）。
+Added the possibility to apply emotes to your owned entities from the emote selector window (/be) via right click.	新增通过右键点击，在情感动作选择窗口（/be）中对自己拥有的单位播放情感动作的功能。
+Added a configuration option to choose whether you want your minion, pet or chocobo to stop emoting when it moves.\nUseful for the Plush Cushion or the Campfire if you're using SimpleHeels' temporary offsets, or for non-static entities.	新增配置选项，可选择宠物、召唤兽或陆行鸟移动时是否停止播放情感动作。\n如果你在使用 SimpleHeels 的临时偏移，或者面对非静态单位，这对毛绒坐垫或篝火很有用。
+Enhances the target handling and the emote bypassing.	改进目标处理与情感动作的无视限制播放。
+BypassEmote now handles hotbar emote slots. If you click a locked emote hotbar slot (greyed out), the emote will play.	BypassEmote 现在可以处理热键栏上的情感动作格子。点击未解锁情感动作的格子（灰色显示）时，该情感动作就会播放。
+The soft target is now properly handled. If you have both a target and a soft target, bypassing an emote will prioritize the soft target.	现在可以正确处理软目标。若同时存在目标与软目标，无视限制播放情感动作时会优先使用软目标。
+Reworked the IPC Data being sent to consumers.	重做了发送给使用方的 IPC 数据。
+Hotbar integration enhancement	热键栏集成改进
+Allows to add emotes to hotbars.	允许将情感动作添加到热键栏。
+Added the possibility to assign emotes to hotbar slots.\nRight click an emote in the main UI, and an option will appear if the emote is assignable.	新增将情感动作分配到热键栏格子的功能。\n在主窗口中右键点击情感动作，若该情感动作可分配，就会出现相应选项。
+Added a new config option for enabling/disabling bypassing emotes on emote hotbar slot click.	新增配置选项，用于启用/禁用点击情感动作热键栏格子时的无视限制播放。
+Emote Swap	表情替换
+Adds a new way of bypassing emotes through Penumbra, visible on every sync service.	新增一种通过 Penumbra 无视限制播放情感动作的方式，在所有同步服务中均可见。
+Added Emote Swap, a new bypass mode, which is now the default one.\nInstead of applying the animation on your character, the plugin looks for an emote you have unlocked that behaves like the one you asked for, plays that one for real, and swaps its animation with the locked one through a Penumbra mod it manages for you.\nThe game itself plays the emote, so other players see it over any sync service without their plugin having to integrate BypassEmote.	新增表情替换：这是一种新的无视限制模式，现已成为默认模式。\n插件不再直接把动画应用到你的角色上，而是寻找一个你已解锁、且表现与你请求的情感动作相似的情感动作，真正播放它，并通过插件为你管理的 Penumbra 模组把它与未解锁的情感动作的动画互换。\n由于是游戏本身在播放该情感动作，其他玩家在任何同步服务中都能看到，无需他们的插件集成 BypassEmote。
+Emote Swap needs Penumbra installed and enabled.	表情替换需要安装并启用 Penumbra。
+A prompt will appear on your first launch to let you pick the mode you want. You can change your mind at any time in the configuration window.	首次启动时会弹出提示，让你选择想要的模式。之后随时可以在配置窗口中更改。
+Added a lot of configuration options for Emote Swap, such as how close a match has to be, when the swap is turned off, how many swaps are kept per emote, and whether your name appears on the generated mod.	为表情替换新增了大量配置选项，例如匹配需要多接近、何时关闭替换、每个情感动作保留多少个替换，以及你的名字是否出现在生成的模组中。
+The default configuration is already set up the way it works best, you do not need to touch any of it.	默认配置已经调整为效果最佳的状态，你无需改动任何设置。
+Every swap is kept as an option of the generated mod, so playing the same emote again puts it back without rebuilding anything.	每个替换都会作为生成的模组的选项保留，因此再次播放同一情感动作时会直接恢复，无需重新构建。
+Emotes are now played according to your character's condition.\nSitting on the ground, sitting in a chair, mounted, riding pillion, swimming, diving, holding an umbrella or a torch, wearing a fashion accessory: the plugin plays the variant that matches the state you are in, instead of forcing the standing animation on you.\nIf an emote cannot be played in the state you are in, the plugin will tell you so instead of playing something wrong.	现在情感动作会根据角色所处的状态播放。\n坐在地上、坐在椅子上、骑乘、坐在他人坐骑后座、游泳、潜水、手持雨伞或火把、佩戴时尚配饰：插件会播放与你当前状态相符的变体，而不是强行给你播放站立动画。\n若某个情感动作无法在你当前的状态下播放，插件会明确告知，而不是播放错误的内容。
+Emote Swap follows the same rule, and will only play an emote you own that can be executed in the state you are in.	表情替换遵循同样的规则，只会播放你已拥有、且能在当前状态下执行的情感动作。
+The main UI now shows the same condition icons as the game's own emote window, so you can see at a glance where an emote can be played.	主界面现在会显示与游戏自带情感动作窗口相同的状态图标，让你一眼看出某个情感动作可以在哪些状态下播放。
+Added a safe mode to Direct Play, the original method, which is on by default.\nWhile it is on, you can only bypass emotes from the base pose (pose 0) of your current stance. This is because the game client sends duplicate change pose packets when your character is in any other pose, which is not something the plugin causes, but not something it can prevent either.\nYou can lift that limit in the configuration window if you know what you are doing.	为直接播放（原有方式）新增了安全模式，默认开启。\n开启时，你只能从当前姿态的基础姿势（姿势 0）无视限制播放情感动作。这是因为当角色处于其他姿势时，游戏客户端会重复发送姿势变更封包——这并非插件造成的，但插件也无法阻止。\n如果你清楚自己在做什么，可以在配置窗口中解除该限制。
+Safe mode is not a promise either, it only keeps Direct Play to the states where nothing has ever been seen to go wrong. Use Emote Swap if you want to be certain.	安全模式同样不是保证，它只是把直接播放限制在从未出现过问题的状态。如果你想要万无一失，请使用表情替换。
+Added the possibility to create a permanent Penumbra mod from any emote.\nClick the \"Create a mod\" button in the main UI, or right click an emote and pick \"Create a mod from this emote...\".\nUseful if you want to keep an animation over one of your emotes without the plugin having to do anything.	新增从任意情感动作创建永久 Penumbra 模组的功能。\n点击主界面中的「创建模组」按钮，或右键点击某个情感动作并选择「用此情感动作创建模组...」。\n如果你想在某个情感动作上保留一段动画、而又不需要插件做任何事，这会很有用。
+You can now stop Emote Swap from playing one of your own emotes, by clicking the ban icon next to its star.\nBlocked emotes have their own tab in the main UI. Useful if you would rather not have a specific one of yours played, for example one that makes noise.	现在你可以点击星标旁的禁止图标，阻止表情替换播放你自己的某个情感动作。\n被屏蔽的情感动作在主界面中有独立标签页。如果你不希望自己的某个情感动作被拿来播放（例如会发出声音的那种），这会很有用。
+Added drag and drop from the main UI onto your hotbars. Drag an emote onto a slot of hotbars 1 to 10 and it will be assigned to it.	新增从主界面拖放到热键栏的功能。将情感动作拖到热键栏 1 至 10 的任意格子上，即可将其分配到该格子。
+Added configuration options for the messages the plugin prints in chat, and for how often the same one is repeated.	新增配置选项，用于控制插件在聊天栏输出哪些消息，以及同一条消息的重复间隔。
+Fixed emotes that make your character draw its weapon.	修复了会让角色拔出武器的情感动作。
+Fixed visual effects not playing on some bypassed emotes.	修复了部分被无视限制播放的情感动作不显示视觉效果的问题。
+Added Penumbra V4 support.	新增 Penumbra V4 支持。
+BypassEmote now checks that the game patch you are on has been approved before enabling anything it finds by signature.\nIf a patch breaks something, the plugin turns those parts off by itself and checks every 10 minutes until it is approved again, instead of doing something it should not.	BypassEmote 现在会先确认你所在的游戏版本已通过审批，再启用任何通过特征码找到的功能。\n如果某个游戏版本导致功能失效，插件会自动关闭这些部分，并每 10 分钟检查一次，直到重新通过审批，而不是做出不该做的事。
+Moved a large part of the plugin's internals to NoireLib.	将插件内部的大部分实现迁移至 NoireLib。
+Animation cache breaking	动画缓存刷新
+Added \"Always cache-break\" option for Emote Swap, and various bug fixes.	为表情替换新增「始终刷新缓存」选项，并修复多项错误。
+Added \"Always cache-break\", a new option for Emote Swap.\nWith it on, every emote you play will be cache-broken, especially the ones you own. Play an emote, enable or disable any mod affecting that emote, play the emote again, the new animation refreshes and shows without needing to redraw nor to stop the emote.	新增「始终刷新缓存」，这是表情替换的一个新选项。\n开启后，你播放的每个情感动作都会刷新缓存，尤其是你自己已拥有的那些。播放一个情感动作，启用或禁用任何影响该动作的模组，再播放一次，新的动画就会刷新并显示出来，无需重新加载角色，也无需停止情感动作。
+It is off by default, you can enable it in the configuration window.	该选项默认关闭，可在配置窗口中开启。
+Added /belogs (also available as /be logs), which exports a zip of the plugin logs and settings to send to the developer. Check its content before sending it, it is not meant to be posted publicly.	新增 /belogs（也可写作 /be logs），用于将插件日志与设置的压缩包导出，以便发送给开发者。发送前请检查其中的内容，它不适合公开发布。
+The plugin now recognizes the Korean and Chinese game clients.	插件现在可以识别韩文与中文游戏客户端。
+Playing the real emote of a swap while the swap is still playing now refreshes the animation.\nBefore, playing for example /beesknees while a swap was using it kept showing the swapped animation until you stopped emoting.	在替换仍然生效时播放被替换的真实情感动作，现在会刷新动画。\n在此之前，例如某个替换占用了 /beesknees，此时播放它仍会一直显示被替换后的动画，直到你停止播放情感动作。
+Disabling the plugin now disables the generated mod.	禁用插件时现在会一并禁用生成的模组。
+Playing an emote while a swapped idle pose is active now stops the idle pose swap.	在被替换的待机动作生效期间播放情感动作，现在会停止该待机动作的替换。
+Reworked how animations are loaded around the game's caches.	重做了围绕游戏缓存加载动画的方式。
+Emote overrides	情感动作覆写
+Adds \"Emote overrides\", and various bug fixes and improvements.	新增「情感动作覆写」，并带来多项错误修复与改进。
+Added the \"Emote overrides\" tab to the configuration window.\nPick a locked emote, then pick the emotes it is allowed to land on. Emote Swap will then use your list instead of finding a best match, in the order you put it in.\nIf none of them can be played, the plugin tells you which ones it skipped and why.	在配置窗口中新增「情感动作覆写」标签页。\n先选择一个未解锁的情感动作，再选择允许它替换到的情感动作。之后表情替换会按你排列的顺序使用这份列表，而不是自行寻找最佳匹配。\n如果这些动作都无法播放，插件会告诉你跳过了哪些以及原因。
+The \"Fav\" and \"Blocked\" tabs of the main window now have their own dropdown, to add an emote to either list without hunting for it in the other tabs.	主窗口的「收藏」与「屏蔽」标签页现在都有各自的下拉菜单，无需再到其他标签页里翻找，即可将情感动作加入任一列表。
+The \"Create a mod\" window now warns you about mismatches and other potentially unwanted behaviors, such as when you have not unlocked the target emote, when one of your own mods already changes it, or when the two emotes have turn, loop, sound or intro mismatches.	「创建模组」窗口现在会就不匹配以及其他可能不希望出现的情况给出警告，例如你尚未解锁目标情感动作、你自己的某个模组已经修改了它，或者两个情感动作在转身、循环、音效或前奏方面不匹配。
+Added \"Support me on Ko-fi\" and \"Discord\" buttons to the main window.	在主窗口中新增「在 Ko-fi 上支持我」和「Discord」按钮。
+Fixed \"Create a mod\" sometimes writing the wrong animation instead of the one you asked for.	修复了「创建模组」有时写入错误动画、而非你指定动画的问题。
+Fixed changing world turning off the generated Penumbra mod and its options.	修复了切换服务器会关闭生成的 Penumbra 模组及其选项的问题。
+Fixed one of the signatures the plugin needed for the cache-breaker feature.\nWithout it, a swap could play the emote you played before it.	修复了缓存刷新功能所需的其中一个特征码。\n缺少它时，替换可能会播放你在此之前播放过的情感动作。
+Animation refresh rework	动画刷新机制重做
+Reworks how animations are refreshed, and stops other players from seeing you redraw.	重做了动画刷新的方式，并避免其他玩家看到你重新加载角色。
+Added \"Add an override...\" to the right click menu of the main UI.\nIt opens the \"Emote overrides\" tab with the emote already picked.	在主界面的右键菜单中新增「添加覆盖...」。\n它会打开「情感动作覆写」标签页，并已预先选好该情感动作。
+\"Always cache-break\" no longer makes other players see you redraw for random emotes.	「始终刷新缓存」不再让其他玩家在随机情感动作上看到你重新加载角色。
+Reworked how the plugin refreshes an animation, it is now way more efficient and optimized. Dropped from 10+ sigs to 2.	重做了插件刷新动画的方式，现在效率与优化程度都大幅提升。特征码从 10 多个减少到 2 个。
+Idle pose fixes	待机动作修复
+Fixes loop emotes playing your own idle mod instead of the emote you asked for.	修复了循环情感动作播放你自己的待机模组、而不是你请求的情感动作的问题。
+Loop emotes no longer play your own idle mod instead of the emote you asked for.\nGenerated bypass mods priority was not correctly set, this is fixed now.	循环情感动作不再播放你自己的待机模组，而是播放你请求的情感动作。\n生成的无视限制模组优先级此前设置不正确，现已修复。
+Fixed a bug where stopping a bypass on an idle animation by moving would not correctly stop the animation.	修复了通过移动来停止待机动画上的无视限制播放时、动画无法正确停止的问题。
+Fixed a bug with \"Only when nothing else fits\" for \"Loops on idle poses\" where it ignored blocked emotes.	修复了「在待机动作上循环」的「仅当无其他选择」会忽略被屏蔽情感动作的问题。
+/belogs now exports everything the plugin did since it loaded.\nIt would only partially export logs when the dalamud log level was not properly set.	/belogs 现在会导出插件自加载以来所做的全部内容。\n当 Dalamud 日志级别设置不当时，它此前只会导出部分日志。
+The plugin reads its mod's priority back from Penumbra instead of taking the cached value.	插件现在会从 Penumbra 读回其模组的优先级，而不是使用缓存的值。
+[Open]	[打开]
+[Disable]	[禁用]
+{0} Mod not opened.	{0} 未打开模组。
+Penumbra would not open '{0}'.	Penumbra 无法打开「{0}」。
+{0} Mod not disabled.	{0} 未禁用模组。
+No Penumbra collection is assigned to your character. Mod not disabled.	你的角色没有分配 Penumbra 集合，未禁用模组。
+Penumbra would not switch '{0}' off in {1}.	Penumbra 无法在 {1} 中关闭「{0}」。
+'{0}' is now off in {1}.	「{0}」现已在 {1} 中关闭。
+Bypass Emote is waiting for you to choose how it should play locked emotes.	Bypass Emote 正在等待你选择如何处理未解锁的情感动作。
+You cannot bypass this emote right now.	你现在无法无视限制播放该情感动作。
+No name	无名称
+Bypasses any emote (including locked ones) on yourself, by command name or ID.	对自己播放任意情感动作（包括未解锁的），可用指令名或 ID。
+Opens the configuration window.	打开设置窗口。
+Syncs only players that are bypassing an emote.	只同步正在无视限制播放情感动作的玩家。
+Syncs everyone playing an emote.	同步所有正在播放情感动作的玩家。
+Opens the changelog window.	打开更新日志窗口。
+Stops the emote currently playing on yourself.	停止你自己当前播放的情感动作。
+Exports a zip with the plugin logs and settings, to send to the developer.	导出包含插件日志与设置的 zip 压缩包，用于发送给开发者。
+Changes the language of the plugin. Usage: /be lang <auto|zh|en>	切换插件语言。用法：/be lang <auto|zh|en>
+auto, zh or en	auto、zh 或 en
+Opens the debug window.	打开调试窗口。
+Shows the hooks window.	显示 Hook 窗口。
+Usage: /bet <emote_command> or /bet stop	用法：/bet <情感动作指令> 或 /bet stop
+Usage: /bem <emote_command> or /bem stop	用法：/bem <情感动作指令> 或 /bem stop
+Usage: /bep <emote_command> or /bep stop	用法：/bep <情感动作指令> 或 /bep stop
+Usage: /bec <emote_command> or /bec stop	用法：/bec <情感动作指令> 或 /bec stop
+Stops the emote currently playing on your target.	停止你当前目标正在播放的情感动作。
+Plays the emote on your target, by command name or ID.	对目标播放该情感动作，可用指令名或 ID。
+Stops the emote currently playing on your minion.	停止你宠物当前播放的情感动作。
+Plays the emote on your minion, by command name or ID.	对宠物播放该情感动作，可用指令名或 ID。
+Stops the emote currently playing on your pet.	停止你召唤兽当前播放的情感动作。
+Plays the emote on your pet, by command name or ID.	对召唤兽播放该情感动作，可用指令名或 ID。
+Stops the emote currently playing on your chocobo.	停止你陆行鸟当前播放的情感动作。
+Plays the emote on your chocobo, by command name or ID.	对陆行鸟播放该情感动作，可用指令名或 ID。
+No NPC targeted.	没有选中 NPC。
+You can only target your own minion, pet, chocobo.	你只能选中自己的宠物、召唤兽或陆行鸟。
+No minion summoned.	没有召唤宠物。
+No pet summoned.	没有召唤召唤兽。
+No chocobo summoned.	没有召唤陆行鸟。
+Poses cannot be swapped.	待机姿势无法被替换。
+This emote cannot be played in Emote Swap mode.	该情感动作无法在表情替换模式下播放。
+Emote not found: {0}\n{1}	找不到该情感动作：{0}\n{1}
+Plugin language: {0}.	插件语言：{0}。
+Cancel	取消
+None	无
+Unknown	未知
+Open settings	打开设置
+Support me	支持作者
+Language	语言
+Language used by this plugin's windows and chat messages.	本插件窗口与聊天提示所使用的语言。
+Follow the game	跟随游戏
+General settings	通用设置
+Bypass Mode	无视限制模式
+When the emote ends	情感动作结束时
+When you play the target emote	播放目标动作时
+Never	从不
+Multiple swaps	多个替换
+One swap at a time	仅保留一个替换
+Strict	严格
+Lenient	宽松
+Off	关闭
+Very strict	非常严格
+Allowed	允许
+Last resort	最后手段
+Blocked	屏蔽
+Only when nothing else fits	仅当无其他选择
+Allow	允许
+Only when necessary	仅在必要时
+On	开启
+Same rank only	仅同等级
+One rank below	可低一级
+Anything allowed	不限等级
+Direct Play	直接播放
+Mode	模式
+Turn the swap off	何时关闭替换
+Swaps at the same time	同时替换数量
+Kept swaps per emote	每个情感动作保留的替换
+Hide your name on the mod	在模组中隐藏你的名字
+Always cache-break (experimental)	始终刷新缓存（实验性）
+Loop matching	循环匹配
+Turn matching	转身匹配
+Sound matching	音效匹配
+Spread swaps over several emotes	将替换分散到多个情感动作
+Emotes used per behaviour	每种行为可用的情感动作数
+How close a spread emote must fit	分散替换所需的接近程度
+Repeat an error at most every	同一错误最短重复间隔
+Repeat a warning at most every	同一警告最短重复间隔
+Unsafe toggle	不安全开关
+Emotes your mods change	被模组修改的情感动作
+Loops on idle poses	在待机动作上循环
+Show swap messages	显示替换消息
+Show error messages	显示错误消息
+Show warning messages	显示警告消息
+Face your target automatically	自动面向目标
+Enable the plugin	启用插件
+Bypass emotes from locked hotbar slots	无视热键栏格子解锁限制
+Show locked emotes in the game's Emote window	在游戏情感动作窗口显示未解锁动作
+Do not grey out locked emotes	未解锁的情感动作不变灰
+Stop companion emotes when they move	宠物移动时停止其情感动作
+Show update notifications	显示更新通知
+Show the changelog after an update	更新后显示更新日志
+Show windows in GPose	在 GPose 中显示窗口
+Show windows while the game UI is hidden	游戏界面隐藏时仍显示窗口
+Check now	立即检查
+Plugin	插件
+Windows	窗口
+Updates	更新
+Safety	安全
+Direct play	直接播放
+Matching	匹配
+Penumbra	Penumbra
+Chat messages	聊天消息
+Not all sync services support Direct Play.	并非所有同步服务都支持直接播放。
+In safe mode you can only bypass emotes from the base pose (pose 0) of your current stance.	安全模式下，你只能从当前姿态的基础姿势（姿势 0）无视限制播放情感动作。
+Safe mode is not 100% guaranteed to be safe either. It prevents Direct Play from being used in states where it was proved to go wrong, but I can not prove the absence of issues. Use Emote Swap if you want to be 100% safe, it will behave almost the same way.	安全模式也无法 100% 保证绝对安全。它能避免直接播放在已知会出问题的状态下使用，但我无法证明不存在其他问题。想要 100% 安全就请使用表情替换，它的表现几乎完全一致。
+This is unsafe. Forcing an emote outside your base pose is, in theory, detectable by the server.	这不安全。在基础姿势之外强制播放情感动作，理论上可被服务器检测到。
+In practice it is a non-issue. This has been a thing in other tools and plugins (and still is in some of them), which people have used for years without trouble. Go back to safe mode, or even better, to emote swap, if you are uncomfy with this.	实际上这基本不算问题。其他工具和插件一直都有类似做法（有些至今仍在使用），人们用了很多年也没出过事。如果你对此感到不安，请回到安全模式，或者更好——回到表情替换。
+Lets Direct Play bypass an emote whatever pose you are in.\n\nLeave it off unless you know what you are doing: off, the plugin only plays emotes from states where nothing can be noticed.	让直接播放在任何姿势下都能无视限制播放情感动作。\n\n除非你清楚自己在做什么，否则请保持关闭：关闭时插件只会在不会被察觉的状态下播放情感动作。
+Not all sync services support it. In safe mode you can only bypass emotes from the base pose (pose 0) of your current stance.	并非所有同步服务都支持。安全模式下，你只能从当前姿态的基础姿势（姿势 0）无视限制播放情感动作。
+Not recommended. Not all sync services support it. Emote Swap is safer and works over any sync service.	不推荐。并非所有同步服务都支持。表情替换更安全，且适用于任何同步服务。
+\"Emote Swap plays\" your emote over one your character owns, through a Penumbra mod. Other players see it over any sync service.\n\"Direct Play\" sends the emote to the game itself, which not every sync service supports.	「表情替换」通过 Penumbra 模组，把你想要的情感动作替换到角色已拥有的情感动作上播放。其他玩家在任何同步服务中都能看到。\n「直接播放」把情感动作直接发送给游戏本体，并非所有同步服务都支持。
+Lets you bypass emotes with the vanilla emote commands (/beesknees, /tea, and so on) and with hotbar slots.\nThe main window and the /be command work regardless of this setting.	允许你使用游戏原生的情感动作指令（/beesknees、/tea 等）和热键栏格子来无视限制播放情感动作。\n主窗口和 /be 指令不受此设置影响。
+Bypasses a locked emote when you press its hotbar slot.\nRight-click an emote in the main window to assign it to a slot.	按下未解锁情感动作所在的热键栏格子时，无视限制直接播放它。\n在主窗口中右键点击情感动作即可将其分配到热键栏格子。
+Lists the emotes you have not unlocked in the game's own emote window.\nClose and reopen the emote window for changes to appear.	在游戏自带的情感动作窗口中列出你尚未解锁的情感动作。\n关闭并重新打开该窗口后改动才会生效。
+Keeps the emotes you have not unlocked lit in the game's emote window and on your hotbars.\nPurely cosmetic.	让未解锁的情感动作在游戏情感动作窗口和热键栏中保持亮起。\n仅为显示效果。
+Stops your minion, pet or chocobo's looped emote when they move.	当你的宠物、召唤物或陆行鸟移动时，停止其正在循环的情感动作。
+Keeps this plugin's windows visible while you are in GPose.	进入 GPose 时保持本插件的窗口可见。
+Keeps this plugin's windows visible when you hide the game UI.	隐藏游戏界面时保持本插件的窗口可见。
+Tells you in chat and on screen when a new version of the plugin has been installed.	插件安装新版本时，会在聊天栏和屏幕上通知你。
+Opens the changelog window after an update.	更新后自动打开更新日志窗口。
+Turns your character toward your target when you bypass an emote.	无视限制播放情感动作时，让角色转向目标。
+Due to detectability, you need to be in the base pose (pose 0) of your current stance to bypass emotes in safe mode.	出于可被检测的考虑，安全模式下你需要处于当前姿态的基础姿势（姿势 0）才能无视限制播放情感动作。
+\"Strict\" only puts a looping emote on another looping one.\n\"Lenient\" lets a looping emote play once on a one time emote when no better match exists.\n\nRecommended: \"Strict\", or \"Lenient\" if you really don't have many emotes.	「严格」只会把循环情感动作替换到另一个循环情感动作上。\n「宽松」在没有更好选择时，允许循环情感动作在一次性情感动作上播放一次。\n\n推荐：「严格」；如果你确实没多少情感动作，可以选「宽松」。
+Emotes have different turn behaviors when you target someone. Some emotes will make your torso turn (i.e: /hum), some only your head (i.e: /stepdance),some will only make your eyes follow your target (i.e: /beesknees) while others will not move at all (i.e:/guard).\n\n\"Very strict\" only picks emotes that behaves the same way.\n\"Strict\" allows eye following differences but keeps emotes head and body turn behaviors.\n\"Lenient\" allows any turn behavior.\n\nThe plugin will still always try to find the best match first, regardless of the selected rule.\n\nRecommended: \"Lenient\".	情感动作在锁定目标时的转身表现各不相同。有些动作会让你的躯干转动（如 /hum），有些只转动头部（如 /stepdance），有些只会让你的视线跟随目标（如 /beesknees），还有一些完全不会动（如 /guard）。\n\n「非常严格」只选择表现完全一致的情感动作。\n「严格」允许视线跟随上的差异，但要求头部和身体的转身表现一致。\n「宽松」允许任何转身表现。\n\n无论选择哪种规则，插件都仍然会优先尝试寻找最佳匹配。\n\n推荐：「宽松」。
+\"Strict\" never puts an emote on one that makes sound.\n\"Lenient\" allows matching emotes that make sounds together.\n\"Off\" will let emotes play regardless of sound.\n\nThis is to prevent vanilla people from seeing you play fume which could annoy other vanilla players, for example.\n\nRecommended: \"Lenient\".	「严格」绝不会把情感动作替换到会发出音效的动作上。\n「宽松」允许把都会发出音效的情感动作互相匹配。\n「关闭」不考虑音效，直接播放。\n\n举例来说，这是为了避免原版玩家看到你在播放 fume，从而可能打扰到其他原版玩家。\n\n推荐：「宽松」。
+Gives each bypassed emote a target emote of its own. This is useful when you want to bypass multiple emotes quickly.\n\n\"Off\" would make it so other people on your sync service would see you redraw constantly.\n\"Only when necessary\" spreads nothing while the game plays fresh content on its own, and steps in for the emotes that would show a stale frame once a game patch breaks that.\n\"On\" always spreads emotes.\n\nRecommended: \"On\" if you want other people on your sync service to always see you properly without redrawing all the time, otherwise highly recommended to leave it on \"Only when necessary\" and not \"Off\".	为每个被无视限制播放的情感动作分配各自的目标情感动作。想在短时间内连续播放多个情感动作时很有用。\n\n「关闭」会让同步服务上的其他玩家看到你不断重新加载角色。\n「仅在必要时」在游戏能自行播放新内容时不分散替换，而当游戏更新破坏该机制、某些动作会显示旧画面时再介入。\n「开启」始终分散情感动作。\n\n推荐：如果你希望同步服务上的其他玩家不必频繁重新加载也能始终看到正确的效果，请选「开启」；否则强烈建议保持「仅在必要时」，不要选「关闭」。
+How many different target emotes one kind of emote may swap to.	同一种情感动作可以替换到多少个不同的目标情感动作上。
+Takes effect when \"Spread swaps over several emote\" is enabled. This determines which emotes become available for a source emote. Basically, if you want to spread swaps over 5 emotes, and you try to bypass an emote but you only have 2 same-rank targets available, this is how it will determine what to do in this scenario. A rank is basically a category of emotes with similar characteristics (same turn behaviour, etc).\n\n\"Same rank only\" strictly picks targets of the same rank.\n\"One rank below\" also accepts targets one rank below.\n\"Anything allowed\" picks any target it can find, regardless of the rank.\n\nNone of them ever breaks your other rules.\n\nRecommended: \"One rank below\", or \"Same rank only\" if you want behavior accuracy.	在启用「将替换分散到多个情感动作」时生效，决定某个源情感动作可以使用哪些情感动作作为目标。简单来说，如果你想分散到 5 个情感动作，但只有 2 个同等级目标可用时，就由它来决定如何处理。等级大致就是具有相同特征（转身表现等）的一类情感动作。\n\n「仅同等级」只选择同等级的目标。\n「可低一级」也接受低一个等级的目标。\n「不限等级」会选择任何能找到的目标，不考虑等级。\n\n以上选项都不会破坏你的其他规则。\n\n推荐：「可低一级」；如果你更看重表现准确，可以选「仅同等级」。
+Determines whether to block unlocked emotes from being picked when they are modified by at least one of your mods. This prevents other people from seeing other modded emotes you might have before the swap takes place.\nAs an example, you have a mod on beesknees, and you try to bypass /conduct which happens to land on beesknees: other players might or might not see the modded beesknees for a moment.\n\n\"Allowed\" allows using unlocked emotes that are modified by one of your mods.\n\"Last resort\" uses one only when nothing else fits.\n\"Blocked\" never uses one, and show an error message in the chat with options to disable or open the mod in penumbra.\n\nRecommended: \"Last resort\", or \"Blocked\" if you absolutely don't want your modded emotes to accidentaly be seen.	决定当已解锁的情感动作被你的某个模组修改时，是否禁止将其作为目标。这可以避免其他玩家在替换生效前看到你拥有的其他模组效果。\n例如：你给 beesknees 装了模组，而你想无视限制播放 /conduct，它正好匹配到 beesknees：其他玩家可能会在瞬间看到被模组修改后的 beesknees。\n\n「允许」允许使用被你的模组修改过的已解锁情感动作。\n「最后手段」仅在没有其他合适选项时才使用。\n「禁止」绝不使用，并在聊天栏显示错误提示，附带禁用该模组或在 Penumbra 中打开模组的选项。\n\n推荐：「最后手段」；如果你绝对不希望自己的模组效果被意外看到，可以选「禁止」。
+When no unlocked looped emote fits as a target, your current idle pose may be eligible instead. The emote you try to bypass will then be targeted onto your current idle pose. This will cause a redraw of your character when triggered.\n\n\"Never\" blocks idle poses from being used as targets.\n\"Only when nothing else fits\" uses the pose only when literally no unlocked looped emote could have played here at all. This will not use your idle pose if any other emote would have been available if it wasn't blocked.\n\"Allow\" always falls back to your idle pose when no other options are available.\n\nRecommended: \"Only when nothing else fits\".	当没有已解锁的循环情感动作可以作为目标时，你的当前待机动作也可以作为候选。此时你要无视限制播放的情感动作会被替换到当前待机动作上。触发时会导致角色重新加载。\n\n「从不」禁止将待机动作作为目标。\n「仅当无其他选择」只在确实没有任何已解锁的循环情感动作可播放时才使用待机动作。如果还有其他情感动作（只是被规则挡住）可用，就不会改用待机动作。\n「允许」在没有其他可用选项时总是回退到你的待机动作。\n\n推荐：「仅当无其他选择」。
+\"When the emote ends\" puts your real emote back as soon as the animation stops.\n\"When you play the target emote\" keeps the swap enabled until the next time you play the target emote.\n\"Never\" keeps the swap live until another swap claims the same target emote.\n\nRecommended: \"When you play the target emote\". \"When the emote ends\" is not recommended, as people will see you redraw constantly after swapping.	「情感动作结束时」在动画停止后立刻恢复你原本的情感动作。\n「播放目标动作时」保持替换生效，直到你下次播放该目标情感动作。\n「从不」让替换一直保留，直到另一个替换占用了同一个目标情感动作。\n\n推荐：「播放目标动作时」。「情感动作结束时」不推荐，因为替换后其他人会看到你不断重新加载。
+\"Multiple swaps\" keeps multiple swaps active at the same time in the mod.\n\"One swap at a time\" turns the previous swaps off as soon as a new one starts.\n\nRecommended: \"Multiple swaps\", unless for some reason you want to only keep one swap at a time.	「多个替换」让模组中同时保留多个替换。\n「仅保留一个替换」在新替换开始时立即关闭之前的替换。\n\n推荐：「多个替换」，除非你出于某种原因只想同时保留一个替换。
+How many swaps are kept per target emote. 0 keeps them all.\n\nEach kept swap stays as an option of the generated Penumbra mod, so playing an emote again enables it again without rebuilding it. The only cost is that the mod gets bigger.	每个目标情感动作保留多少个替换。设为 0 表示全部保留。\n\n每个保留的替换都会作为生成的 Penumbra 模组的一个选项存在，因此再次播放该情感动作时会直接启用，而无需重新生成。唯一的代价是模组会变大。
+Names the generated mod after your initials instead of your full name and world.	生成的模组使用你的姓名首字母命名，而不是完整的角色名和服务器名。
+Applies the cache-break mechanism to every emote, even those you own. This is a bonus feature and is experimental. This will allow the client to always \"refresh\" animations so you never have to redraw yourself or stop emoting to apply an animation change.	对所有情感动作（包括你自己已拥有的）应用缓存刷新机制。这是一个附加的实验性功能。它能让客户端始终「刷新」动画，因此你无需重新加载角色或停止情感动作，就能应用动画变化。
+Shows a message in chat when an emote is swapped.	发生替换时在聊天栏显示消息。
+Shows an error in chat when a swap could not be done.	替换失败时在聊天栏显示错误。
+How long the same error stays quiet after you have seen it.\n\nAccepts time format: 5m, 300s, 5m10s, 1h.\nSet to 0 to see every one of them.	同一条错误在你看到之后会静默多久。\n\n支持时间格式：5m、300s、5m10s、1h。\n设为 0 表示每条都显示。
+Shows a warning in chat when a swap happened, but not the way you would expect.	替换发生但结果与预期不符时，在聊天栏显示警告。
+How long the same warning stays quiet after you have seen it.\n\nAccepts time format: 5m, 300s, 5m10s, 1h.\nSet to 0 to disable.	同一条警告在你看到之后会静默多久。\n\n支持时间格式：5m、300s、5m10s、1h。\n设为 0 表示不再提示。
+This game build is not approved yet, this will not work.	当前游戏版本尚未通过审批，此功能不会生效。
+Not running: {0}.	未运行：{0}。
+Leave this on, otherwise bypassing several animations in a row may look broken.	请保持开启，否则连续播放多个动画时可能看起来出问题。
+Bypass Emote has not been approved for this game build.	Bypass Emote 尚未针对当前游戏版本通过审批。
+Emote swaps may behave oddly until the build is approved.\nThe plugin will automatically fetch updates every 10 minutes to check if it was approved.	在版本通过审批之前，表情替换可能表现异常。\n插件每 10 分钟会自动获取一次更新，以检查是否已通过审批。
+The Bypass Emote you are using is not the original plugin.	你所在使用的Bypass Emote不是原版插件
+This Chinese localization and CN client adaptation branch is maintained by Sachimi. If you have any problem, please report the bug at https://github.com/Luckyumimi/BypassEmoteCN	此汉化＆国服适配分支由Sachimi负责，如果有任何问题，请前往https://github.com/Luckyumimi/BypassEmoteCN报告bug
+Open the project page	打开项目主页
+not yet	尚未
+Checked at {0}.	检查时间：{0}。
+Enable Force Approval	开启强制审批
+Disable Force Approval	关闭强制审批
+Force approval is on.	强制审批已开启。
+Switch to Direct Play?	切换到直接播放？
+Switch to Direct Play	切换到直接播放
+Enable unsafe mode?	开启不安全模式？
+Enable unsafe mode	开启不安全模式
+Bypass Emote - Create a mod	Bypass Emote - 创建模组
+This window allows you to create a permanent swap mod, and it stays unaffected by BypassEmote. You own it, and you manage it, like any other mod.	此窗口用于创建一个永久替换模组，它不受 Bypass Emote 影响；它归你所有，也和其他模组一样由你自行管理。
+Emote to play	播放的情感动作
+Played over	替换到
+Races covered	适用种族
+Mod name	模组名称
+Enable on creation	创建时启用
+Highest priority	最高优先级
+The animation the mod plays. The one you have not unlocked.	模组播放的动画，也就是你尚未解锁的那个。
+The emote you will actually use in game. The one you have unlocked.	你在游戏中实际使用的那个情感动作，也就是你已解锁的那个。
+Which bodies the mod is written for.	该模组为哪些种族生成。
+The name of the generated mod.	生成的模组名称。
+Switches the mod on in your character's collection as soon as it exists.	模组一创建就在你的角色集合中启用。
+Makes the mod have the highest priority. When off, it is created at priority 0.	让该模组拥有最高优先级。关闭时以优先级 0 创建。
+Pick the emote to play...	选择要播放的情感动作...
+Pick the emote to play over...	选择要替换到的情感动作...
+My emote mod	我的情感动作模组
+Search races...	搜索种族...
+No race covered	尚未选择种族
+Modded animation: {0}	模组动画：{0}
+Vanilla animation	原版动画
+You have not unlocked {0}.	你还没有解锁 {0}。
+Your mod \"{0}\" already changes {1}.	你的模组「{0}」已经修改了 {1}。
+{0} read the same animation file as {1}. {1}'s version plays for all of them.	{0} 与 {1} 读取同一个动画文件，因此它们都会播放 {1} 的版本。
+This also changes the emote for {0}. They read a file the mod writes.	这也会改变 {0} 的情感动作：它们会读取该模组写入的文件。
+Create	创建
+An emote cannot be played over itself.	情感动作不能替换到它自己身上。
+Pick at least one race.	请至少选择一个种族。
+Pick both emotes and name the mod.	请选择两个情感动作并为模组命名。
+Emote data is still loading. Try again in a moment.	情感动作数据仍在加载中，请稍后再试。
+One of those emotes has no animation this can read.	其中一个情感动作没有可读取的动画。
+Penumbra is not running.	Penumbra 未运行。
+Bypass Emote Debug	Bypass Emote 调试
+IPC Tests	IPC 测试
+Tracked Characters	追踪的角色
+Networker	网络联机
+Swap Layers	替换层
+Emote Pool	情感动作池
+Kept Swaps	保留的替换
+Patch Approval	补丁审批
+The gate is not up.	审批闸门尚未就绪。
+Probed client: {0}	探测到的客户端：{0}
+Gate reads: {0}	闸门读取到：{0}
+Pretend this is the Korean client	假装这是韩服客户端
+Pretend this is the Chinese client	假装这是国服客户端
+Pretend this client cannot be identified	假装无法识别此客户端
+Pretend Penumbra rejects the player identifier (KR/CN clients debug)	假装 Penumbra 拒绝玩家标识（韩服/国服客户端调试用）
+Client is Global. Enable one of the client checkboxes above.	当前为国际服客户端。请勾选上方任一客户端选项。
+Fallback in use: {0}	正在使用回退方案：{0}
+Assignment chain:	分配链：
+Game build: {0}	游戏版本：{0}
+Status: {0}	状态：{0}
+Reason: {0}	原因：{0}
+Notice: {0}	通知：{0}
+Governs: {0}    Holds hooks: {1}    Held: {2}	接管：{0}    持有 Hook：{1}    已持有：{2}
+as soon as the loop runs	循环运行后立即
+Next automatic check: {0}	下次自动检查：{0}
+Drop the recorded approval	清除已记录的审批
+Clears the approval stored in the config and at runtime	清除配置中和运行时保存的审批
+Notice for this build	本次构建的说明
+Approve this build in the .json file	在 .json 文件中批准本次构建
+The swap mod manager is not initialized.	替换模组管理器尚未初始化。
+Mod directory: {0}	模组目录：{0}
+<no character loaded>	（未加载角色）
+Penumbra: {0}	Penumbra：{0}
+Drawn body: {0}	绘制骨架：{0}
+<unknown>	（未知）
+Swap files: {0}	替换文件：{0}
+Clear kept swaps	清除保留的替换
+No swap is kept.	没有保留的替换。
+Target	目标
+Source	来源
+Option	选项
+Races	种族
+Last used	最近使用
+Selected	已选中
+Rules	规则
+(idle pose)	（待机动作）
+yes	是
+no	否
+Select	选中
+Turn off	取消选中
+does not hold the mod	未持有该模组
+{0}, priority {1}	{0}，优先级 {1}
+enabled	已启用
+disabled	已禁用
+Networker is not initialized.	网络联机尚未初始化。
+Network: {0}	网络：{0}
+State: {0}	状态：{0}
+(hub)	（主机）
+Self: {0}	自身：{0}
+Active	启用
+LAN discovery	局域网发现
+Instances on the same PC find each other with no configuration.\nLAN discovery reaches other PCs. It may need an inbound Windows Firewall rule.	同一台电脑上的多个实例无需配置即可互相发现。\n局域网发现可连接到其他电脑，可能需要放行 Windows 防火墙的入站规则。
+Peers:	节点：
+You - {0} [{1}]	你 - {0} [{1}]
+hub	主机
+client	客户端
+same PC	同一台电脑
+LAN	局域网
+Swap owned emotes	替换已拥有的情感动作
+Swaps emotes you already own instead of letting the game play them. Debug only.	让你已拥有的情感动作也走替换流程，而不是由游戏直接播放。仅供调试。
+Weapon in hand	手持武器
+Weapon stow at end	结束时收起武器
+Weapon travel animation	武器移动动画
+IPC Version: {0}	IPC 版本：{0}
+IPC Is Ready: {0}	IPC 就绪：{0}
+Select Emote:	选择情感动作：
+Search emotes...	搜索情感动作...
+Set local player state	设置本地玩家状态
+Set target state	设置目标状态
+Clear local player state	清除本地玩家状态
+Clear target state	清除目标状态
+Current Local Player IPC Data (Looping only):	当前本地玩家 IPC 数据（仅循环情感动作）：
+Current Target IPC Data (Looping only):	当前目标 IPC 数据（仅循环情感动作）：
+Tracked Characters:	追踪的角色：
+Serialization error: {0}	序列化错误：{0}
+Unknown ({0})	未知（{0}）
+The emote catalog is still building.	情感动作目录仍在构建中。
+State	状态
+Read my state	读取我的状态
+Refresh	刷新
+Refused	已拒绝
+Kept out	已排除
+rules: loop {0}, turn {1}, sound {2}, modded {3}, idle pose {4}, dispatch {5}	规则：循环 {0}，转身 {1}，音效 {2}，模组 {3}，待机动作 {4}，派发 {5}
+off	关闭
+{0}, {1} per rank, {2}	{0}，每档 {1} 个，{2}
+(not here)	（此处不可用）
+No source emote selected.	尚未选择来源情感动作。
+Emote Swap is not running.	表情替换未运行。
+Nothing to show.	没有可显示的内容。
+Filter targets...	筛选目标情感动作...
+, you pressed {0}	，你按下的是 {0}
+Pose family, never swapped.	属于姿势组，从不参与替换。
+Not playable here: {0}	此处无法播放：{0}
+state {0}, channel {1}, body {2}	状态 {0}，通道 {1}，骨架 {2}
+The condition check was skipped.	已跳过状态检查。
+Pool of {0}: {1} usable, {2} refused. {3} of your {4} owned emotes were excluded.	情感动作池共 {0} 个：{1} 个可用，{2} 个被拒绝。你拥有的 {4} 个情感动作中有 {3} 个被排除。
+Borrows your idle pose first. The match below is only used if that fails.	优先借用你的待机动作，只有失败时才使用下面的匹配结果。
+No owned loop fitted. Lenient pass: a one-shot can be used for a loop.	没有合适的已拥有循环情感动作。宽松匹配：可用一次性动作充当循环。
+Nothing passes the filters. This emote cannot be bypassed here.	没有候选能通过筛选，此处无法无视限制播放该情感动作。
+No posture variant shared with {0}. The swap stops before it is built.	与 {0} 没有共用的姿势变体，替换在构建前中止。
+If this was to alternate, it would land on a second same-tier emote.	若要交替播放，会落到同档的第二个情感动作。
+kept out	已排除
+refused	已拒绝
+chosen	已选中
+same tier	同档
+usable	可用
+, blocked by your rules	，被你的规则阻止
+, another of your mods changes it	，你的另一个模组改动了它
+, blocked on {0}	，因 {0} 被阻止
+cancels on rotate	转身即取消
+pose family	姿势组
+never a target	永不作为目标
+blocked by your rules	被你的规则阻止
+intro + loop	前奏 + 循环
+intro + one shot	前奏 + 一次性
+loop only	仅循环
+one shot	一次性
+no sound	无音效
+sound	音效
+voiceline	语音
+sound unknown	音效未知
+no turn	不转向
+eyes turn	视线转向
+head turn	头部转向
+body turn	身体转向
+turn unknown	转向未知
+no posture	无姿势
+standing	站立
+chair	椅子
+ground	地面
+mounted	骑乘
+Show every logs	显示全部日志
+Show changelogs	显示更新日志
+Join the Discord	加入 Discord
+Show invalid emotes	显示无效情感动作
+Show Invalid Emotes	显示无效情感动作
+Show IDs	显示 ID
+General	一般
+Special	特殊
+Expressions	表情
+Other	其他
+Fav	收藏
+No blocked emote	没有屏蔽的情感动作
+Block this emote as a swap target	将此情感动作屏蔽为替换目标
+Patch: {0}	版本：{0}
+Left-click to apply to yourself	左键点击对自己使用
+Right-click for more options	右键点击查看更多选项
+Drag onto a hotbar slot to assign it	拖到热键栏格子上即可分配
+Only Emote Swap mode swaps.	只有表情替换模式才会替换。
+Apply emote on Minion	对宠物播放情感动作
+Apply emote on Pet	对召唤兽播放情感动作
+Apply emote on Chocobo	对陆行鸟播放情感动作
+Add an override...	添加覆写...
+Assign emote to Hotbar...	将情感动作分配到热键栏...
+Create a mod from this emote...	用此情感动作创建模组...
+This plugin is free and always will be, donations are appreciated.	本插件永久免费，欢迎捐赠支持。
+Help, bug reports and updates.	获取帮助、反馈问题与更新。
+(favorite)	（收藏）
+Block an emote as a swap target...	将情感动作屏蔽为替换目标...
+(blocked)	（屏蔽）
+Create a mod	创建模组
+Sync...	同步...
+Sync everyone (/be sync)	同步所有人 (/be sync)
+Sync Direct Play only (/be syncdirect)	仅同步直接播放 (/be syncdirect)
+This tab allows you to make sure a locked emote will always use one or multiple specific target emotes.	此标签页让你指定某个未解锁的情感动作始终使用一个或多个特定的目标情感动作。
+Override an emote...	覆写一个情感动作...
+(overridden)	（已覆写）
+No override yet.	尚无覆写。
+Remove this override	移除此覆写
+Pick an emote on the left.	请先在左侧选择一个情感动作。
+Add a target emote...	添加目标情感动作...
+(already a target)	（已是目标）
+No target yet.	尚无目标。
+Limited to selected targets only	仅限选定的目标
+On: this emote plays on one of these targets, or not at all.\nOff: your usual settings take over when none of these targets can be used.	开启：该情感动作会在这些目标之一上播放，否则完全不播放。\n关闭：当这些目标都不可用时，改由你的常规设置生效。
+The approval list could not be reached.	无法访问审批列表。
+Game build {0} has not been approved yet.	游戏版本 {0} 尚未通过审批。
+Game build {0} names a plugin version the plugin cannot read.	游戏版本 {0} 指定的插件版本无法被识别。
+Game build {0} needs Bypass Emote {1} or newer. Installed: {2}.	游戏版本 {0} 需要 Bypass Emote {1} 或更高版本；当前安装的是 {2}。
+unknown	未知
+Game build {0} is approved.	游戏版本 {0} 已通过审批。
+This game client is not the Global one, and has not and can not be tested. This plugin might not work and might be unstable/unusable. Please don't use it if it does not work well.	该游戏客户端并非国际服客户端，尚未且无法进行测试。本插件可能无法工作，也可能不稳定／不可用。如果表现不佳，请不要继续使用。
+Reading the approval list.	正在读取审批列表。
+The approval recorded for game build {0} was dropped.	已清除为游戏版本 {0} 记录的审批结果。
+The plugin has been approved for this patch. If you noticed weird behaviors prior to this message, try again and it should be fixed now.	本插件已通过该游戏版本的审批。如果你在此提示之前遇到了异常表现，请重试，现在应该已恢复正常。
+Could not swap /{0}.	无法替换 /{0}。
+Found /{0} but {1}	找到 /{0}，但{1}
+Also found /{0} but {1}	另外找到 /{0}，但{1}
+it is on your blocked targets list.	它在你屏蔽的目标列表中。
+another of your mods targets it. Your configuration blocked it.	你的另一个模组以它为目标，已被你的配置屏蔽。
+your mod \"{0}\" targets it. Your configuration blocked it.	你的模组「{0}」以它为目标，已被你的配置屏蔽。
+the loop kinds do not match.	两者的循环类型不匹配。
+turn matching is very strict.	转身匹配设置为非常严格。
+it makes a sound, and your sound rule avoids every target that does.	它会发出声音，而你的音效规则会避开所有会发声的目标。
+it makes a sound, and your sound rule only allows that for an emote that makes one too.	它会发出声音，而你的音效规则只允许替换到同样会发声的情感动作。
+it makes a sound.	它会发出声音。
+{0} matching is strict.	{0}匹配设置为严格。
+loop	循环
+turn	转身
+{0} is the emote being bypassed.	{0} 就是被无视限制播放的那个情感动作。
+{0} can never be a swap target: it is a pose, a facial expression, a per-job emote, or it draws your weapon. It is always skipped.	{0} 永远不能作为替换目标：它是姿势、表情、职业专属动作，或者会拔出武器。它会被始终跳过。
+You have not unlocked {0}. It is skipped.	你还没有解锁 {0}，将被跳过。
+{0} is on your blocked targets list. This override uses it anyway.	{0} 在你屏蔽的目标列表中，但此覆写仍会使用它。
+Your mod \"{0}\" already changes {1}. What your \"Emotes your mods change\" setting is set to still applies here.	你的模组「{0}」已经修改了 {1}。这里仍然会应用你在「被模组修改的情感动作」中的设置。
+{0} and {1} share no posture. The swap will not happen.	{0} 与 {1} 没有共同的姿态，替换不会发生。
+{0} has no {1} animation. The swap will not happen when you play {2} in that posture.	{0} 没有{1}姿态的动画。当你以该姿态播放 {2} 时，替换不会发生。
+chair sitting	坐在椅子上
+ground sitting	坐在地上
+matching	共有姿态
+ or 	或
+{0} will stop when you turn your character.	当你转动角色时，{0} 会中断。
+{0} plays a separate animation when you use it on someone (adjust variant) but {1} has no adjust variant. Targeting someone will keep {2}'s animation.	{0} 对他人使用时有一套单独的动画（adjust 变体），但 {1} 没有 adjust 变体。选中他人时会继续播放 {2} 的动画。
+{0} plays once while {1} loops. The animation will stop instead of looping.	{0} 只播放一次，而 {1} 是循环的。动画会停止而不会循环。
+{0} loops while {1} plays once. Weird behavior might happen.	{0} 是循环的，而 {1} 只播放一次。可能会出现异常表现。
+{0} does not behave like {1} when you target someone: {0} {2} while {1} {3}.	{0} 与 {1} 在选中他人时的表现不同：{0}{2}，而 {1}{3}。
+does not turn at all	完全不转身
+only follows with the eyes	只转动视线
+turns the head	转动头部
+turns the whole body	转动整个身体
+turns in a way the plugin could not read	以插件无法识别的方式转身
+{0} emits a voice line sound. Everyone around you will hear it.	{0} 会发出语音音效，周围的人都会听到。
+{0} emits a sound that {1} does not. Everyone around you will hear it.	{0} 会发出 {1} 没有的音效，周围的人都会听到。
+{0} has no intro meanwhile {1} has one, meaning the intro will not play.	{0} 没有开场动作，而 {1} 有，因此开场动作不会播放。
+{0} has an intro and {1} does not.	{0} 有开场动作，而 {1} 没有。
+Still loading emote data. Try again in a moment.	情感动作数据仍在加载中，请稍后再试。
+Something went wrong. Emote not swapped.	出了点问题，未执行替换。
+No Penumbra collection is assigned to your character. Emote not swapped.	你的角色没有分配 Penumbra 集合，未执行替换。
+{0} Emote not swapped.	{0} 未执行替换。
+Penumbra could not say which collection your character uses. Emote not swapped.	Penumbra 无法确定你的角色使用哪个集合，未执行替换。
+Emote Swap is off.	表情替换已关闭。
+Client in gpose.	客户端处于 GPose 中。
+Local player not found.	找不到本地玩家。
+This emote is not in the catalog.	该情感动作不在目录中。
+/{0} needs {1}.	/{0} 需要{1}。
+water underfoot	站在水中
+Penumbra is not running. Emote Swap needs it installed.	Penumbra 未运行。表情替换需要先安装它。
+Penumbra answers over interface version {0}, and Bypass Emote needs version {1} or newer. Update Penumbra.	Penumbra 的接口版本为 {0}，而 Bypass Emote 需要 {1} 或更高版本。请更新 Penumbra。
+/{0} cannot be played {1}.	/{0} 无法在{1}播放。
+while carrying your {0}	携带{0}时
+while standing	站立时
+while swimming	游泳时
+while diving	潜水时
+while sitting on the ground	坐在地上时
+while sitting in a chair	坐在椅子上时
+while mounted	骑乘时
+while holding an umbrella	手持雨伞时
+while holding a torch	手持火把时
+while wearing a fashion accessory	佩戴时尚配饰时
+while fishing	钓鱼时
+right now	当前状态
+rules	规则
+modded	模组
+Standing	站立
+SittingInChair	坐在椅子上
+SittingOnGround	坐在地上
+Mounted	骑乘
+Swimming	游泳
+Diving	潜水
+Fishing	钓鱼
+HoldingUmbrella	手持雨伞
+HoldingTorch	手持火把
+WearingFashionAccessory	佩戴时尚配饰
+idle pose	待机动作
+Your character is still in another emote. Move, or change pose, then try again.	你的角色仍在播放其他情感动作。请移动或更换姿势后重试。
+Your character is mounted, so there is no idle pose to borrow.	你的角色正在骑乘，没有可借用的待机动作。
+This pose cannot be changed.	该姿势无法更改。
+Your pose animation could not be found.	找不到你的姿势动画。
+That emote has no animation to lend.	该情感动作没有可借出的动画。
+That emote's animation could not be found.	找不到该情感动作的动画。
+Your pose animation could not be rebuilt.	你的姿势动画无法重建。
+Penumbra could not say which collection your character uses.	Penumbra 无法确定你的角色使用哪个集合。
+The swap mod could not be turned on.	无法开启替换模组。
+Your character could not be refreshed.	无法重新绘制你的角色。
+Something went wrong.	出了点问题。
+Could not use your idle pose for this emote. {0}	无法为此情感动作使用你的待机动作。{0}
+Your idle 0 pose has no intro, so this emote's intro will not play. Try changing pose.	你的待机 0 号姿势没有开场动作，因此该情感动作的开场不会播放。请尝试更换姿势。
+A debug log export is already running.	调试日志导出已在进行中。
+Exporting logs...	正在导出日志……
+Debug logs could not be exported. The Dalamud log has the reason.	无法导出调试日志，原因见 Dalamud 日志。
+Debug logs exported to 	调试日志已导出到 
+. Send this file to the developer. Feel free to check the content of the zip and if you need to anonymize any information, please do so before sending it. 	。请把这个文件发送给开发者。你可以先查看压缩包内容；如需匿名化处理，请在发送前完成。 
+Personal information appears in it, DO NOT send this in a public channel.	其中包含个人信息，切勿在公开频道发送。
+ Ask the developer where to send this file to be extra safe.	 为了更安全，请先向开发者确认发送途径。
+[Open folder]	[打开文件夹]
+Emote Swap was enabled because no choice was made.	由于没有做出选择，已启用表情替换。
+Could not swap /{0}: none of the target override emotes can be played right now.	无法替换 /{0}：目标覆写的情感动作目前都无法播放。
+{0} was skipped because {1}.	{0} 被跳过，因为{1}。
+{0} more target(s) were skipped for the same reason.	还有 {0} 个目标因相同原因被跳过。
+Emote #{0}	情感动作 #{0}
+you have not unlocked it	你还没有解锁它
+it can never be a swap target	它永远不能作为替换目标
+it cannot be played in your current state	它无法在你当前的状态下播放
+one of your mods changes it, and your settings block those	你的某个模组修改了它，而你的设置屏蔽了这类目标
+there is no animation data for it	它没有动画数据
+it is available	它可以替换
+This emote landed on /{0}, which your mod \"{1}\" changes. Players around you may briefly see that mod's animation before yours reaches them. If you don't want this to happen, head over to the configuration window and block emotes that are changed by other mods.	该情感动作替换到了 /{0}，而你的模组「{1}」修改了它。你周围的玩家可能会先短暂看到该模组的动画，之后才会收到你的。如果不希望这样，请到配置窗口中屏蔽被其他模组修改的情感动作。
+This emote landed on a {0} target with no intro. You will not see the intro play.	该情感动作替换到了没有开场动作的{0}目标上，你不会看到开场播放。
+Something went wrong. Nothing was created; the log has the details.	出了点问题，没有创建任何内容；详情见日志。
+Pick at least one race for the mod to cover.	请至少选择一个该模组要覆盖的种族。
+Give the mod a name first.	请先给模组起个名字。
+Penumbra's mod folder could not be read.	无法读取 Penumbra 的模组目录。
+The swap engine is not running.	替换引擎未运行。
+Penumbra already holds a mod folder called '{0}'. Pick another name.	Penumbra 中已存在名为「{0}」的模组目录，请换一个名字。
+/{0} cannot be played over /{1}: they share no posture to move the animation onto.	/{0} 无法覆盖 /{1}：两者没有可用于迁移动画的共同姿态。
+The mod's files could not be written. The log has the details.	无法写入模组文件，详情见日志。
+'{0}' was written to '{1}' but Penumbra would not take it. Rediscovering mods in Penumbra should pick it up.	「{0}」已写入「{1}」，但 Penumbra 没有接受它。在 Penumbra 中重新扫描模组即可加载。
+'{0}' was created. Enable it in Penumbra when you want it.	「{0}」已创建。需要时在 Penumbra 中启用它。
+'{0}' was created, but no collection is assigned to your character, so it is off.	「{0}」已创建，但你的角色没有分配集合，因此它是关闭的。
+'{0}' was created, but Penumbra would not switch it on in {1}.	「{0}」已创建，但 Penumbra 无法在 {1} 中启用它。
+'{0}' was created and switched on in {1}.	「{0}」已创建，并已在 {1} 中启用。
+{0} can never be a swap target (pose, facial expression, per-job emote or weapon drawn). It is always skipped.	{0} 永远不能作为替换目标（姿势、表情、职业专属动作，或会拔出武器）。它会被始终跳过。
+Your mod \"{0}\" already changes {1}. Your \"Emotes your mods change\" setting still applies.	你的模组「{0}」已经修改了 {1}，你的「被模组修改的情感动作」设置仍然适用。
+{0} has an adjust variant for use on someone. {1} has none. Targeting someone keeps {2}'s animation.	{0} 对他人使用时有一套单独的动画（adjust 变体），而 {1} 没有。选中他人时仍会播放 {2} 的动画。
+When you target someone, {0} {1} while {2} {3}.	当你选中他人时，{0}{1}，而 {2}{3}。
+{0} has no intro and {1} has one. The intro will not play.	{0} 没有开场动作，而 {1} 有，因此开场动作不会播放。
+a mod changes it and your settings block modded emotes	有模组修改了它，而你的设置屏蔽了模组情感动作
+Something went wrong. Nothing was created. The log has the details.	出了点问题，没有创建任何内容。详情见日志。
+/{0} cannot be played over /{1}. They share no posture.	/{0} 无法覆盖 /{1}：两者没有共同的姿态。
+'{0}' was written to '{1}'. Penumbra did not load it. Rediscover mods in Penumbra to pick it up.	「{0}」已写入「{1}」，但 Penumbra 没有加载它。在 Penumbra 中重新扫描模组即可加载。
+'{0}' was created. No collection is assigned to your character. The mod is off.	「{0}」已创建，但你的角色没有分配集合，因此模组处于关闭状态。
+'{0}' was created. Penumbra could not enable it in {1}.	「{0}」已创建，但 Penumbra 无法在 {1} 中启用它。
+Could not swap /{0}. None of its override targets can be played right now.	无法替换 /{0}：它的覆写目标目前都无法播放。
+Your character is mounted. There is no idle pose to borrow.	你的角色正在骑乘，没有可借用的待机动作。
+Your idle 0 pose has no intro. This emote's intro will not play. Try changing pose.	你的待机 0 号姿势没有开场动作，因此该情感动作的开场不会播放。请尝试更换姿势。
+Bypass Emote needs Penumbra {0} or newer. Update Penumbra (its interface reads {1}.{2}).	Bypass Emote 需要 Penumbra {0} 或更高版本。请更新 Penumbra（当前接口版本为 {1}.{2}）。
+Use Emote Swap	使用表情替换
+Keep Direct Play	保留直接播放
+A safer way to play locked emotes	更安全地播放未解锁情感动作
+Until now Bypass Emote forced the animation onto your character from your own client. Nothing was ever sent to the server, but in specific cases, where your character would be in any pose other than the base one, the game client would send duplicate change pose packets to the server. This is not caused by the plugin itself, but rather by how the game handles pose changes. The \"Idle Animation Delay\" setting in the game's Character Configuration > Control Settings > Character tab is what causes this.	在此之前，Bypass Emote 是在你自己的客户端里把动画强制套用到角色身上的。任何内容都不会发送到服务器，但在特定情况下——当你的角色处于基础姿势以外的其他姿势时——游戏客户端会向服务器重复发送变更姿势的封包。这并不是插件本身造成的，而是游戏处理姿势变更的方式所致。真正的原因是游戏「角色配置 > 操作设置 > 角色」标签页中的「待机动作延迟」设置。
+The new mode uses Penumbra to swap locked emotes onto unlocked ones. The game plays the emote itself. Nothing mismatches between the game and the server anymore.	新模式通过 Penumbra 把未解锁的情感动作替换成已解锁的。情感动作由游戏本身播放，游戏与服务器之间不会再出现任何不一致。
+You can change this at any time in the settings.	你可以随时在设置中更改。
+Assign {0} to hotbar...	将 {0} 绑定到热键栏...
+Hotbar	热键栏
+Currently assigned: {0}	当前已绑定：{0}
+This slot is empty. You can safely assign an emote.	此格子为空，可以安全地绑定情感动作。
+Slot {0} - Empty	热键栏格子 {0} - 空
+Slot {0} - {1}	热键栏格子 {0} - {1}
+You can also drag and drop an emote from the main window onto any visible hotbar slot.	你也可以把主窗口中的情感动作拖放到任意可见的热键栏格子上。
