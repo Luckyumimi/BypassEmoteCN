@@ -91,6 +91,7 @@ public partial class Service
 
     public static void OpenKofi() => SystemHelper.OpenUrl("https://ko-fi.com/aspher0");
     public static void OpenDiscord() => SystemHelper.OpenUrl("https://discord.gg/kzAnEbgfq5");
+    public static void OpenRepository() => SystemHelper.OpenUrl("https://github.com/Luckyumimi/BypassEmoteCN");
 
     public static void Dispose()
     {

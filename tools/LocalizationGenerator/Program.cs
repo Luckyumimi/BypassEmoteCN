@@ -19,7 +19,8 @@ Directory.CreateDirectory(outputRoot);
 var wrapped = 0;
 foreach (var file in Directory.EnumerateFiles(sourceRoot, "*.cs", SearchOption.AllDirectories)
              .Where(path => !path.Contains($"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}")
-                 && !path.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}")))
+                 && !path.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}")
+                 && !string.Equals(Path.GetFileName(path), "L.cs", StringComparison.OrdinalIgnoreCase)))
 {
     var relative = Path.GetRelativePath(sourceRoot, file);
     var destination = Path.Combine(outputRoot, relative);
@@ -61,7 +62,14 @@ static Dictionary<string, string> LoadTranslations(string path)
     return result;
 }
 
-static string Unescape(string value) => value.Replace("\\r", "\r").Replace("\\n", "\n").Replace("\\t", "\t");
+// translations.tsv escapes a literal double quote as \" the same way it escapes \n and \t.
+// Without this replacement every key containing a quote keeps its backslashes, never matches
+// the C# literal at the call site, and silently falls back to English.
+static string Unescape(string value) => value
+    .Replace("\\r", "\r")
+    .Replace("\\n", "\n")
+    .Replace("\\t", "\t")
+    .Replace("\\\"", "\"");
 
 static string GenerateTable(Dictionary<string, string> translations)
 {
@@ -98,10 +106,19 @@ sealed class TranslationRewriter(IReadOnlyDictionary<string, string> translation
 
     public override SyntaxNode? VisitExpressionStatement(ExpressionStatementSyntax node) => base.VisitExpressionStatement(node);
 
+    public override SyntaxNode? VisitInvocationExpression(InvocationExpressionSyntax node)
+    {
+        if (IsLocalizationCall(node))
+            return node;
+        return base.VisitInvocationExpression(node);
+    }
+
     public override SyntaxNode? VisitLiteralExpression(LiteralExpressionSyntax node) => WrapIfEligible(node);
 
     public override SyntaxNode? VisitBinaryExpression(BinaryExpressionSyntax node)
     {
+        if (node.Ancestors().OfType<InvocationExpressionSyntax>().Any(IsLocalizationCall))
+            return base.VisitBinaryExpression(node);
         if (node.IsKind(SyntaxKind.AddExpression) && TryConstant(node, out var text)
             && translations.ContainsKey(text) && !IsForbidden(node))
             return Wrap(node);
@@ -118,7 +135,7 @@ sealed class TranslationRewriter(IReadOnlyDictionary<string, string> translation
 
     private ExpressionSyntax Wrap(ExpressionSyntax expression)
     {
-        if (expression.Ancestors().OfType<InvocationExpressionSyntax>().Any(i => i.Expression.ToString() == "L.T"))
+        if (expression.Ancestors().OfType<InvocationExpressionSyntax>().Any(IsLocalizationCall))
             return expression;
         Count++;
         return SyntaxFactory.InvocationExpression(SyntaxFactory.ParseExpression("L.T"),
@@ -126,10 +143,14 @@ sealed class TranslationRewriter(IReadOnlyDictionary<string, string> translation
             .WithTriviaFrom(expression);
     }
 
-    private static bool IsForbidden(SyntaxNode node) => node.Ancestors().Any(parent => parent is AttributeSyntax
+    private static bool IsForbidden(SyntaxNode node) => node.Ancestors().OfType<InvocationExpressionSyntax>().Any(IsLocalizationCall)
+        || node.Ancestors().Any(parent => parent is AttributeSyntax
         or CaseSwitchLabelSyntax or ConstantPatternSyntax or ParameterSyntax
         || parent is FieldDeclarationSyntax field && field.Modifiers.Any(SyntaxKind.ConstKeyword)
         || parent is LocalDeclarationStatementSyntax local && local.Modifiers.Any(SyntaxKind.ConstKeyword));
+
+    private static bool IsLocalizationCall(InvocationExpressionSyntax invocation)
+        => invocation.Expression.ToString() is "L.T" or "SettingsLayout.Help";
 
     private static bool TryConstant(ExpressionSyntax expression, out string value)
     {
@@ -147,4 +168,5 @@ sealed class TranslationRewriter(IReadOnlyDictionary<string, string> translation
         value = string.Empty;
         return false;
     }
+
 }

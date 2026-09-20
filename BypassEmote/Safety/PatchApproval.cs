@@ -1,4 +1,5 @@
 using BypassEmote.Enums;
+using BypassEmote.Localization;
 using NoireLib.Helpers;
 using System;
 using System.Collections.Generic;
@@ -85,14 +86,13 @@ public static class PatchApproval
         return remaining <= TimeSpan.Zero ? 0 : (int)Math.Ceiling(remaining.TotalSeconds);
     }
 
-    private const string UntestedTail = "has not and can not be tested. This plugin might not work and might be "
-        + "unstable/unusable. Please don't use it if it does not work well.";
-
     public static string UntestedReason(GameClient client) => client switch
     {
         GameClient.Korean or GameClient.Chinese
-            => $"The {GameClientHelper.Name(client)} client {UntestedTail}",
-        _ => $"This game client is not the Global one, and {UntestedTail}",
+            => L.T("The {0} client has not and can not be tested. This plugin might not work and might be "
+                + "unstable/unusable. Please don't use it if it does not work well.", GameClientHelper.Name(client)),
+        _ => L.T("This game client is not the Global one, and has not and can not be tested. This plugin might not work and might be "
+            + "unstable/unusable. Please don't use it if it does not work well."),
     };
 
     private static PatchApprovalVerdict Unapproved(GameClient client, string blockedReason, string? notice)

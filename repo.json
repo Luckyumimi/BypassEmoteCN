@@ -1,7 +1,7 @@
 [
     {
         "Author": "Aspher0, Sachimi",
-        "Name": "Bypass Emote 国服版",
+        "Name": "Bypass Emote",
         "InternalName": "BypassEmote",
         "AssemblyVersion": "2.3.1.0",
         "Description": "国服适配版。可播放未解锁的情感动作，支持自定义动画与同步服务。",

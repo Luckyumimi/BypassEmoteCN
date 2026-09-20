@@ -1,6 +1,7 @@
 using BypassEmote.EmoteSwap;
 using BypassEmote.Enums;
 using BypassEmote.Helpers;
+using BypassEmote.Localization;
 using BypassEmote.Safety;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
@@ -36,8 +37,8 @@ public class ConfigWindow : Window, IDisposable
 
     private static readonly string[] DispatchFidelityOptions = ["Same rank only", "One rank below", "Anything allowed"];
 
-    private const string EmoteSwapLabel = "Emote Swap";
-    private const string DirectPlayLabel = "Direct Play";
+    private static readonly string EmoteSwapLabel = L.T("Emote Swap");
+    private static readonly string DirectPlayLabel = L.T("Direct Play");
     private static readonly string[] ModeOptions = [EmoteSwapLabel, DirectPlayLabel];
 
     private const string ModeName = "Mode";
@@ -141,31 +142,33 @@ public class ConfigWindow : Window, IDisposable
 
     private static readonly TimeSpan UnsafeAttentionDuration = TimeSpan.FromSeconds(5);
 
-    private const string SyncServicesLine = "Not all sync services support Direct Play.";
+    // These are read straight by ImGui/NoireLib text calls, which do not localize on their own,
+    // so they are translated here at the declaration instead of being left as const English.
+    private static readonly string SyncServicesLine = L.T("Not all sync services support Direct Play.");
 
-    private const string SafeModeLimitLine =
-        "In safe mode you can only bypass emotes from the base pose (pose 0) of your current stance.";
+    private static readonly string SafeModeLimitLine =
+        L.T("In safe mode you can only bypass emotes from the base pose (pose 0) of your current stance.");
 
-    private const string SafeModeIsNotAPromiseLine =
-        "Safe mode is not 100% guaranteed to be safe either. It prevents Direct Play from being used in states where it was proved to "
-        + "go wrong, but I can not prove the absence of issues. Use Emote Swap if you want to be 100% safe, it will behave almost the same way.";
+    private static readonly string SafeModeIsNotAPromiseLine =
+        L.T("Safe mode is not 100% guaranteed to be safe either. It prevents Direct Play from being used in states where it was proved to "
+        + "go wrong, but I can not prove the absence of issues. Use Emote Swap if you want to be 100% safe, it will behave almost the same way.");
 
-    private const string UnsafeHeadline =
-        "This is unsafe. Forcing an emote outside your base pose is, in theory, detectable by the server.";
+    private static readonly string UnsafeHeadline =
+        L.T("This is unsafe. Forcing an emote outside your base pose is, in theory, detectable by the server.");
 
-    private const string UnsafeReassurance =
-        "In practice it is a non-issue. This has been a thing in other tools and plugins (and still is in some of them), "
-        + "which people have used for years without trouble. Go back to safe mode, or even better, to emote swap, if you are uncomfy with this.";
+    private static readonly string UnsafeReassurance =
+        L.T("In practice it is a non-issue. This has been a thing in other tools and plugins (and still is in some of them), "
+        + "which people have used for years without trouble. Go back to safe mode, or even better, to emote swap, if you are uncomfy with this.");
 
     private const string UnsafeToggleHelp =
         "Lets Direct Play bypass an emote in any pose."
         + "\n\nLeave it off unless you know what you are doing. When off, the plugin only plays emotes from states where "
         + "nothing can be noticed.";
 
-    private const string SafeDirectPlayTooltip = "Not all sync services support it. " + SafeModeLimitLine;
+    private static readonly string SafeDirectPlayTooltip = L.T("Not all sync services support it. In safe mode you can only bypass emotes from the base pose (pose 0) of your current stance.");
 
-    private const string UnsafeDirectPlayTooltip =
-        "Not recommended. Not all sync services support it. Emote Swap is safer and works over any sync service.";
+    private static readonly string UnsafeDirectPlayTooltip =
+        L.T("Not recommended. Not all sync services support it. Emote Swap is safer and works over any sync service.");
 
     private const string ModeHelp =
         "\"Emote Swap\" plays your emote over one your character owns, through a Penumbra mod. Other players see it "
@@ -227,6 +230,7 @@ public class ConfigWindow : Window, IDisposable
     private static bool checkingApproval;
 
     private const string CheckNowLabel = "Check now";
+    private const string RepositoryLabel = "Open the project page";
 
     private static void DrawPatchApproval()
     {
@@ -264,7 +268,7 @@ public class ConfigWindow : Window, IDisposable
             ? utc.ToLocalTime().ToString("HH:mm:ss")
             : "not yet";
 
-        ImGui.TextDisabled($"Checked at {checkedAt}.");
+        ImGui.TextDisabled(L.T("Checked at {0}.", checkedAt));
 
         DrawCheckNowButton(gate);
 
@@ -294,9 +298,15 @@ public class ConfigWindow : Window, IDisposable
 
     private static void DrawUntestedClient(PatchApprovalGate gate)
     {
-        ImGui.TextColoredWrapped(PatchWarningColor, "Bypass Emote cannot be tested on this game client.");
+        ImGui.TextColoredWrapped(PatchWarningColor, "The Bypass Emote you are using is not the original plugin.");
 
-        ImGui.TextWrapped(gate.Reason);
+        ImGui.TextColoredWrapped(NoireTheme.Current.Resolve(ThemeColor.Success),
+            "This Chinese localization and CN client adaptation branch is maintained by Sachimi. "
+            + "If you have any problem, please report the bug at https://github.com/Luckyumimi/BypassEmoteCN");
+
+        // The label is localized before the ImGui id is appended, so it cannot be wrapped automatically.
+        if (ImGui.Button($"{L.T(RepositoryLabel)}##BypassEmoteRepository"))
+            Service.OpenRepository();
 
         if (gate.Notice is { Length: > 0 } notice)
             ImGui.TextColoredWrapped(PatchNoticeColor, notice);
@@ -308,11 +318,13 @@ public class ConfigWindow : Window, IDisposable
     {
         var cooldown = gate.ManualCooldownSeconds;
 
-        var label = cooldown > 0
-            ? $"{CheckNowLabel} ({cooldown})"
-            : CheckNowLabel;
+        var checkNow = L.T(CheckNowLabel);
 
-        var width = ImGui.CalcTextSize($"{CheckNowLabel} ({PatchApprovalGate.ManualCheckCooldown.TotalSeconds:0})").X
+        var label = cooldown > 0
+            ? $"{checkNow} ({cooldown})"
+            : checkNow;
+
+        var width = ImGui.CalcTextSize($"{checkNow} ({PatchApprovalGate.ManualCheckCooldown.TotalSeconds:0})").X
             + (ImGui.GetStyle().FramePadding.X * 2f);
 
         using (ImRaii.Disabled(checkingApproval || cooldown > 0))
@@ -627,45 +639,45 @@ public class ConfigWindow : Window, IDisposable
             {
                 var loopMatching = (int)Configuration.LoopMatching;
                 if (ComboRow(LoopMatchingName, "##BypassEmoteLoopMatching", ref loopMatching, LoopMatchingOptions,
-                    "\"Strict\" only puts a looping emote on another looping one."
+                    L.T("\"Strict\" only puts a looping emote on another looping one."
                     + "\n\"Lenient\" lets a looping emote play once on a one time emote when no better match exists."
-                    + "\n\nRecommended: \"Strict\", or \"Lenient\" if you really don't have many emotes."))
+                    + "\n\nRecommended: \"Strict\", or \"Lenient\" if you really don't have many emotes.")))
                 {
                     Configuration.LoopMatching = (LoopMatchRule)loopMatching;
                 }
 
                 var turnMatching = Array.IndexOf(TurnMatchingOrder, Configuration.TurnMatching);
                 if (ComboRow(TurnMatchingName, "##BypassEmoteTurnMatching", ref turnMatching, TurnMatchingOptions,
-                    "Emotes have different turn behaviors when you target someone. Some emotes will make your torso turn (i.e: /hum), some only your head (i.e: /stepdance),"
+                    L.T("Emotes have different turn behaviors when you target someone. Some emotes will make your torso turn (i.e: /hum), some only your head (i.e: /stepdance),"
                     + "some will only make your eyes follow your target (i.e: /beesknees) while others will not move at all (i.e:/guard)."
                     + "\n\n\"Very strict\" only picks emotes that behaves the same way."
                     + "\n\"Strict\" allows eye following differences but keeps emotes head and body turn behaviors."
                     + "\n\"Lenient\" allows any turn behavior."
                     + "\n\nThe plugin will still always try to find the best match first, regardless of the selected rule."
-                    + "\n\nRecommended: \"Lenient\"."))
+                    + "\n\nRecommended: \"Lenient\".")))
                 {
                     Configuration.TurnMatching = TurnMatchingOrder[turnMatching];
                 }
 
                 var soundMatching = (int)Configuration.SoundMatching;
                 if (ComboRow(SoundMatchingName, "##BypassEmoteSoundMatching", ref soundMatching, SoundMatchingOptions,
-                    "\"Strict\" never puts an emote on one that makes sound."
+                    L.T("\"Strict\" never puts an emote on one that makes sound."
                     + "\n\"Lenient\" allows matching emotes that make sounds together."
                     + "\n\"Off\" will let emotes play regardless of sound."
                     + "\n\nThis is to prevent vanilla people from seeing you play fume which could annoy other vanilla players, for example."
-                    + "\n\nRecommended: \"Lenient\"."))
+                    + "\n\nRecommended: \"Lenient\".")))
                 {
                     Configuration.SoundMatching = (SoundMatchRule)soundMatching;
                 }
 
                 var cachedDispatch = (int)Configuration.CachedDispatch;
                 if (ComboRow(CachedDispatchName, "##BypassEmoteCachedDispatch", ref cachedDispatch, CachedDispatchOptions,
-                    "Gives each bypassed emote a target emote of its own. This is useful when you want to bypass multiple emotes quickly."
+                    L.T("Gives each bypassed emote a target emote of its own. This is useful when you want to bypass multiple emotes quickly."
                     + "\n\n\"Off\" would make it so other people on your sync service would see you redraw constantly."
                     + "\n\"Only when necessary\" spreads emotes only after a game patch breaks the cache-breaker feature."
                     + "\n\"On\" always spreads emotes."
                     + "\n\nRecommended: \"On\" if you want other people on your sync service to always see you properly without "
-                    + "redrawing all the time, otherwise highly recommended to leave it on \"Only when necessary\" and not \"Off\".",
+                    + "redrawing all the time, otherwise highly recommended to leave it on \"Only when necessary\" and not \"Off\""),
                     CachedDispatchAlarm()))
                 {
                     Configuration.CachedDispatch = (CachedDispatchMode)cachedDispatch;
@@ -677,46 +689,46 @@ public class ConfigWindow : Window, IDisposable
                 if (NoireInputs.Number("###BypassEmoteMaxTargets", ref maxTargets, MaxTargetsStyle))
                     Configuration.MaxTargetsPerRank = maxTargets;
 
-                SettingsLayout.Help("How many different target emotes one kind of emote may swap to.");
+                SettingsLayout.Help(L.T("How many different target emotes one kind of emote may swap to."));
 
                 var dispatchFidelity = (int)Configuration.DispatchFidelity;
                 if (ComboRow(DispatchFidelityName, "##BypassEmoteDispatchFidelity", ref dispatchFidelity,
                     DispatchFidelityOptions,
-                    "Takes effect when \"Spread swaps over several emote\" is enabled. This determines which emotes become available for a source emote. "
+                    L.T("Takes effect when \"Spread swaps over several emote\" is enabled. This determines which emotes become available for a source emote. "
                     + "Basically, if you want to spread swaps over 5 emotes, and you try to bypass an emote but you only have 2 same-rank targets available, "
                     + "this is how it will determine what to do in this scenario. A rank is basically a category of emotes with similar characteristics (same turn behaviour, etc)."
                     + "\n\n\"Same rank only\" strictly picks targets of the same rank."
                     + "\n\"One rank below\" also accepts targets one rank below."
                     + "\n\"Anything allowed\" picks any target it can find, regardless of the rank."
                     + "\n\nNone of them ever breaks your other rules."
-                    + "\n\nRecommended: \"One rank below\", or \"Same rank only\" if you want behavior accuracy."))
+                    + "\n\nRecommended: \"One rank below\", or \"Same rank only\" if you want behavior accuracy.")))
                 {
                     Configuration.DispatchFidelity = (DispatchFidelity)dispatchFidelity;
                 }
 
                 var moddedTargets = (int)Configuration.ModdedTargets;
                 if (ComboRow(ModdedTargetsName, "##BypassEmoteModdedTargets", ref moddedTargets, ModdedTargetsOptions,
-                    "Determines whether to block unlocked emotes from being picked when they are modified by at least one of your mods. "
+                    L.T("Determines whether to block unlocked emotes from being picked when they are modified by at least one of your mods. "
                     + "This prevents other people from seeing other modded emotes you might have before the swap takes place."
                     + "\nAs an example, you have a mod on beesknees, and you try to bypass /conduct which happens to land on beesknees: "
                     + "other players might or might not see the modded beesknees for a moment."
                     + "\n\n\"Allowed\" allows using unlocked emotes that are modified by one of your mods."
                     + "\n\"Last resort\" uses one only when nothing else fits."
                     + "\n\"Blocked\" never uses one, and show an error message in the chat with options to disable or open the mod in penumbra."
-                    + "\n\nRecommended: \"Last resort\", or \"Blocked\" if you absolutely don't want your modded emotes to accidentaly be seen."))
+                    + "\n\nRecommended: \"Last resort\", or \"Blocked\" if you absolutely don't want your modded emotes to accidentaly be seen.")))
                 {
                     Configuration.ModdedTargets = (ModdedTargetRule)moddedTargets;
                 }
 
                 var idlePoseLoops = (int)Configuration.IdlePoseLoops;
                 if (ComboRow(IdlePoseLoopsName, "##BypassEmoteIdlePoseLoops", ref idlePoseLoops, IdlePoseLoopsOptions,
-                    "When no unlocked looped emote fits as a target, your current idle pose may be eligible instead. "
+                    L.T("When no unlocked looped emote fits as a target, your current idle pose may be eligible instead. "
                     + "The emote you try to bypass will then be targeted onto your current idle pose. This will cause a redraw of your character when triggered."
                     + "\n\n\"Never\" blocks idle poses from being used as targets."
                     + "\n\"Only when nothing else fits\" uses the pose only when literally no unlocked looped emote could have played here at all. "
                     + "This will not use your idle pose if any other emote would have been available if it wasn't blocked."
                     + "\n\"Allow\" always falls back to your idle pose when no other options are available."
-                    + "\n\nRecommended: \"Only when nothing else fits\"."))
+                    + "\n\nRecommended: \"Only when nothing else fits\".")))
                 {
                     Configuration.IdlePoseLoops = (IdlePoseFallback)idlePoseLoops;
                 }
@@ -731,20 +743,20 @@ public class ConfigWindow : Window, IDisposable
             {
                 var swapLifetime = (int)Configuration.SwapLifetime;
                 if (ComboRow(LifetimeName, "##BypassEmoteLifetime", ref swapLifetime, SwapLifetimeOptions,
-                    "\"When the emote ends\" puts your real emote back as soon as the animation stops."
+                    L.T("\"When the emote ends\" puts your real emote back as soon as the animation stops."
                     + "\n\"When you play the target emote\" keeps the swap enabled until the next time you play the target emote."
                     + "\n\"Never\" keeps the swap live until another swap claims the same target emote."
                     + "\n\nRecommended: \"When you play the target emote\". \"When the emote ends\" is not recommended, as people will "
-                    + "see you redraw constantly after swapping."))
+                    + "see you redraw constantly after swapping.")))
                 {
                     Configuration.SwapLifetime = (SwapLifetime)swapLifetime;
                 }
 
                 var swapBehavior = (int)Configuration.SwapBehavior;
                 if (ComboRow(BehaviorName, "##BypassEmoteSwapBehavior", ref swapBehavior, SwapBehaviorOptions,
-                    "\"Multiple swaps\" keeps multiple swaps active at the same time in the mod."
+                    L.T("\"Multiple swaps\" keeps multiple swaps active at the same time in the mod."
                     + "\n\"One swap at a time\" turns the previous swaps off as soon as a new one starts."
-                    + "\n\nRecommended: \"Multiple swaps\", unless for some reason you want to only keep one swap at a time."))
+                    + "\n\nRecommended: \"Multiple swaps\", unless for some reason you want to only keep one swap at a time.")))
                 {
                     Configuration.SwapBehavior = (SwapBehavior)swapBehavior;
                 }
@@ -836,7 +848,7 @@ public class ConfigWindow : Window, IDisposable
         if (Service.PatchApproval is { HoldsHooks: true })
             return "This game build is not approved yet, this will not work.";
 
-        return Service.Rebinder?.Fault is { } fault ? $"Not running: {fault}." : null;
+        return Service.Rebinder?.Fault is { } fault ? L.T("Not running: {0}.", fault) : null;
     }
 
     private static string? CachedDispatchAlarm()
@@ -853,7 +865,7 @@ public class ConfigWindow : Window, IDisposable
             return message;
 
         return (spreads ? string.Empty : message + "\n\n")
-            + $"Not running: {fault}.";
+            + L.T("Not running: {0}.", fault);
     }
 
     private static bool ComboRow(string name, string id, ref int index, string[] options, string help, string? alarm = null)

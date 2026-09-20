@@ -3,6 +3,7 @@ using Dalamud.Interface;
 using Dalamud.Interface.Utility.Raii;
 using NoireLib.Helpers;
 using NoireLib.UI;
+using BypassEmote.Localization;
 using System;
 using System.Numerics;
 
@@ -39,17 +40,17 @@ internal static class SettingsLayout
 
         if (string.IsNullOrEmpty(alarm))
         {
-            ImGui.TextUnformatted(name);
+        ImGui.TextUnformatted(L.T(name));
         }
         else
         {
-            ImGui.TextColored(NoireTheme.Current.Resolve(ThemeColor.Danger), name);
+            ImGui.TextColored(NoireTheme.Current.Resolve(ThemeColor.Danger), L.T(name));
 
             if (ImGui.IsItemHovered())
             {
                 ImGui.BeginTooltip();
                 ImGui.PushTextWrapPos(ImGui.GetFontSize() * TooltipEms);
-                ImGui.TextUnformatted(alarm);
+            ImGui.TextUnformatted(L.T(alarm));
                 ImGui.PopTextWrapPos();
                 ImGui.EndTooltip();
             }
@@ -83,7 +84,7 @@ internal static class SettingsLayout
 
         ImGui.BeginTooltip();
         ImGui.PushTextWrapPos(ImGui.GetFontSize() * TooltipEms);
-        ImGui.TextUnformatted(help);
+        ImGui.TextUnformatted(L.T(help));
         ImGui.PopTextWrapPos();
         ImGui.EndTooltip();
     }

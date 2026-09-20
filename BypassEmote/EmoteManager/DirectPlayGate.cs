@@ -1,4 +1,5 @@
 using BypassEmote.Enums;
+using BypassEmote.Localization;
 using NoireLib.Animations.Helpers;
 using NoireLib.Enums;
 
@@ -9,9 +10,10 @@ namespace BypassEmote;
 /// </summary>
 internal static class DirectPlayGate
 {
-    internal const string SafeModeMessage =
+    // Shown both in the settings notice and as a chat error, so it is translated here.
+    internal static readonly string SafeModeMessage = L.T(
         "Due to detectability, you need to be in the base pose (pose 0) of your current stance to bypass emotes "
-        + "in safe mode.";
+        + "in safe mode.");
 
     internal const string SafeModeRefusalKind = "directplay.safemode";
 

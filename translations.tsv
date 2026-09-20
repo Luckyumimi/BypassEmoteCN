@@ -224,6 +224,7 @@ Swaps at the same time	同时替换数量
 Kept swaps per emote	每个情感动作保留的替换
 Hide your name on the mod	在模组中隐藏你的名字
 Always cache-break (experimental)	始终刷新缓存（实验性）
+Always cache-break	始终刷新缓存
 Loop matching	循环匹配
 Turn matching	转身匹配
 Sound matching	音效匹配
@@ -262,10 +263,10 @@ In safe mode you can only bypass emotes from the base pose (pose 0) of your curr
 Safe mode is not 100% guaranteed to be safe either. It prevents Direct Play from being used in states where it was proved to go wrong, but I can not prove the absence of issues. Use Emote Swap if you want to be 100% safe, it will behave almost the same way.	安全模式也无法 100% 保证绝对安全。它能避免直接播放在已知会出问题的状态下使用，但我无法证明不存在其他问题。想要 100% 安全就请使用表情替换，它的表现几乎完全一致。
 This is unsafe. Forcing an emote outside your base pose is, in theory, detectable by the server.	这不安全。在基础姿势之外强制播放情感动作，理论上可被服务器检测到。
 In practice it is a non-issue. This has been a thing in other tools and plugins (and still is in some of them), which people have used for years without trouble. Go back to safe mode, or even better, to emote swap, if you are uncomfy with this.	实际上这基本不算问题。其他工具和插件一直都有类似做法（有些至今仍在使用），人们用了很多年也没出过事。如果你对此感到不安，请回到安全模式，或者更好——回到表情替换。
-Lets Direct Play bypass an emote whatever pose you are in.\n\nLeave it off unless you know what you are doing: off, the plugin only plays emotes from states where nothing can be noticed.	让直接播放在任何姿势下都能无视限制播放情感动作。\n\n除非你清楚自己在做什么，否则请保持关闭：关闭时插件只会在不会被察觉的状态下播放情感动作。
+Lets Direct Play bypass an emote in any pose.\n\nLeave it off unless you know what you are doing. When off, the plugin only plays emotes from states where nothing can be noticed.	让直接播放能在任何姿势下无视限制播放情感动作。\n\n除非你清楚自己在做什么，否则请保持关闭。关闭时插件只会在不会被察觉的状态下播放情感动作。
 Not all sync services support it. In safe mode you can only bypass emotes from the base pose (pose 0) of your current stance.	并非所有同步服务都支持。安全模式下，你只能从当前姿态的基础姿势（姿势 0）无视限制播放情感动作。
 Not recommended. Not all sync services support it. Emote Swap is safer and works over any sync service.	不推荐。并非所有同步服务都支持。表情替换更安全，且适用于任何同步服务。
-\"Emote Swap plays\" your emote over one your character owns, through a Penumbra mod. Other players see it over any sync service.\n\"Direct Play\" sends the emote to the game itself, which not every sync service supports.	「表情替换」通过 Penumbra 模组，把你想要的情感动作替换到角色已拥有的情感动作上播放。其他玩家在任何同步服务中都能看到。\n「直接播放」把情感动作直接发送给游戏本体，并非所有同步服务都支持。
+\"Emote Swap\" plays your emote over one your character owns, through a Penumbra mod. Other players see it over any sync service.\n\"Direct Play\" sends the emote to the game itself. Not every sync service supports it.	「表情替换」通过 Penumbra 模组，把你想要的情感动作替换到角色已拥有的情感动作上播放。其他玩家在任何同步服务中都能看到。\n「直接播放」把情感动作直接发送给游戏本体，并非所有同步服务都支持。
 Lets you bypass emotes with the vanilla emote commands (/beesknees, /tea, and so on) and with hotbar slots.\nThe main window and the /be command work regardless of this setting.	允许你使用游戏原生的情感动作指令（/beesknees、/tea 等）和热键栏格子来无视限制播放情感动作。\n主窗口和 /be 指令不受此设置影响。
 Bypasses a locked emote when you press its hotbar slot.\nRight-click an emote in the main window to assign it to a slot.	按下未解锁情感动作所在的热键栏格子时，无视限制直接播放它。\n在主窗口中右键点击情感动作即可将其分配到热键栏格子。
 Lists the emotes you have not unlocked in the game's own emote window.\nClose and reopen the emote window for changes to appear.	在游戏自带的情感动作窗口中列出你尚未解锁的情感动作。\n关闭并重新打开该窗口后改动才会生效。
@@ -279,8 +280,15 @@ Turns your character toward your target when you bypass an emote.	无视限制�
 Due to detectability, you need to be in the base pose (pose 0) of your current stance to bypass emotes in safe mode.	出于可被检测的考虑，安全模式下你需要处于当前姿态的基础姿势（姿势 0）才能无视限制播放情感动作。
 \"Strict\" only puts a looping emote on another looping one.\n\"Lenient\" lets a looping emote play once on a one time emote when no better match exists.\n\nRecommended: \"Strict\", or \"Lenient\" if you really don't have many emotes.	「严格」只会把循环情感动作替换到另一个循环情感动作上。\n「宽松」在没有更好选择时，允许循环情感动作在一次性情感动作上播放一次。\n\n推荐：「严格」；如果你确实没多少情感动作，可以选「宽松」。
 Emotes have different turn behaviors when you target someone. Some emotes will make your torso turn (i.e: /hum), some only your head (i.e: /stepdance),some will only make your eyes follow your target (i.e: /beesknees) while others will not move at all (i.e:/guard).\n\n\"Very strict\" only picks emotes that behaves the same way.\n\"Strict\" allows eye following differences but keeps emotes head and body turn behaviors.\n\"Lenient\" allows any turn behavior.\n\nThe plugin will still always try to find the best match first, regardless of the selected rule.\n\nRecommended: \"Lenient\".	情感动作在锁定目标时的转身表现各不相同。有些动作会让你的躯干转动（如 /hum），有些只转动头部（如 /stepdance），有些只会让你的视线跟随目标（如 /beesknees），还有一些完全不会动（如 /guard）。\n\n「非常严格」只选择表现完全一致的情感动作。\n「严格」允许视线跟随上的差异，但要求头部和身体的转身表现一致。\n「宽松」允许任何转身表现。\n\n无论选择哪种规则，插件都仍然会优先尝试寻找最佳匹配。\n\n推荐：「宽松」。
+Emotes have different turn behaviors when you target someone. Some emotes will make your torso turn (i.e: /hum), some only your head (i.e: /stepdance),	锁定目标时，不同情感动作的转身表现也不同。有些动作会让你的躯干转动（如 /hum），有些只转动头部（如 /stepdance），
+some will only make your eyes follow your target (i.e: /beesknees) while others will not move at all (i.e:/guard).	有些动作只会让你的视线跟随目标（如 /beesknees），还有一些完全不会动（如 /guard）。
+\n\n\"Very strict\" only picks emotes that behaves the same way.	\n\n「非常严格」只选择表现完全一致的情感动作。
+\n\"Strict\" allows eye following differences but keeps emotes head and body turn behaviors.	\n「严格」允许视线跟随上的差异，但要求头部和身体的转身表现一致。
+\n\"Lenient\" allows any turn behavior.	\n「宽松」允许任何转身表现。
+\n\nThe plugin will still always try to find the best match first, regardless of the selected rule.	\n\n无论选择哪种规则，插件都仍然会优先尝试寻找最佳匹配。
+\n\nRecommended: \"Lenient\".	\n\n推荐：「宽松」。
 \"Strict\" never puts an emote on one that makes sound.\n\"Lenient\" allows matching emotes that make sounds together.\n\"Off\" will let emotes play regardless of sound.\n\nThis is to prevent vanilla people from seeing you play fume which could annoy other vanilla players, for example.\n\nRecommended: \"Lenient\".	「严格」绝不会把情感动作替换到会发出音效的动作上。\n「宽松」允许把都会发出音效的情感动作互相匹配。\n「关闭」不考虑音效，直接播放。\n\n举例来说，这是为了避免原版玩家看到你在播放 fume，从而可能打扰到其他原版玩家。\n\n推荐：「宽松」。
-Gives each bypassed emote a target emote of its own. This is useful when you want to bypass multiple emotes quickly.\n\n\"Off\" would make it so other people on your sync service would see you redraw constantly.\n\"Only when necessary\" spreads nothing while the game plays fresh content on its own, and steps in for the emotes that would show a stale frame once a game patch breaks that.\n\"On\" always spreads emotes.\n\nRecommended: \"On\" if you want other people on your sync service to always see you properly without redrawing all the time, otherwise highly recommended to leave it on \"Only when necessary\" and not \"Off\".	为每个被无视限制播放的情感动作分配各自的目标情感动作。想在短时间内连续播放多个情感动作时很有用。\n\n「关闭」会让同步服务上的其他玩家看到你不断重新加载角色。\n「仅在必要时」在游戏能自行播放新内容时不分散替换，而当游戏更新破坏该机制、某些动作会显示旧画面时再介入。\n「开启」始终分散情感动作。\n\n推荐：如果你希望同步服务上的其他玩家不必频繁重新加载也能始终看到正确的效果，请选「开启」；否则强烈建议保持「仅在必要时」，不要选「关闭」。
+Gives each bypassed emote a target emote of its own. This is useful when you want to bypass multiple emotes quickly.\n\n\"Off\" would make it so other people on your sync service would see you redraw constantly.\n\"Only when necessary\" spreads emotes only after a game patch breaks the cache-breaker feature.\n\"On\" always spreads emotes.\n\nRecommended: \"On\" if you want other people on your sync service to always see you properly without redrawing all the time, otherwise highly recommended to leave it on \"Only when necessary\" and not \"Off\"	为每个被无视限制播放的情感动作分配各自的目标情感动作。想在短时间内连续播放多个情感动作时很有用。\n\n「关闭」会让同步服务上的其他玩家看到你不断重新加载角色。\n「仅在必要时」只在游戏更新破坏缓存刷新机制之后才分散替换。\n「开启」始终分散情感动作。\n\n推荐：如果你希望同步服务上的其他玩家不必频繁重新加载也能始终看到正确的效果，请选「开启」；否则强烈建议保持「仅在必要时」，不要选「关闭」。
 How many different target emotes one kind of emote may swap to.	同一种情感动作可以替换到多少个不同的目标情感动作上。
 Takes effect when \"Spread swaps over several emote\" is enabled. This determines which emotes become available for a source emote. Basically, if you want to spread swaps over 5 emotes, and you try to bypass an emote but you only have 2 same-rank targets available, this is how it will determine what to do in this scenario. A rank is basically a category of emotes with similar characteristics (same turn behaviour, etc).\n\n\"Same rank only\" strictly picks targets of the same rank.\n\"One rank below\" also accepts targets one rank below.\n\"Anything allowed\" picks any target it can find, regardless of the rank.\n\nNone of them ever breaks your other rules.\n\nRecommended: \"One rank below\", or \"Same rank only\" if you want behavior accuracy.	在启用「将替换分散到多个情感动作」时生效，决定某个源情感动作可以使用哪些情感动作作为目标。简单来说，如果你想分散到 5 个情感动作，但只有 2 个同等级目标可用时，就由它来决定如何处理。等级大致就是具有相同特征（转身表现等）的一类情感动作。\n\n「仅同等级」只选择同等级的目标。\n「可低一级」也接受低一个等级的目标。\n「不限等级」会选择任何能找到的目标，不考虑等级。\n\n以上选项都不会破坏你的其他规则。\n\n推荐：「可低一级」；如果你更看重表现准确，可以选「仅同等级」。
 Determines whether to block unlocked emotes from being picked when they are modified by at least one of your mods. This prevents other people from seeing other modded emotes you might have before the swap takes place.\nAs an example, you have a mod on beesknees, and you try to bypass /conduct which happens to land on beesknees: other players might or might not see the modded beesknees for a moment.\n\n\"Allowed\" allows using unlocked emotes that are modified by one of your mods.\n\"Last resort\" uses one only when nothing else fits.\n\"Blocked\" never uses one, and show an error message in the chat with options to disable or open the mod in penumbra.\n\nRecommended: \"Last resort\", or \"Blocked\" if you absolutely don't want your modded emotes to accidentaly be seen.	决定当已解锁的情感动作被你的某个模组修改时，是否禁止将其作为目标。这可以避免其他玩家在替换生效前看到你拥有的其他模组效果。\n例如：你给 beesknees 装了模组，而你想无视限制播放 /conduct，它正好匹配到 beesknees：其他玩家可能会在瞬间看到被模组修改后的 beesknees。\n\n「允许」允许使用被你的模组修改过的已解锁情感动作。\n「最后手段」仅在没有其他合适选项时才使用。\n「禁止」绝不使用，并在聊天栏显示错误提示，附带禁用该模组或在 Penumbra 中打开模组的选项。\n\n推荐：「最后手段」；如果你绝对不希望自己的模组效果被意外看到，可以选「禁止」。
@@ -300,9 +308,11 @@ Not running: {0}.	未运行：{0}。
 Leave this on, otherwise bypassing several animations in a row may look broken.	请保持开启，否则连续播放多个动画时可能看起来出问题。
 Bypass Emote has not been approved for this game build.	Bypass Emote 尚未针对当前游戏版本通过审批。
 Emote swaps may behave oddly until the build is approved.\nThe plugin will automatically fetch updates every 10 minutes to check if it was approved.	在版本通过审批之前，表情替换可能表现异常。\n插件每 10 分钟会自动获取一次更新，以检查是否已通过审批。
-The Bypass Emote you are using is not the original plugin.	你所在使用的Bypass Emote不是原版插件
+Bypass Emote cannot be tested on this game client.	无法在此游戏客户端上测试 Bypass Emote。
+The {0} client has not and can not be tested. This plugin might not work and might be unstable/unusable. Please don't use it if it does not work well.	{0} 客户端尚未且无法进行测试。本插件可能无法工作，也可能不稳定／不可用。如果表现不佳，请不要继续使用。
+The Bypass Emote you are using is not the original plugin.	你所在使用的Bypass Emote不是原版插件，
 This Chinese localization and CN client adaptation branch is maintained by Sachimi. If you have any problem, please report the bug at https://github.com/Luckyumimi/BypassEmoteCN	此汉化＆国服适配分支由Sachimi负责，如果有任何问题，请前往https://github.com/Luckyumimi/BypassEmoteCN报告bug
-Open the project page	打开项目主页
+Open the project page	打开仓库
 not yet	尚未
 Checked at {0}.	检查时间：{0}。
 Enable Force Approval	开启强制审批
@@ -312,6 +322,7 @@ Switch to Direct Play?	切换到直接播放？
 Switch to Direct Play	切换到直接播放
 Enable unsafe mode?	开启不安全模式？
 Enable unsafe mode	开启不安全模式
+Cancel	取消
 Bypass Emote - Create a mod	Bypass Emote - 创建模组
 This window allows you to create a permanent swap mod, and it stays unaffected by BypassEmote. You own it, and you manage it, like any other mod.	此窗口用于创建一个永久替换模组，它不受 Bypass Emote 影响；它归你所有，也和其他模组一样由你自行管理。
 Emote to play	播放的情感动作
@@ -384,6 +395,37 @@ Clear kept swaps	清除保留的替换
 No swap is kept.	没有保留的替换。
 Target	目标
 Source	来源
+Achievement	成就
+Quest	任务
+Event	活动
+Seasonal Event	季节活动
+NPC	NPC
+Vendor	商人
+Duty	副本
+PvP	PvP
+Mog Station	商城
+Veteran Reward	老兵奖励
+Recruitment	招募奖励
+Gold Saucer	金碟游乐场
+Island Sanctuary	无人岛
+Tribe Quest	部族任务
+Achievement Reward	成就奖励
+Quest Reward	任务奖励
+Event Reward	活动奖励
+Premium	商城
+Skybuilders	重建伊修加德
+Treasure Hunt	寻宝
+Cosmic Exploration	宇宙探索
+Occult Crescent	神秘岛新月岛
+Tribal	部族
+V&C Dungeon	变幻迷宫
+Purchase	购买
+Hunts	狩猎
+Eureka	优雷卡
+Deep Dungeon	深层迷宫
+Bozja	博兹雅
+Other	其他
+Raid	团队副本
 Option	选项
 Races	种族
 Last used	最近使用

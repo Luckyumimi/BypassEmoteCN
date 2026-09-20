@@ -392,7 +392,10 @@ public class EmoteWindow : Window, IDisposable
 
                         foreach (var entry in emoteSources.Sources)
                         {
-                            ImGui.Text($"{entry.Type}: {entry.Text}");
+                            // FFXIVCollect returns source categories in English. Translate the
+                            // category when known, while keeping unknown categories intact so a
+                            // newly added API value can never break the tooltip.
+                            ImGui.Text($"{L.T(entry.Type)}: {entry.Text}");
                         }
 
                         ImGui.EndTooltip();
